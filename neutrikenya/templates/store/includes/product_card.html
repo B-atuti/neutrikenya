@@ -1,0 +1,58 @@
+<div class="product-card">
+    <div class="product-img-container">
+        {% if product.images.exists %}
+            <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="product-img">
+        {% else %}
+            <img src="{% static 'images/placeholder-product.jpg' %}" alt="{{ product.name }}" class="product-img">
+        {% endif %}
+        
+        {% if product.is_bestseller %}
+            <span class="product-badge">Bestseller</span>
+        {% endif %}
+        {% if product.is_new %}
+            <span class="product-badge" style="background: #28a745;">New</span>
+        {% endif %}
+        {% if product.discount_percentage > 0 %}
+            <span class="product-badge" style="background: #dc3545;">-{{ product.discount_percentage }}%</span>
+        {% endif %}
+    </div>
+    
+    <div class="product-info">
+        {% if product.category %}
+            <div class="product-category">{{ product.category.name }}</div>
+        {% endif %}
+        
+        <h3 class="product-title">{{ product.name }}</h3>
+        
+        <div class="d-flex align-items-center mb-3">
+            {% if product.average_rating %}
+                <div class="stars me-2">
+                    {% for i in "12345"|make_list %}
+                        {% if forloop.counter <= product.average_rating %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <span class="text-muted small">({{ product.review_count }})</span>
+            {% endif %}
+        </div>
+        
+        <div class="d-flex align-items-center mb-3">
+            {% if product.original_price %}
+                <span class="text-decoration-line-through text-muted me-2">KSh {{ product.original_price }}</span>
+            {% endif %}
+            <span class="product-price">KSh {{ product.price }}</span>
+        </div>
+        
+        <form method="post" action="{% url 'store:add_to_cart' product.id %}" class="cart-form">
+            {% csrf_token %}
+            <button type="submit" class="btn-cart">
+                <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+            </button>
+        </form>
+    </div>
+    
+    <a href="{% url 'store:product_detail' product.slug %}" class="stretched-link"></a>
+</div> 

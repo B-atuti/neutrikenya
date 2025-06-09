@@ -1,0 +1,638 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - NeutriKenya{% endblock %}
+
+{% block extra_css %}
+<style>
+    .product-detail-img {
+        height: 400px;
+        object-fit: contain;
+        background-color: #f8f9fa;
+    }
+    
+    .product-detail-price {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #c4a484;
+    }
+    
+    .product-detail-original-price {
+        font-size: 1.25rem;
+        text-decoration: line-through;
+        color: #999;
+        margin-right: 10px;
+    }
+    
+    .badge-category {
+        background-color: #f8f9fa;
+        color: #333;
+        font-weight: 500;
+        padding: 8px 15px;
+        border-radius: 20px;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        display: inline-block;
+    }
+    
+    .badge-category:hover {
+        background-color: #e9ecef;
+        text-decoration: none;
+    }
+    
+    .countdown-container {
+        display: flex;
+        margin: 15px 0;
+    }
+    
+    .countdown-box {
+        background: #333;
+        color: white;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+    
+    .countdown-value {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    
+    .countdown-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+    }
+    
+    .usp-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .usp-icon {
+        color: #c4a484;
+        margin-right: 15px;
+        font-size: 1.2rem;
+    }
+    
+    .trust-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin: 5px;
+    }
+    
+    .trust-badge i {
+        margin-right: 8px;
+        color: #c4a484;
+    }
+    
+    .product-categories {
+        margin-bottom: 15px;
+    }
+    
+    .add-to-cart-button {
+        background-color: #333;
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        border: none;
+        width: 100%;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .add-to-cart-button:hover {
+        background-color: #000;
+        transform: translateY(-2px);
+    }
+    
+    .discount-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #ff6b6b;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 50px;
+        font-weight: 600;
+        z-index: 10;
+    }
+    
+    .limited-offer {
+        background: #fff6e5;
+        border: 2px dashed #f8c95a;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .highlight-text {
+        font-weight: 600;
+        color: #000;
+    }
+    
+    .review-summary {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .review-stars {
+        color: #ffc107;
+        margin-right: 10px;
+        font-size: 1.2rem;
+    }
+    
+    .review-count {
+        color: #666;
+    }
+    
+    .btn-outline-secondary {
+        color: #333;
+        border-color: #ddd;
+    }
+    
+    .btn-outline-secondary:hover {
+        background-color: #f8f9fa;
+        color: #333;
+    }
+    
+    .related-product-card {
+        border: 1px solid #eee;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .related-product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'store:home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'store:shop' %}">Shop</a></li>
+            {% if product.category %}
+            <li class="breadcrumb-item"><a href="{% url 'store:category_detail' product.category.slug %}">{{ product.category.name }}</a></li>
+            {% endif %}
+            {% if product.product_line %}
+            <li class="breadcrumb-item"><a href="{% url 'store:shop' %}?line={{ product.product_line }}">{{ product.product_line }}</a></li>
+            {% endif %}
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row g-5">
+        <!-- Product Images -->
+        <div class="col-md-6">
+            {% if product.original_price %}
+                <div class="discount-badge">
+                    -{{ product.get_discount_percentage|default:15 }}% OFF
+                </div>
+            {% endif %}
+            
+            <div class="row">
+                <div class="col-9">
+                    <div id="productMainCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for image in product.images.all %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <img src="{{ image.image.url }}" class="d-block w-100 product-detail-img" alt="{{ product.name }}">
+                                </div>
+                            {% empty %}
+                                <div class="carousel-item active">
+                                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
+                                        <i class="fas fa-image fa-4x text-muted"></i>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#productMainCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#productMainCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-3">
+                    {% for image in product.images.all %}
+                        <div class="mb-3">
+                            <img src="{{ image.image.url }}" class="img-thumbnail" alt="{{ product.name }}" 
+                                 data-bs-target="#productMainCarousel" data-bs-slide-to="{{ forloop.counter0 }}" 
+                                 style="cursor: pointer;">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Trust badges section -->
+            <div class="row mt-4 text-center g-2">
+                <div class="col-6">
+                    <div class="trust-badge">
+                        <i class="fas fa-truck"></i>
+                        <span>Fast Delivery</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="trust-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Secure Checkout</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="trust-badge">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Easy Returns</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="trust-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Authentic Products</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Info -->
+        <div class="col-md-6">
+            <h1 class="mb-2">{{ product.name }}</h1>
+            
+            <!-- Product categories -->
+            <div class="product-categories">
+                {% if product.category %}
+                    <a href="{% url 'store:category_detail' product.category.slug %}" class="badge-category">
+                        <i class="fas fa-tag me-1"></i> {{ product.category.name }}
+                    </a>
+                {% endif %}
+                {% if product.product_line %}
+                    <a href="{% url 'store:shop' %}?line={{ product.product_line }}" class="badge-category">
+                        <i class="fas fa-flask me-1"></i> {{ product.product_line }}
+                    </a>
+                {% endif %}
+                {% if product.skin_concern %}
+                    <a href="{% url 'store:shop' %}?concern={{ product.skin_concern }}" class="badge-category">
+                        <i class="fas fa-spa me-1"></i> {{ product.skin_concern }}
+                    </a>
+                {% endif %}
+            </div>
+            
+            <!-- Reviews summary -->
+            <div class="review-summary">
+                <div class="review-stars">★★★★★</div>
+                <div class="review-count">{{ product.id|add:25 }} Reviews</div>
+            </div>
+            
+            <!-- Price section -->
+            <div class="d-flex align-items-center mb-3">
+                {% if product.original_price %}
+                    <span class="product-detail-original-price">KES {{ product.original_price }}</span>
+                    <span class="product-detail-price">KES {{ product.price }}</span>
+                    <span class="badge bg-danger ms-2">SAVE {{ product.get_discount_percentage|default:15 }}%</span>
+                {% else %}
+                    <span class="product-detail-price">KES {{ product.price }}</span>
+                {% endif %}
+            </div>
+            
+            <!-- Limited time offer -->
+            <div class="limited-offer">
+                <h5 class="mb-2"><i class="fas fa-clock me-2"></i>Limited Time Offer!</h5>
+                <p class="mb-2">Use code <span class="highlight-text">SAVE15</span> at checkout for an extra 15% off!</p>
+                <div class="countdown-container">
+                    <div class="countdown-box">
+                        <span class="countdown-value" id="countdown-hours">24</span>
+                        <span class="countdown-label">hrs</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span class="countdown-value" id="countdown-minutes">00</span>
+                        <span class="countdown-label">min</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span class="countdown-value" id="countdown-seconds">00</span>
+                        <span class="countdown-label">sec</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product status badges -->
+            <div class="mb-3">
+                <span class="badge {% if product.stock > 10 %}bg-success{% elif product.stock > 0 %}bg-warning text-dark{% else %}bg-danger{% endif %} mb-2">
+                    {% if product.stock > 10 %}
+                        <i class="fas fa-check-circle me-1"></i> In Stock
+                    {% elif product.stock > 0 %}
+                        <i class="fas fa-exclamation-circle me-1"></i> Only {{ product.stock }} left
+                    {% else %}
+                        <i class="fas fa-times-circle me-1"></i> Out of Stock
+                    {% endif %}
+                </span>
+            </div>
+            
+            <!-- Product description -->
+            <div class="mb-4">
+                {{ product.description|linebreaks }}
+            </div>
+            
+            <!-- Product benefits -->
+            <div class="mb-4">
+                <h5 class="mb-3">Key Benefits:</h5>
+                <div class="usp-item">
+                    <i class="fas fa-check usp-icon"></i>
+                    <span>Dermatologist tested and approved</span>
+                </div>
+                <div class="usp-item">
+                    <i class="fas fa-check usp-icon"></i>
+                    <span>Natural ingredients, no harsh chemicals</span>
+                </div>
+                <div class="usp-item">
+                    <i class="fas fa-check usp-icon"></i>
+                    <span>Suitable for all skin types</span>
+                </div>
+                {% if product.product_line == 'Vitamin C' %}
+                <div class="usp-item">
+                    <i class="fas fa-check usp-icon"></i>
+                    <span>Brightens skin and reduces dark spots</span>
+                </div>
+                {% endif %}
+                <div class="usp-item">
+                    <i class="fas fa-check usp-icon"></i>
+                    <span>Made in Kenya with locally sourced ingredients</span>
+                </div>
+            </div>
+            
+            {% if product.stock > 0 %}
+                <form class="add-to-cart-form" data-product-id="{{ product.id }}">
+                    {% csrf_token %}
+                    <div class="row g-3 align-items-center mb-3">
+                        <div class="col-auto">
+                            <label for="quantity" class="col-form-label fw-bold">Quantity:</label>
+                        </div>
+                        <div class="col-auto">
+                            <div class="input-group" style="width: 150px;">
+                                <button class="btn btn-outline-secondary" type="button" id="decrease-quantity">-</button>
+                                <input type="number" class="form-control text-center" id="quantity" name="quantity" value="1" min="1" max="{{ product.stock }}">
+                                <button class="btn btn-outline-secondary" type="button" id="increase-quantity">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 mb-3">
+                        <button type="submit" class="add-to-cart-button">
+                            <i class="fas fa-shopping-cart me-2"></i> ADD TO CART
+                        </button>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'store:checkout' %}" class="btn btn-outline-dark">
+                            <i class="fas fa-credit-card me-2"></i> BUY NOW
+                        </a>
+                    </div>
+                </form>
+            {% else %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    This product is currently out of stock. Please check back later or join our waitlist.
+                </div>
+                <div class="d-grid">
+                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#waitlistModal">
+                        <i class="fas fa-bell me-2"></i> JOIN WAITLIST
+                    </button>
+                </div>
+            {% endif %}
+            
+            <hr class="my-4">
+            
+            <div class="d-flex justify-content-between">
+                <div>
+                    <i class="fas fa-shipping-fast me-2"></i> Free delivery on orders over KSh 5,000
+                </div>
+                <div>
+                    <i class="fas fa-shield-alt me-2"></i> Secure checkout
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Related Products -->
+    {% if related_products %}
+        <section class="mt-5 pt-5 border-top">
+            <h3 class="mb-4">Complete Your Routine</h3>
+            <div class="row g-4">
+                {% for product in related_products %}
+                    <div class="col-6 col-md-3">
+                        <div class="related-product-card h-100">
+                            {% if forloop.counter == 1 %}
+                            <div class="position-absolute top-0 start-0 bg-warning text-dark p-2 m-2">
+                                BEST MATCH
+                            </div>
+                            {% endif %}
+                            <div class="position-relative">
+                                {% for image in product.images.all %}
+                                    {% if image.is_main %}
+                                        <img src="{{ image.image.url }}" alt="{{ product.name }}" class="img-fluid">
+                                    {% endif %}
+                                {% empty %}
+                                    <div class="bg-light w-100 aspect-ratio-1x1 d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-image fa-3x text-muted"></i>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="p-3">
+                                <h6 class="product-title">{{ product.name }}</h6>
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="text-warning me-2">★★★★★</div>
+                                    <small class="text-muted">({{ product.id|add:10 }})</small>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    {% if product.original_price %}
+                                        <span class="text-decoration-line-through text-muted me-2">KES {{ product.original_price }}</span>
+                                    {% endif %}
+                                    <span class="fw-bold">KES {{ product.price }}</span>
+                                </div>
+                                <div class="d-grid">
+                                    <a href="{% url 'store:product_detail' product.slug %}" class="btn btn-sm btn-dark w-100">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+</div>
+
+<div id="alerts-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;"></div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Quantity controls
+        const quantityInput = document.getElementById('quantity');
+        const decreaseBtn = document.getElementById('decrease-quantity');
+        const increaseBtn = document.getElementById('increase-quantity');
+        
+        if (decreaseBtn && increaseBtn && quantityInput) {
+            decreaseBtn.addEventListener('click', function() {
+                const currentValue = parseInt(quantityInput.value);
+                if (currentValue > 1) {
+                    quantityInput.value = currentValue - 1;
+                }
+            });
+            
+            increaseBtn.addEventListener('click', function() {
+                const currentValue = parseInt(quantityInput.value);
+                const maxValue = parseInt(quantityInput.getAttribute('max'));
+                if (currentValue < maxValue) {
+                    quantityInput.value = currentValue + 1;
+                }
+            });
+        }
+        
+        // Add to cart form submission
+        const addToCartForm = document.querySelector('.add-to-cart-form');
+        if (addToCartForm) {
+            addToCartForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const productId = this.dataset.productId;
+                const quantity = document.getElementById('quantity').value;
+                const formData = new FormData();
+                formData.append('quantity', quantity);
+                formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+                
+                // Show loading state
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...';
+                
+                // Send AJAX request with absolute URL
+                fetch('/add-to-cart/' + productId + '/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Reset button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                    
+                    if (data.success) {
+                        // Show success message
+                        const alertsContainer = document.getElementById('alerts-container');
+                        const alert = document.createElement('div');
+                        alert.className = 'alert alert-success alert-dismissible fade show animate__animated animate__fadeIn';
+                        alert.innerHTML = `
+                            <strong>Success!</strong> Item added to your cart.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <div class="mt-2">
+                                <a href="/cart/" class="btn btn-sm btn-primary">View Cart</a>
+                                <a href="/checkout/" class="btn btn-sm btn-success ms-2">Checkout</a>
+                            </div>
+                        `;
+                        alertsContainer.appendChild(alert);
+                        
+                        // Update cart count in navbar
+                        const cartCountElement = document.querySelector('.fa-shopping-cart').nextElementSibling;
+                        if (cartCountElement) {
+                            cartCountElement.textContent = data.item_count;
+                        }
+                        
+                        // Auto-dismiss alert after 5 seconds
+                        setTimeout(() => {
+                            alert.classList.add('animate__fadeOut');
+                            setTimeout(() => {
+                                alertsContainer.removeChild(alert);
+                            }, 500);
+                        }, 5000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error adding to cart:', error);
+                    
+                    // Reset button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                    
+                    // Show error message
+                    const alertsContainer = document.getElementById('alerts-container');
+                    const alert = document.createElement('div');
+                    alert.className = 'alert alert-danger alert-dismissible fade show';
+                    alert.innerHTML = `
+                        <strong>Error!</strong> Could not add item to cart. Please try again.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    `;
+                    alertsContainer.appendChild(alert);
+                });
+            });
+        }
+        
+        // Countdown timer
+        function startCountdown() {
+            // Set expiration to 24 hours from now
+            const now = new Date();
+            const expiration = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+            
+            const hoursEl = document.getElementById('countdown-hours');
+            const minutesEl = document.getElementById('countdown-minutes');
+            const secondsEl = document.getElementById('countdown-seconds');
+            
+            function updateCountdown() {
+                const now = new Date();
+                const diff = expiration - now;
+                
+                if (diff <= 0) {
+                    clearInterval(interval);
+                    hoursEl.textContent = '00';
+                    minutesEl.textContent = '00';
+                    secondsEl.textContent = '00';
+                    return;
+                }
+                
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                hoursEl.textContent = hours.toString().padStart(2, '0');
+                minutesEl.textContent = minutes.toString().padStart(2, '0');
+                secondsEl.textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            // Initial call
+            updateCountdown();
+            
+            // Update every second
+            const interval = setInterval(updateCountdown, 1000);
+        }
+        
+        // Start countdown
+        if (document.getElementById('countdown-hours')) {
+            startCountdown();
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %} 

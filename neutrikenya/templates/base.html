@@ -1,0 +1,397 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NeutriherbsKenya{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .footer-image-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+        
+        @media (max-width: 768px) {
+            .footer-image-container {
+                height: 150px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-image-container {
+                height: 120px;
+            }
+        }
+
+        .mega-menu {
+            width: 100%;
+            max-width: 800px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .mega-menu h5 {
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <!-- Top Bar -->
+        <div class="top-bar bg-dark text-white py-2">
+            <div class="container d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="me-3">Orders ship next day</span>
+                    <span>Logistics info updates within 1-2 working days</span>
+                </div>
+                <div>
+                    <div class="dropdown d-inline-block me-3">
+                        <button class="btn btn-sm btn-dark dropdown-toggle currency-selector" type="button" id="currencyDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span id="selected-currency-flag" class="flag-icon flag-icon-ke">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 640 480">
+                                    <defs>
+                                        <path id="a" stroke-miterlimit="10" d="M-28.6 47.5l1.8 1 46.7-81c2.7-.6 4.2-3.2 5.7-5.8 1-1.8 5-8.7 6.7-17.7a58 58 0 0 0-11.9 14.7c-1.5 2.6-3 5.2-2.3 7.9z"/>
+                                    </defs>
+                                    <path fill="#fff" d="M0 0h640v480H0z"/>
+                                    <path d="M0 0h640v144H0z"/>
+                                    <path fill="#060" d="M0 336h640v144H0z"/>
+                                    <g id="b" transform="matrix(3 0 0 3 320 240)">
+                                        <use width="100%" height="100%" stroke="#000" xlink:href="#a"/>
+                                        <use width="100%" height="100%" fill="#fff" xlink:href="#a"/>
+                                    </g>
+                                    <use width="100%" height="100%" transform="matrix(-1 0 0 1 640 0)" xlink:href="#b"/>
+                                    <path fill="#b00" d="M0 144h640v192H0z"/>
+                                    <path id="c" d="M266.2 204v71.7l-19.3.3s-89.9 40.4-93 40.4c-3 0 3.3-36.2 3.3-36.2l21.8-6.7-22.4-6.7s-9.3-47.8-4.5-59.3c8.8-17.3 42-4.5 42-4.5z" fill="#000"/>
+                                    <use width="100%" height="100%" transform="matrix(-1 0 0 1 640 0)" xlink:href="#c"/>
+                                    <g fill="#fff">
+                                    <path d="M590.5 173.3a15.3 15.3 0 0 1-30.7 0 15.3 15.3 0 0 1 30.7 0z"/>
+                                    <path d="M580 173.3a5 5 0 0 1-10 0 5 5 0 0 1 10 0z"/>
+                                    </g>
+                                    <g fill="#fff">
+                                    <path d="M590.5 306.7a15.3 15.3 0 0 1-30.7 0 15.3 15.3 0 0 1 30.7 0z"/>
+                                    <path d="M580 306.7a5 5 0 0 1-10 0 5 5 0 0 1 10 0z"/>
+                                    </g>
+                                    <g fill="#fff">
+                                    <path d="M539.1 240a15.3 15.3 0 0 1-30.7 0 15.3 15.3 0 0 1 30.7 0z"/>
+                                    <path d="M528.6 240a5 5 0 0 1-10 0 5 5 0 0 1 10 0z"/>
+                                    </g>
+                                    <g fill="#fff">
+                                    <path d="M335.9 263.3a15.3 15.3 0 0 1-30.7 0 15.3 15.3 0 0 1 30.7 0z"/>
+                                    <path d="M325.4 263.3a5 5 0 0 1-10 0 5 5 0 0 1 10 0z"/>
+                                    </g>
+                                    <g fill="#fff">
+                                    <path d="M335.9 216.7a15.3 15.3 0 0 1-30.7 0 15.3 15.3 0 0 1 30.7 0z"/>
+                                    <path d="M325.4 216.7a5 5 0 0 1-10 0 5 5 0 0 1 10 0z"/>
+                                    </g>
+                                    <g fill="#fff">
+                                    <path d="M386 240a15.3 15.3 0 0 1-30.6 0 15.3 15.3 0 0 1 30.7 0z"/>
+                                    <path d="M375.6 240a5 5 0 0 1-10 0 5 5 0 0 1 10 0z"/>
+                                    </g>
+                                </svg>
+                            </span> 
+                            <span id="selected-currency">KES</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="currencyDropdown">
+                            <li><a class="dropdown-item currency-option" href="#" data-currency="KES" data-rate="1" data-flag-code="ke">
+                                <span class="flag-icon flag-icon-ke">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 640 480">
+                                        <defs>
+                                            <path id="a-ke" stroke-miterlimit="10" d="M-28.6 47.5l1.8 1 46.7-81c2.7-.6 4.2-3.2 5.7-5.8 1-1.8 5-8.7 6.7-17.7a58 58 0 0 0-11.9 14.7c-1.5 2.6-3 5.2-2.3 7.9z"/>
+                                        </defs>
+                                        <path fill="#fff" d="M0 0h640v480H0z"/>
+                                        <path d="M0 0h640v144H0z"/>
+                                        <path fill="#060" d="M0 336h640v144H0z"/>
+                                        <g id="b-ke" transform="matrix(3 0 0 3 320 240)">
+                                            <use width="100%" height="100%" stroke="#000" xlink:href="#a-ke"/>
+                                            <use width="100%" height="100%" fill="#fff" xlink:href="#a-ke"/>
+                                        </g>
+                                        <use width="100%" height="100%" transform="matrix(-1 0 0 1 640 0)" xlink:href="#b-ke"/>
+                                        <path fill="#b00" d="M0 144h640v192H0z"/>
+                                        <path id="c-ke" d="M266.2 204v71.7l-19.3.3s-89.9 40.4-93 40.4c-3 0 3.3-36.2 3.3-36.2l21.8-6.7-22.4-6.7s-9.3-47.8-4.5-59.3c8.8-17.3 42-4.5 42-4.5z" fill="#000"/>
+                                        <use width="100%" height="100%" transform="matrix(-1 0 0 1 640 0)" xlink:href="#c-ke"/>
+                                    </svg>
+                                </span> KES (Kenyan Shilling)
+                            </a></li>
+                            <li><a class="dropdown-item currency-option" href="#" data-currency="USD" data-rate="0.0078" data-flag-code="us">
+                                <span class="flag-icon flag-icon-us">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 640 480">
+                                        <path fill="#bd3d44" d="M0 0h640v480H0"/>
+                                        <path stroke="#fff" stroke-width="37" d="M0 55.3h640M0 129h640M0 203h640M0 277h640M0 351h640M0 425h640"/>
+                                        <path fill="#192f5d" d="M0 0h364.8v258.5H0"/>
+                                        <marker id="us-a" markerHeight="30" markerWidth="30">
+                                            <path fill="#fff" d="m14 0 9 27L0 10h28L5 27z"/>
+                                        </marker>
+                                        <path fill="none" marker-mid="url(#us-a)" d="m0 0 16 11h61 61 61 61 60L47 37h61 61 60 61L16 63h61 61 61 61 60L47 89h61 61 60 61L16 115h61 61 61 61 60L47 141h61 61 60 61L16 166h61 61 61 61 60L47 192h61 61 60 61L16 218h61 61 61 61 60z"/>
+                                    </svg>
+                                </span> USD (US Dollar)
+                            </a></li>
+                            <li><a class="dropdown-item currency-option" href="#" data-currency="EUR" data-rate="0.0072" data-flag-code="eu">
+                                <span class="flag-icon flag-icon-eu">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 640 480">
+                                        <defs>
+                                            <g id="eu-d">
+                                                <g id="eu-b">
+                                                    <path id="eu-a" d="M0-1v1h.5" transform="rotate(18 0 -1)"/>
+                                                    <use transform="scale(-1 1)" xlink:href="#eu-a"/>
+                                                </g>
+                                                <g id="eu-c">
+                                                    <use transform="rotate(72)" xlink:href="#eu-b"/>
+                                                    <use transform="rotate(144)" xlink:href="#eu-b"/>
+                                                </g>
+                                                <use transform="scale(-1 1)" xlink:href="#eu-c"/>
+                                            </g>
+                                        </defs>
+                                        <path fill="#039" d="M0 0h640v480H0z"/>
+                                        <g fill="#fc0" transform="matrix(30 0 0 30 320 240)">
+                                            <use height="100%" width="100%" xlink:href="#eu-d"/>
+                                            <use height="100%" width="100%" transform="rotate(36)" xlink:href="#eu-d"/>
+                                            <use height="100%" width="100%" transform="rotate(72)" xlink:href="#eu-d"/>
+                                            <use height="100%" width="100%" transform="rotate(108)" xlink:href="#eu-d"/>
+                                            <use height="100%" width="100%" transform="rotate(144)" xlink:href="#eu-d"/>
+                                        </g>
+                                    </svg>
+                                </span> EUR (Euro)
+                            </a></li>
+                            <li><a class="dropdown-item currency-option" href="#" data-currency="GBP" data-rate="0.0062" data-flag-code="gb">
+                                <span class="flag-icon flag-icon-gb">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 640 480">
+                                        <path fill="#012169" d="M0 0h640v480H0z"/>
+                                        <path fill="#FFF" d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z"/>
+                                        <path fill="#C8102E" d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z"/>
+                                        <path fill="#FFF" d="M241 0v480h160V0H241zM0 160v160h640V160H0z"/>
+                                        <path fill="#C8102E" d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z"/>
+                                    </svg>
+                                </span> GBP (British Pound)
+                            </a></li>
+                        </ul>
+                    </div>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'store:profile' %}" class="text-decoration-none text-white me-3">
+                        <i class="fas fa-user me-1"></i> My Account
+                    </a>
+                    <a href="{% url 'logout' %}" class="text-decoration-none text-white me-3">
+                        <i class="fas fa-sign-out-alt me-1"></i> Logout
+                    </a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="text-decoration-none text-white me-3">
+                        <i class="fas fa-user me-1"></i> My Account
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'store:cart' %}" class="text-decoration-none text-white position-relative">
+                        <i class="fas fa-shopping-cart me-1"></i> Cart
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+                            {% if request.user.is_authenticated or request.session.session_id %}
+                                {{ cart.item_count|default:"0" }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
+            <div class="container">
+                <a class="navbar-brand fs-3 fw-bold text-dark d-flex align-items-center" href="{% url 'store:home' %}">
+                    <img src="https://th.bing.com/th/id/OIP.bzaNm7gEkSI6kMuByrSmvgHaHa?w=180&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" 
+                         alt="Neutriherbs Logo" 
+                         style="height: 40px; width: 40px; margin-right: 10px; border-radius: 5px;">
+                    NeutriherbsKenya
+                </a>
+                
+                <div class="d-flex align-items-center order-lg-3">
+                    <a href="#" class="nav-link text-dark me-3">
+                        <i class="fas fa-search fs-5"></i>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="{% url 'store:home' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="{% url 'store:shop' %}">Shop</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown">
+                                Categories
+                            </a>
+                            <div class="dropdown-menu mega-menu p-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h5>Featured Categories</h5>
+                                        <ul class="list-unstyled">
+                                            <li><a href="{% url 'store:shop' %}" class="dropdown-item">All Products</a></li>
+                                            <li><a href="{% url 'store:category_detail' 'vitamin-c' %}" class="dropdown-item">Vitamin C</a></li>
+                                            <li><a href="{% url 'store:category_detail' 'vitamin-e' %}" class="dropdown-item">Vitamin E</a></li>
+                                            <li><a href="{% url 'store:category_detail' 'collagen' %}" class="dropdown-item">Collagen</a></li>
+                                            <li><a href="{% url 'store:category_detail' 'pro-retinol' %}" class="dropdown-item">Pro Retinol</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h5>Specialized Care</h5>
+                                        <ul class="list-unstyled">
+                                            <li><a href="{% url 'store:category_detail' 'hyaluronic-acid' %}" class="dropdown-item">Hyaluronic Acid</a></li>
+                                            <li><a href="{% url 'store:category_detail' 'salicylic-acid' %}" class="dropdown-item">Salicylic Acid</a></li>
+                                            <li><a href="{% url 'store:category_detail' 'gold-series' %}" class="dropdown-item">Gold Series</a></li>
+                                            <li><a href="{% url 'store:category_detail' 'lighten-skin' %}" class="dropdown-item">Lighten Skin</a></li>
+                                            <li><a href="{% url 'store:category_detail' 'serums' %}" class="dropdown-item">Serums</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h5>Body & Facial Care</h5>
+                                        <ul class="list-unstyled">
+                                            <li><a href="{% url 'store:category_detail' 'body-care' %}" class="dropdown-item">Body Care</a></li>
+                                            <li><a href="{% url 'store:category_detail' 'facial-care' %}" class="dropdown-item">Facial Care</a></li>
+                                            <li><a href="{% url 'store:category_detail' 'hydrating-cream' %}" class="dropdown-item">Hydrating Cream</a></li>
+                                            <li><a href="{% url 'store:category_detail' 'hair-care' %}" class="dropdown-item">Hair Care</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="{% url 'store:haircare' %}">Hair Care</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown">
+                                About Us
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'store:about' %}">Our Story</a>
+                                <a class="dropdown-item" href="#">Our Ingredients</a>
+                                <a class="dropdown-item" href="#">Value Proposition</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="{% url 'store:contact' %}">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-dark text-white py-5 mt-5">
+        <div class="footer-image-container">
+            <img src="{% static 'images/footer-image.webp' %}" alt="Neutriherbs Kenya Natural Skincare" class="footer-image">
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">ABOUT NEUTRIHERBSKENYA</h5>
+                    <p>Kenya's official distributor of Neutriherbs products. Premium skincare for all skin types.</p>
+                    <p>
+                        <strong>Address:</strong> Nairobi, Kenya<br>
+                        <strong>Customer Support:</strong> +254 700 000000<br>
+                        <strong>Tel:</strong> +254 700 000000<br>
+                        <strong>Email:</strong> info@neutriherbskenya.co.ke
+                    </p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5 class="mb-3">CUSTOMER CARE</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">FAQs</a></li>
+                        <li><a href="#" class="text-white">Blogs</a></li>
+                        <li><a href="#" class="text-white">Shipping</a></li>
+                        <li><a href="#" class="text-white">Track My Order</a></li>
+                        <li><a href="#" class="text-white">Be Our Stockist</a></li>
+                        <li><a href="#" class="text-white">Do not sell or share my personal information</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5 class="mb-3">PRIVACY & TERMS</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Refund Policy</a></li>
+                        <li><a href="#" class="text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white">Terms of Use</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5 class="mb-3">STAY IN TOUCH</h5>
+                    <div class="d-flex">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-tiktok fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-pinterest fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
+                    </div>
+                    <div class="payment-methods mt-4">
+                        <i class="fab fa-cc-amex fa-2x me-2 text-white" title="American Express"></i>
+                        <i class="fab fa-apple-pay fa-2x me-2 text-white" title="Apple Pay"></i>
+                        <i class="fab fa-cc-diners-club fa-2x me-2 text-white" title="Diners Club"></i>
+                        <i class="fab fa-cc-discover fa-2x me-2 text-white" title="Discover"></i>
+                        <i class="fab fa-google-pay fa-2x me-2 text-white" title="Google Pay"></i>
+                        <i class="fab fa-cc-jcb fa-2x me-2 text-white" title="JCB"></i>
+                        <i class="fab fa-cc-mastercard fa-2x me-2 text-white" title="Mastercard"></i>
+                        <i class="fab fa-cc-paypal fa-2x me-2 text-white" title="PayPal"></i>
+                        <i class="fab fa-cc-visa fa-2x text-white" title="Visa"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <p class="mb-0">&copy; NeutriherbsKenya {% now "Y" %}</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 

@@ -1,0 +1,110 @@
+[
+    {
+        "name": "Vitamin C Brightening & Glow Body Lotion",
+        "url": "https://neutriherbs.ng/products/vitamin-c-body-lotion",
+        "description": "Neutriherbs Vitamin C Brightening & Glow Body Lotion is infused with the goodness of Vitamin C, Ferulic Acid, Hyaluronic Acid, and natural plant extracts to brighten and hydrate your skin, leaving it glowing and radiant.",
+        "price": 15800.0,
+        "product_line": "Vitamin C",
+        "skin_concern": "Brightening Skin",
+        "images": []
+    },
+    {
+        "name": "15% Vitamin C + Hyaluronic Acid Serum",
+        "url": "https://neutriherbs.ng/products/best-vitamin-c-serum",
+        "description": "This powerful Vitamin C serum combines 15% pure Vitamin C with Hyaluronic Acid to brighten the skin, fade dark spots, and provide deep hydration for a glowing complexion.",
+        "price": 15000.0,
+        "product_line": "Vitamin C",
+        "skin_concern": "Dark Spots",
+        "images": []
+    },
+    {
+        "name": "Vitamin C Brighten & Glow Cleanser",
+        "url": "https://neutriherbs.ng/products/vitamin-c-facial-cleanser-for-glowing-skin",
+        "description": "This gentle yet effective cleanser is enriched with Vitamin C to cleanse, brighten, and rejuvenate your skin, removing impurities while preserving natural moisture.",
+        "price": 12500.0,
+        "product_line": "Vitamin C",
+        "skin_concern": "Brightening Skin",
+        "images": []
+    },
+    {
+        "name": "Retinol Cream For Acne & Anti Aging",
+        "url": "https://neutriherbs.ng/products/retinol-cream-for-acne-and-wrinkles",
+        "description": "Our advanced Retinol cream targets fine lines, wrinkles, and acne with a powerful formula that promotes skin renewal and collagen production for smoother, clearer skin.",
+        "price": 16500.0,
+        "product_line": "Retinol",
+        "skin_concern": "Acne Skin",
+        "images": []
+    },
+    {
+        "name": "Vitamin C Brighten & Glow Body Wash",
+        "url": "https://neutriherbs.ng/products/vitamin-c-body-wash",
+        "description": "Infused with pure Vitamin C, this luxurious body wash cleanses while brightening and evening your skin tone for a radiant all-over glow.",
+        "price": 15500.0,
+        "product_line": "Vitamin C",
+        "skin_concern": "Brightening Skin",
+        "images": []
+    },
+    {
+        "name": "Argan Oil Body Lotion With Shea Butter",
+        "url": "https://neutriherbs.ng/products/neutriherbs-argan-oil-body-lotion-with-shea-butter",
+        "description": "This richly moisturizing body lotion combines nourishing Argan Oil and Shea Butter to deeply hydrate and revitalize dry, dull skin.",
+        "price": 15000.0,
+        "product_line": "Argan Oil",
+        "skin_concern": "Dry Skin",
+        "images": []
+    },
+    {
+        "name": "Vitamin C Glow Body Oil",
+        "url": "https://neutriherbs.ng/products/vitamin-c-glow-body-oil",
+        "description": "This lightweight, quick-absorbing body oil is enriched with Vitamin C and natural oils to hydrate, brighten, and enhance your skin's natural glow.",
+        "price": 15000.0,
+        "product_line": "Vitamin C",
+        "skin_concern": "Brightening Skin",
+        "images": []
+    },
+    {
+        "name": "Vitamin C Turmeric Exfoliating Glow Body Scrub",
+        "url": "https://neutriherbs.ng/products/vitamin-c-turmeric-exfoliating-body-scrub",
+        "description": "This invigorating body scrub combines Vitamin C and Turmeric with natural exfoliants to buff away dead skin cells, revealing smoother, brighter skin.",
+        "price": 10500.0,
+        "product_line": "Vitamin C",
+        "skin_concern": "Brightening Skin",
+        "images": []
+    },
+    {
+        "name": "Hyaluronic Acid Serum",
+        "url": "https://neutriherbs.ng/products/hyaluronic-acid-serum",
+        "description": "Our Hyaluronic Acid Serum provides intense hydration and plumping effects, helping to reduce the appearance of fine lines and wrinkles while maintaining skin's moisture balance.",
+        "price": 14500.0,
+        "product_line": "Hyaluronic Acid",
+        "skin_concern": "Dehydrated Skin",
+        "images": []
+    },
+    {
+        "name": "Snail Mucin Essence",
+        "url": "https://neutriherbs.ng/products/snail-mucin-essence",
+        "description": "This powerful essence contains 96% Snail Mucin to deeply hydrate, repair, and rejuvenate your skin, promoting a smoother, more youthful complexion.",
+        "price": 13500.0,
+        "product_line": "Snail",
+        "skin_concern": "Aging Skin",
+        "images": []
+    },
+    {
+        "name": "Turmeric Brightening Face Mask",
+        "url": "https://neutriherbs.ng/products/turmeric-brightening-face-mask",
+        "description": "This brightening face mask combines Turmeric with other natural ingredients to even skin tone, reduce hyperpigmentation, and reveal a radiant complexion.",
+        "price": 9500.0,
+        "product_line": "Turmeric",
+        "skin_concern": "Brightening Skin",
+        "images": []
+    },
+    {
+        "name": "Skin Whitening Face Cream",
+        "url": "https://neutriherbs.ng/products/skin-whitening-face-cream",
+        "description": "Our advanced skin whitening cream helps to lighten dark spots, even out skin tone, and reveal a brighter, more radiant complexion.",
+        "price": 17500.0,
+        "product_line": "Skin Whitening",
+        "skin_concern": "Brightening Skin",
+        "images": []
+    }
+]

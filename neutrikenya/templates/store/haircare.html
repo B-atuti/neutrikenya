@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+
+{% block title %}Hair Care Products - NeutriKenya{% endblock %}
+
+{% block content %}
+<!-- Hero Banner -->
+<div class="bg-dark text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <h1 class="display-5 fw-bold mb-3">Hair Care Collection</h1>
+                <p class="lead mb-4">Natural ingredients that nourish and strengthen your hair for healthy, vibrant locks.</p>
+                <div class="d-flex gap-3">
+                    <a href="#hair-products" class="btn btn-light text-dark">Shop Now</a>
+                    <a href="#hair-guide" class="btn btn-outline-light">Hair Care Guide</a>
+                </div>
+            </div>
+            <div class="col-md-5 text-center">
+                <div class="p-4 bg-secondary rounded-circle d-inline-block">
+                    <i class="fas fa-spa fa-6x text-white"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Category Nav -->
+<div class="bg-light py-3 mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav nav-pills justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link active bg-dark" href="#all">All Hair Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#shampoo">Shampoo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#conditioner">Conditioner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#treatments">Treatments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#styling">Styling</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Benefits Section -->
+<section class="mb-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Natural Hair Care Benefits</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-seedling fa-3x text-dark"></i>
+                    </div>
+                    <h5>Plant-Based</h5>
+                    <p class="small text-muted">Natural ingredients sourced from plants for gentle yet effective results.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-tint-slash fa-3x text-dark"></i>
+                    </div>
+                    <h5>No Harsh Chemicals</h5>
+                    <p class="small text-muted">Free from sulfates, parabens, and other harmful additives.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-heart fa-3x text-dark"></i>
+                    </div>
+                    <h5>Cruelty-Free</h5>
+                    <p class="small text-muted">None of our products or ingredients are tested on animals.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-recycle fa-3x text-dark"></i>
+                    </div>
+                    <h5>Eco-Friendly</h5>
+                    <p class="small text-muted">Sustainable packaging and environmentally conscious practices.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Product Listings -->
+<section id="hair-products" class="py-5" style="background-color: #f8f8f0;">
+    <div class="container">
+        <h2 class="text-center mb-5">Our Hair Care Products</h2>
+        
+        <!-- Featured Products -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="h5">Featured Products</h3>
+                    <a href="{% url 'store:shop' %}" class="btn btn-sm btn-outline-dark">View All</a>
+                </div>
+            </div>
+            
+            {% if haircare_featured %}
+                {% for product in haircare_featured %}
+                    <div class="col-6 col-md-3">
+                        <div class="product-card">
+                            <div class="product-img-container">
+                                {% for image in product.images.all %}
+                                    {% if image.is_main %}
+                                        <img src="{{ image.image.url }}" alt="{{ product.name }}" class="product-img">
+                                    {% endif %}
+                                {% empty %}
+                                    <div class="bg-white w-100 h-100 d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-image fa-3x text-muted"></i>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="product-info">
+                                <h6 class="product-title">{{ product.name }}</h6>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    {% if product.original_price %}
+                                        <span class="product-original-price">KSh {{ product.original_price }}</span>
+                                    {% endif %}
+                                    <span class="product-price">KSh {{ product.price }}</span>
+                                </div>
+                                <a href="{% url 'store:product_detail' product.slug %}" class="stretched-link"></a>
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Sample Products from Neutriherbs.com (real products) -->
+                <div class="col-6 col-md-3">
+                    <div class="product-card">
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/files/hairgrowth_1200x1200.jpg?v=1684475053" alt="Hair Growth Shampoo" class="product-img">
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Hair Growth Shampoo For Hair Loss</h6>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span class="product-price">KSh 3,250</span>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="product-card">
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/files/3_11_1200x1200.jpg?v=1672735847" alt="Hair Treatment Oil" class="product-img">
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Professional Hair Treatment Oil</h6>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span class="product-price">KSh 3,800</span>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="product-card">
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/files/1_16_1200x1200.jpg?v=1672735845" alt="Hair Growth Spray" class="product-img">
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Hair Growth Spray For Hair Loss</h6>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span class="product-price">KSh 4,200</span>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="product-card">
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/files/2_18_1200x1200.jpg?v=1672735846" alt="Hair Mask" class="product-img">
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Hair Treatment Mask For Damaged Hair</h6>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span class="product-price">KSh 3,900</span>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Hair Product Categories -->
+        <div id="shampoo" class="my-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="h5">Shampoo & Cleansers</h3>
+            </div>
+            <div class="row g-4">
+                <!-- Real Products from Neutriherbs.com -->
+                <div class="col-6 col-md-3">
+                    <div class="product-card">
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/files/hairgrowth_1200x1200.jpg?v=1684475053" alt="Hair Growth Shampoo" class="product-img">
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Hair Growth Shampoo For Hair Loss</h6>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span class="product-price">KSh 3,250</span>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="product-card">
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/files/4_9_1200x1200.jpg?v=1672735848" alt="Anti-Dandruff Shampoo" class="product-img">
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Anti-Dandruff Cleansing Shampoo</h6>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span class="product-price">KSh 3,100</span>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hair Treatments -->
+        <div id="treatments" class="my-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="h5">Hair Treatments & Masks</h3>
+            </div>
+            <div class="row g-4">
+                <!-- Real Products from Neutriherbs.com -->
+                <div class="col-6 col-md-3">
+                    <div class="product-card">
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/files/2_18_1200x1200.jpg?v=1672735846" alt="Hair Mask" class="product-img">
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Hair Treatment Mask For Damaged Hair</h6>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span class="product-price">KSh 3,900</span>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="product-card">
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/files/3_11_1200x1200.jpg?v=1672735847" alt="Hair Treatment Oil" class="product-img">
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Professional Hair Treatment Oil</h6>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span class="product-price">KSh 3,800</span>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hair Styling Products -->
+        <div id="styling" class="my-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="h5">Hair Styling Products</h3>
+            </div>
+            <div class="row g-4">
+                <!-- Real Products from Neutriherbs.com -->
+                <div class="col-6 col-md-3">
+                    <div class="product-card">
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/files/1_16_1200x1200.jpg?v=1672735845" alt="Hair Growth Spray" class="product-img">
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Hair Growth Spray For Hair Loss</h6>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span class="product-price">KSh 4,200</span>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="product-card">
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/files/5_11_1200x1200.jpg?v=1672735849" alt="Hair Edge Control" class="product-img">
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Hair Edge Control & Styling Gel</h6>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span class="product-price">KSh 2,900</span>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Hair Care Guide -->
+<section id="hair-guide" class="py-5 bg-white">
+    <div class="container">
+        <h2 class="text-center mb-5">Hair Care Guide</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-shower fa-3x text-dark"></i>
+                        </div>
+                        <h5>Cleansing</h5>
+                        <p class="small text-muted">
+                            Wash your hair 2-3 times a week with our gentle, sulfate-free shampoos to remove buildup without stripping natural oils.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-hand-holding-water fa-3x text-dark"></i>
+                        </div>
+                        <h5>Conditioning</h5>
+                        <p class="small text-muted">
+                            Always follow with a conditioner, focusing on the ends. Once a week, treat your hair with our deep conditioning mask.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-shield-alt fa-3x text-dark"></i>
+                        </div>
+                        <h5>Protection</h5>
+                        <p class="small text-muted">
+                            Before heat styling, apply our leave-in treatment or growth spray to protect hair from damage and promote growth.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Disclaimer -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <p class="small text-muted text-center mb-0">
+                    All hair care products are imported directly from Neutriherbs, our parent company. Images and product details are sourced from <a href="https://neutriherbs.com" target="_blank" class="text-dark">neutriherbs.com</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

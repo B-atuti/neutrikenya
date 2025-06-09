@@ -1,0 +1,74 @@
+[
+    {
+        "name": "Vitamin C Brightening & Glow Body Lotion",
+        "url": "https://neutriherbs.ng/products/vitamin-c-body-lotion",
+        "description": "Neutriherbs Vitamin C Brightening & Glow Body Lotion is infused with the goodness of Vitamin C, Ferulic Acid, Hyaluronic Acid, and natural plant extracts to brighten and hydrate your skin, leaving it glowing and radiant.",
+        "price": 15800.0,
+        "product_line": "Vitamin C",
+        "skin_concern": "",
+        "images": []
+    },
+    {
+        "name": "15% Vitamin C + Hyaluronic Acid Serum",
+        "url": "https://neutriherbs.ng/products/best-vitamin-c-serum",
+        "description": "This powerful Vitamin C serum combines 15% pure Vitamin C with Hyaluronic Acid to brighten the skin, fade dark spots, and provide deep hydration for a glowing complexion.",
+        "price": 15000.0,
+        "product_line": "Vitamin C",
+        "skin_concern": "Dark Spots",
+        "images": []
+    },
+    {
+        "name": "Vitamin C Brighten & Glow Cleanser",
+        "url": "https://neutriherbs.ng/products/vitamin-c-facial-cleanser-for-glowing-skin",
+        "description": "This gentle yet effective cleanser is enriched with Vitamin C to cleanse, brighten, and rejuvenate your skin, removing impurities while preserving natural moisture.",
+        "price": 12500.0,
+        "product_line": "Vitamin C",
+        "skin_concern": "",
+        "images": []
+    },
+    {
+        "name": "Retinol Cream For Acne & Anti Aging",
+        "url": "https://neutriherbs.ng/products/retinol-cream-for-acne-and-wrinkles",
+        "description": "Our advanced Retinol cream targets fine lines, wrinkles, and acne with a powerful formula that promotes skin renewal and collagen production for smoother, clearer skin.",
+        "price": 16500.0,
+        "product_line": "Retinol",
+        "skin_concern": "Acne Skin",
+        "images": []
+    },
+    {
+        "name": "Vitamin C Brighten & Glow Body Wash",
+        "url": "https://neutriherbs.ng/products/vitamin-c-body-wash",
+        "description": "Infused with pure Vitamin C, this luxurious body wash cleanses while brightening and evening your skin tone for a radiant all-over glow.",
+        "price": 15500.0,
+        "product_line": "Vitamin C",
+        "skin_concern": "",
+        "images": []
+    },
+    {
+        "name": "Argan Oil Body Lotion With Shea Butter",
+        "url": "https://neutriherbs.ng/products/neutriherbs-argan-oil-body-lotion-with-shea-butter",
+        "description": "This richly moisturizing body lotion combines nourishing Argan Oil and Shea Butter to deeply hydrate and revitalize dry, dull skin.",
+        "price": 15000.0,
+        "product_line": "",
+        "skin_concern": "Dry Skin",
+        "images": []
+    },
+    {
+        "name": "Vitamin C Glow Body Oil",
+        "url": "https://neutriherbs.ng/products/vitamin-c-glow-body-oil",
+        "description": "This lightweight, quick-absorbing body oil is enriched with Vitamin C and natural oils to hydrate, brighten, and enhance your skin's natural glow.",
+        "price": 15000.0,
+        "product_line": "Vitamin C",
+        "skin_concern": "",
+        "images": []
+    },
+    {
+        "name": "Vitamin C Turmeric Exfoliating Glow Body Scrub",
+        "url": "https://neutriherbs.ng/products/vitamin-c-turmeric-exfoliating-body-scrub",
+        "description": "This invigorating body scrub combines Vitamin C and Turmeric with natural exfoliants to buff away dead skin cells, revealing smoother, brighter skin.",
+        "price": 10500.0,
+        "product_line": "Vitamin C",
+        "skin_concern": "",
+        "images": []
+    }
+] 

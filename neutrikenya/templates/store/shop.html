@@ -1,0 +1,1076 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shop - NeutriherbsKenya{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Global Styles */
+    :root {
+        --primary-color: #333;
+        --accent-color: #c4a484;  /* Cream color */
+        --text-color: #333;
+        --light-bg: #f8f9fa;
+        --border-color: #eee;
+        --font-family: "Times New Roman", Times, serif;
+        --cream-light: #f5e6d3;   /* Light cream */
+        --cream-dark: #d2b48c;    /* Dark cream */
+    }
+
+    /* Launch header */
+    .launch-header {
+        background: linear-gradient(135deg, #FFE5D9, #FEC5BB);
+        padding: 3rem 0;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .launch-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.1) 10px, transparent 10px, transparent 20px);
+        opacity: 0.2;
+    }
+
+    .launch-badge {
+        display: inline-block;
+        background: var(--accent-color);
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        animation: pulse 2s infinite;
+    }
+
+    .launch-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+        line-height: 1.2;
+        font-family: var(--font-family);
+    }
+
+    .launch-subtitle {
+        font-size: 1.1rem;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto 1.5rem;
+        font-family: var(--font-family);
+    }
+
+    .launch-cta {
+        display: inline-block;
+        background: var(--primary-color);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 30px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-family: var(--font-family);
+    }
+
+    .launch-cta:hover {
+        background: #000;
+        transform: translateY(-2px);
+        color: white;
+    }
+    
+    /* Promotional Banner */
+    .promo-banner {
+        background: #ffd166;
+        color: #333;
+        text-align: center;
+        padding: 1rem;
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .promo-banner::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+        100% {
+            left: 100%;
+        }
+    }
+
+    /* Filter sidebar */
+    .filter-sidebar {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        position: sticky;
+        top: 20px;
+        transition: all 0.3s ease;
+        font-family: var(--font-family);
+    }
+
+    .filter-group {
+        border-bottom: 1px solid var(--border-color);
+        padding: 1.25rem;
+    }
+
+    .filter-group:last-child {
+        border-bottom: none;
+    }
+
+    .filter-heading {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        font-family: var(--font-family);
+    }
+
+    .filter-heading i {
+        transition: transform 0.3s ease;
+    }
+
+    .filter-heading.collapsed i {
+        transform: rotate(-180deg);
+    }
+
+    /* Product grid */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        position: relative;
+        font-family: var(--font-family);
+        transform-style: preserve-3d;
+        perspective: 1000px;
+    }
+
+    .product-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .product-img-container {
+        position: relative;
+        padding-top: 100%;
+        overflow: hidden;
+        background: var(--light-bg);
+    }
+
+    .product-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: center;
+        will-change: transform;
+    }
+
+    .product-card:hover .product-img {
+        transform: scale(1.1) translateZ(20px);
+    }
+    
+    /* Sales Badge */
+    .product-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #f8635a;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        z-index: 2;
+        transform: translateZ(20px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .product-badge.bestseller {
+        background: #f8c95a;
+        color: #333;
+    }
+    
+    .product-badge.new {
+        background: #4CAF50;
+    }
+
+    .product-info {
+        padding: 1.5rem;
+        background: white;
+        transform: translateZ(10px);
+    }
+
+    .product-category {
+        font-size: 0.8rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .product-title {
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.4;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+        transition: color 0.3s ease;
+    }
+
+    .product-card:hover .product-title {
+        color: var(--accent-color);
+    }
+
+    .product-price-container {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .product-price {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--accent-color);
+    }
+
+    .product-original-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 0.9rem;
+    }
+
+    .product-discount {
+        color: #dc3545;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .btn-cart {
+        background: var(--primary-color);
+        color: white;
+        padding: 0.875rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.9rem;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .btn-cart::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: var(--accent-color);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.4s ease, height 0.4s ease;
+        z-index: -1;
+    }
+
+    .btn-cart:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn-cart:hover::before {
+        width: 300%;
+        height: 300%;
+    }
+    
+    /* Rating Stars */
+    .product-rating {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.75rem;
+    }
+    
+    .rating-stars {
+        color: #ffc107;
+        margin-right: 0.5rem;
+    }
+    
+    .rating-count {
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    /* Active filters */
+    .active-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .active-filter {
+        display: inline-flex;
+        align-items: center;
+        background: var(--light-bg);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: var(--text-color);
+    }
+
+    .remove-filter {
+        margin-left: 0.5rem;
+        color: #999;
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+
+    .remove-filter:hover {
+        color: var(--text-color);
+    }
+
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 0;
+    }
+
+    .empty-state-icon {
+        font-size: 3rem;
+        color: #999;
+        margin-bottom: 1rem;
+    }
+
+    /* Animations */
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+        .product-grid {
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-title {
+            font-size: 0.9rem;
+        }
+
+        .product-price {
+            font-size: 1rem;
+        }
+
+        .btn-cart {
+            padding: 0.75rem;
+            font-size: 0.8rem;
+        }
+    }
+
+    /* Category Navigation */
+    .category-nav {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-bottom: 1px solid #e9ecef;
+        overflow: hidden;
+    }
+
+    .category-slider {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .category-slider::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+    .category-track {
+        display: flex;
+        gap: 0.5rem;
+        padding: 0.25rem;
+        min-width: min-content;
+    }
+
+    .category-card {
+        background: linear-gradient(135deg, #FFD700 0%, #87CEEB 100%);
+        border-radius: 3px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #333;
+        min-width: 100px;
+        height: 28px;
+        padding: 0 0.5rem;
+        white-space: nowrap;
+    }
+
+    .category-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        background: linear-gradient(135deg, #FFD700 0%, #4682B4 100%);
+        color: white;
+    }
+
+    .category-card.active {
+        background: linear-gradient(135deg, #FFD700 0%, #1E90FF 100%);
+        color: white;
+        font-weight: 700;
+    }
+
+    .category-card h6 {
+        margin: 0;
+        font-size: 0.65rem;
+        font-weight: 600;
+        line-height: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    /* Add smooth scrolling animation */
+    .category-track {
+        animation: scroll 30s linear infinite;
+    }
+
+    @keyframes scroll {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    /* Pause animation on hover */
+    .category-track:hover {
+        animation-play-state: paused;
+    }
+
+    /* Custom column width for large screens */
+    @media (min-width: 992px) {
+        .col-lg-1-5 {
+            width: 20%;
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
+    }
+
+    /* Section Headers */
+    .section-header {
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+        padding: 2rem 0;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+    }
+
+    .section-subtitle {
+        color: #666;
+        font-size: 1.1rem;
+    }
+
+    /* Product Line Sections */
+    .product-line {
+        padding: 3rem 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .product-line:last-child {
+        border-bottom: none;
+    }
+    
+    /* Newsletter Section */
+    .newsletter-banner {
+        background: linear-gradient(135deg, #333, #000);
+        border-radius: 8px;
+        padding: 2rem;
+        color: white;
+        margin: 2rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .newsletter-banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.05), rgba(255,255,255,0.05) 10px, transparent 10px, transparent 20px);
+    }
+    
+    .newsletter-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .newsletter-form {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .newsletter-input {
+        height: 50px;
+        border-radius: 25px 0 0 25px;
+        border: none;
+        padding: 0 1.5rem;
+    }
+    
+    .newsletter-btn {
+        height: 50px;
+        border-radius: 0 25px 25px 0;
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 0 1.5rem;
+        font-weight: 600;
+    }
+    
+    /* Limited Time Offer */
+    .limited-offer {
+        background: #fff6e5;
+        border: 2px dashed #f8c95a;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    
+    .limited-offer-badge {
+        position: absolute;
+        top: -15px;
+        right: 20px;
+        background: #f8635a;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    
+    .offer-countdown {
+        display: flex;
+        gap: 10px;
+        margin: 1rem 0;
+    }
+    
+    .countdown-item {
+        background: #333;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 5px;
+        min-width: 50px;
+        text-align: center;
+    }
+    
+    .countdown-number {
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+    
+    .countdown-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if show_launch_header %}
+<!-- Launch Header -->
+<div class="launch-header">
+    <div class="container">
+        <span class="launch-badge">NEW!</span>
+        <h1 class="launch-title">JUST LAUNCHED:<br>Vitamin C Body Care Collection</h1>
+        <p class="launch-subtitle">Experience the brightening and antioxidant benefits of Vitamin C from head to toe with our new body care collection.</p>
+        <a href="#products" class="launch-cta">Shop the Collection</a>
+    </div>
+</div>
+{% else %}
+<!-- Shop Header -->
+<div class="section-header">
+    <div class="container">
+        <h1 class="section-title">Shop</h1>
+        <p class="section-subtitle">Discover premium skincare solutions for all skin types and concerns</p>
+    </div>
+</div>
+{% endif %}
+
+<!-- Limited Time Offer -->
+<div class="container">
+    <div class="limited-offer">
+        <span class="limited-offer-badge">LIMITED TIME</span>
+        <h3>Special Offer: 15% OFF Everything!</h3>
+        <p>Use code <strong>GLOW15</strong> at checkout. Hurry, offer ends soon!</p>
+        <div class="offer-countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">2</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">11</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="mins">45</div>
+                <div class="countdown-label">Mins</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="secs">30</div>
+                <div class="countdown-label">Secs</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Category Navigation -->
+<div class="category-nav py-1">
+    <div class="container">
+        <h2 class="text-center mb-1">Shop by Category</h2>
+        <div class="category-slider">
+            <div class="category-track">
+                <a href="{% url 'store:shop' %}" class="category-item {% if not current_category %}active{% endif %}">
+                    <div class="category-card">
+                        <h6>All</h6>
+                    </div>
+                </a>
+                {% for cat in categories %}
+                <a href="{% url 'store:category_detail' cat.slug %}" class="category-item {% if current_category and current_category.id == cat.id %}active{% endif %}">
+                    <div class="category-card">
+                        <h6>{{ cat.name }}</h6>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Shop Content -->
+<div class="container" id="products">
+    <div class="row">
+        <!-- Filters -->
+        <div class="col-lg-3 mb-4">
+            <div class="filter-sidebar">
+                <div class="filter-group">
+                    <h3 class="filter-heading">
+                        <span>Product Line</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </h3>
+                    <div class="filter-content">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="line-vitamin-c" {% if 'Vitamin C' in selected_lines %}checked{% endif %}>
+                            <label class="form-check-label" for="line-vitamin-c">
+                                Vitamin C
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="line-retinol" {% if 'Retinol' in selected_lines %}checked{% endif %}>
+                            <label class="form-check-label" for="line-retinol">
+                                Retinol
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="line-hyaluronic" {% if 'Hyaluronic Acid' in selected_lines %}checked{% endif %}>
+                            <label class="form-check-label" for="line-hyaluronic">
+                                Hyaluronic Acid
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="line-snail" {% if 'Snail' in selected_lines %}checked{% endif %}>
+                            <label class="form-check-label" for="line-snail">
+                                Snail Mucin
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h3 class="filter-heading">
+                        <span>Skin Concern</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </h3>
+                    <div class="filter-content">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="concern-brightening" {% if 'Brightening Skin' in selected_concerns %}checked{% endif %}>
+                            <label class="form-check-label" for="concern-brightening">
+                                Brightening
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="concern-aging" {% if 'Aging Skin' in selected_concerns %}checked{% endif %}>
+                            <label class="form-check-label" for="concern-aging">
+                                Anti-Aging
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="concern-acne" {% if 'Acne Skin' in selected_concerns %}checked{% endif %}>
+                            <label class="form-check-label" for="concern-acne">
+                                Acne-Prone
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="concern-hydration" {% if 'Dehydrated Skin' in selected_concerns %}checked{% endif %}>
+                            <label class="form-check-label" for="concern-hydration">
+                                Hydration
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h3 class="filter-heading">
+                        <span>Price Range</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </h3>
+                    <div class="filter-content">
+                        <div class="range-slider mb-3">
+                            <input type="range" class="form-range" min="0" max="5000" id="price-range">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>KSh 0</span>
+                            <span>KSh 5,000+</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <button class="btn btn-dark w-100">Apply Filters</button>
+                </div>
+            </div>
+            
+            <!-- Newsletter Signup -->
+            <div class="newsletter-banner mt-4">
+                <h4 class="newsletter-title">Get 10% Off Your First Order</h4>
+                <p class="mb-3">Subscribe to our newsletter for exclusive deals and skincare tips</p>
+                <form class="newsletter-form">
+                    <div class="input-group">
+                        <input type="email" class="form-control newsletter-input" placeholder="Your email" required>
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Products -->
+        <div class="col-lg-9">
+            <!-- Active Filters -->
+            {% if has_filters %}
+            <div class="active-filters mb-4">
+                {% if current_category %}
+                <div class="active-filter">
+                    Category: {{ current_category.name }}
+                    <a href="{% url 'store:shop' %}" class="remove-filter">×</a>
+                </div>
+                {% endif %}
+                
+                {% for line in selected_lines %}
+                <div class="active-filter">
+                    Line: {{ line }}
+                    <a href="{% url 'store:shop' %}" class="remove-filter">×</a>
+                </div>
+                {% endfor %}
+                
+                {% for concern in selected_concerns %}
+                <div class="active-filter">
+                    Concern: {{ concern }}
+                    <a href="{% url 'store:shop' %}" class="remove-filter">×</a>
+                </div>
+                {% endfor %}
+                
+                <a href="{% url 'store:shop' %}" class="btn btn-sm btn-outline-secondary ms-auto">Clear All</a>
+            </div>
+            {% endif %}
+            
+            <!-- Promotional Banner -->
+            <div class="promo-banner mb-4">
+                FREE SHIPPING on orders over KSh 5,000 | Shop now, pay later with Lipa Mdogo Mdogo
+            </div>
+            
+            <!-- Product List -->
+            <div class="product-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    {% if product.is_new %}
+                    <div class="product-badge new">NEW</div>
+                    {% elif product.is_sale %}
+                    <div class="product-badge">SALE</div>
+                    {% elif forloop.counter <= 2 %}
+                    <div class="product-badge bestseller">BESTSELLER</div>
+                    {% endif %}
+                    
+                    <div class="product-img-container">
+                        {% for image in product.images.all %}
+                            {% if image.is_main %}
+                                <img src="{{ image.image.url }}" alt="{{ product.name }}" class="product-img">
+                            {% endif %}
+                        {% empty %}
+                            <div class="bg-light w-100 h-100 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-image fa-3x text-secondary"></i>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="product-info">
+                        {% if product.category %}
+                        <div class="product-category">{{ product.category.name }}</div>
+                        {% endif %}
+                        
+                        <h2 class="product-title">{{ product.name }}</h2>
+                        
+                        <div class="product-rating">
+                            <div class="rating-stars">★★★★★</div>
+                            <div class="rating-count">({{ product.id|add:10 }})</div>
+                        </div>
+                        
+                        <div class="product-price-container">
+                            {% if product.original_price %}
+                            <span class="product-original-price">KSh {{ product.original_price }}</span>
+                            <span class="product-price">KSh {{ product.price }}</span>
+                            <span class="product-discount">-{{ product.discount_percentage|default:"15" }}%</span>
+                            {% else %}
+                            <span class="product-price">KSh {{ product.price }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <form method="post" action="{% url 'store:add_to_cart' product.id %}" class="cart-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn-cart">
+                                <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state col-12">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>No products found</h3>
+                    <p>Try adjusting your filters or search criteria</p>
+                    <a href="{% url 'store:shop' %}" class="btn btn-dark mt-3">View All Products</a>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if products.has_other_pages %}
+            <nav aria-label="Page navigation" class="mb-5">
+                <ul class="pagination justify-content-center">
+                    {% if products.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ products.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for i in products.paginator.page_range %}
+                    <li class="page-item {% if products.number == i %}active{% endif %}">
+                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                    {% endfor %}
+                    
+                    {% if products.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ products.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Cart Form Submission
+    const cartForms = document.querySelectorAll('.cart-form');
+    
+    cartForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('button');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+            submitBtn.disabled = true;
+            
+            // Submit form via AJAX
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update cart count if element exists
+                    const cartCount = document.querySelector('.cart-counter');
+                    if (cartCount) {
+                        cartCount.textContent = data.item_count;
+                    }
+                    
+                    // Show success state
+                    submitBtn.innerHTML = '<i class="fas fa-check"></i> Added!';
+                    submitBtn.classList.add('bg-success');
+                    
+                    // Reset button after delay
+                    setTimeout(() => {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.classList.remove('bg-success');
+                        submitBtn.disabled = false;
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+    });
+    
+    // Filter collapse
+    const filterHeadings = document.querySelectorAll('.filter-heading');
+    
+    filterHeadings.forEach(heading => {
+        heading.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            const isVisible = content.style.display !== 'none';
+            
+            if (isVisible) {
+                content.style.display = 'none';
+                this.classList.add('collapsed');
+            } else {
+                content.style.display = 'block';
+                this.classList.remove('collapsed');
+            }
+        });
+    });
+    
+    // Countdown Timer
+    function startCountdown() {
+        // Set the countdown to end in 2 days from now
+        const endDate = new Date();
+        endDate.setDate(endDate.getDate() + 2);
+        
+        function updateCountdown() {
+            const now = new Date();
+            const distance = endDate - now;
+            
+            // Calculate time components
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Update display
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('mins').textContent = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('secs').textContent = seconds < 10 ? '0' + seconds : seconds;
+            
+            // If countdown is finished
+            if (distance < 0) {
+                clearInterval(timerInterval);
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('mins').textContent = '00';
+                document.getElementById('secs').textContent = '00';
+            }
+        }
+        
+        // Initial call
+        updateCountdown();
+        
+        // Update every second
+        const timerInterval = setInterval(updateCountdown, 1000);
+    }
+    
+    // Start countdown if elements exist
+    if (document.getElementById('days')) {
+        startCountdown();
+    }
+});
+</script>
+{% endblock %} 

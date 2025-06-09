@@ -1,0 +1,90 @@
+NEUTRIHERBS KENYA IMAGE UPDATE GUIDE
+
+To update the placeholder images with real product images from Google Drive, follow these steps:
+
+1. Download all folders from this Google Drive link: 
+   https://drive.google.com/drive/folders/1MD9_OYdgy8Uwg410XWL2SG6_dIqAfskB
+
+2. For each category below, find a suitable image and rename it to match the required filename.
+   Then copy it to the correct directory to replace the placeholder.
+
+3. IMPORTANT: Maintain the exact same filenames listed below to ensure your templates work correctly.
+
+======================================================================================
+
+PRODUCT LINE IMAGES
+Location: static/images/products/
+
+vitamin-c.jpg       - From 'Vit C SERIES' or 'TURMERIC & VITAMIN C' folders - main lineup image
+retinol.jpg         - From 'PRO' folder - look for retinol products
+hyaluronic-acid.jpg - From '4D HYALURONIC ACID GEL MOISTURIZER' folder - hero image  
+skin-whitening.jpg  - From 'LIGHTEN SKIN' folder - main lineup image
+snail.jpg           - From 'NEW-Snail Series' folder - hero image
+turmeric.jpg        - From 'TURMERIC & VITAMIN C' folder - focus on turmeric products
+
+======================================================================================
+
+PRODUCT TYPE IMAGES
+Location: static/images/products/
+
+cleanser.jpg        - Image showing facial cleansers - find in various folders
+toner.jpg           - Image showing toners - search across product line folders
+serum.jpg           - From 'SERUM' folder - representative serum image
+face-cream.jpg      - From 'New Day & Night Cream' folder - cream product image
+facial-mask.jpg     - From 'Facial Sheet Mask' folder - sheet mask image
+soap.jpg            - Look for bar soap products across folders
+body-wash.jpg       - From 'SHOWER GEL' folder - shower gel/body wash image
+body-lotion.jpg     - From 'Body lotion' folder - body lotion product image
+
+======================================================================================
+
+SKIN CONCERN IMAGES
+Location: static/images/concerns/
+
+acne-skin.jpg           - From 'SALICYLIC ACID' folder - acne treatment image
+aging-skin.jpg          - Look for anti-aging products (retinol/collagen products)
+blackhead-removal.jpg   - Look for pore cleansing products
+brightening-skin.jpg    - From 'Vit C SERIES' or 'LIGHTEN SKIN' folders - brightening image
+dehydrated-skin.jpg     - From 'HYALURONIC ACID' folder - hydrating product image
+dry-skin.jpg            - Look for rich moisturizers for dry skin
+oily-skin.jpg           - Look for oil control products (mattifying products)
+soothing-skin.jpg       - Look for calming products (aloe vera, etc.)
+
+======================================================================================
+
+TIPS FOR SELECTING IMAGES:
+
+1. For product line pages: Choose a "hero image" that represents the entire line or shows 
+   multiple products from that line together.
+
+2. For product type pages: Select an image that clearly shows the product type in use or 
+   shows its packaging clearly.
+
+3. For skin concern pages: Use images that show before/after results or depict the skin 
+   concern being addressed.
+
+4. Image recommendations:
+   - JPG format
+   - Landscape orientation
+   - Dimensions around 800x600 pixels
+   - Clear, professional product shots
+
+5. Replace the placeholder images by copying your selected images to the correct directory
+   with the exact filenames listed above.
+
+======================================================================================
+
+FOLDER MAPPING RECOMMENDATIONS:
+
+Vit C SERIES          → vitamin-c.jpg / brightening-skin.jpg
+TURMERIC & VITAMIN C  → turmeric.jpg 
+NEW-Snail Series      → snail.jpg
+HYALURONIC ACID       → hyaluronic-acid.jpg / dehydrated-skin.jpg
+LIGHTEN SKIN          → skin-whitening.jpg
+SALICYLIC ACID        → acne-skin.jpg / blackhead-removal.jpg
+Body lotion           → body-lotion.jpg
+SHOWER GEL            → body-wash.jpg
+Facial Sheet Mask     → facial-mask.jpg
+SERUM                 → serum.jpg
+New Day & Night Cream → face-cream.jpg
+PRO                   → retinol.jpg / aging-skin.jpg 

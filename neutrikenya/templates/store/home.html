@@ -1,0 +1,2806 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}NeutriKenya - Official Distributor of Neutriherbs Skincare Products in Kenya{% endblock title %}
+
+{% block extra_css %}
+<style>
+    /* Global Styles */
+    :root {
+        --primary-color: #333;
+        --accent-color: #c4a484;  /* Cream color */
+        --text-color: #333;
+        --light-bg: #f8f9fa;
+        --border-color: #eee;
+        --font-family: "Times New Roman", Times, serif;
+        --cream-light: #f5e6d3;   /* Light cream */
+        --cream-dark: #d2b48c;    /* Dark cream */
+    }
+
+    body {
+        color: var(--text-color);
+        font-family: var(--font-family);
+    }
+
+    /* Shipping Banner */
+    .shipping-banner {
+        background: var(--light-bg);
+        padding: 0.75rem;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--text-color);
+        border-bottom: 1px solid var(--border-color);
+        font-weight: 500;
+        font-family: var(--font-family);
+    }
+
+    /* Hero Slider */
+    .hero-slider {
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 3rem;
+        height: 600px;
+    }
+
+    .hero-slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    .hero-slide.active {
+        opacity: 1;
+        z-index: 1;
+    }
+
+    /* Video styling for hero slides */
+    .hero-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+    }
+
+    /* Hide content overlay as requested */
+    .hero-content {
+        display: none;
+    }
+
+    .hero-content {
+        max-width: 600px;
+        padding: 3rem;
+        color: var(--text-color);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        margin-left: 10%;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s forwards;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        font-family: var(--font-family);
+    }
+
+    .hero-label {
+        display: inline-block;
+        background: var(--accent-color);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        font-family: var(--font-family);
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+        font-family: var(--font-family);
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        color: #666;
+        font-family: var(--font-family);
+    }
+
+    .hero-ctas {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .btn-primary {
+        background: #333;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-family: var(--font-family);
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: #333;
+        padding: 1rem 2rem;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        border: 2px solid #333;
+        transition: all 0.3s ease;
+        font-family: var(--font-family);
+    }
+
+    .btn-primary:hover {
+        background: #000;
+        transform: translateY(-2px);
+        color: white;
+    }
+
+    .btn-outline:hover {
+        background: #333;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Section Styles */
+    .section-title {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding-top: 2rem;
+    }
+
+    .section-heading {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-family: var(--font-family);
+    }
+
+    .section-subheading {
+        color: #666;
+        font-size: 1.1rem;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.6;
+        font-family: var(--font-family);
+    }
+
+    /* Product Grid */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+        padding: 0 1rem;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        transform-style: preserve-3d;
+    perspective: 1000px;
+        opacity: 0;
+        animation: fadeInUp 0.8s forwards;
+        animation-delay: calc(var(--animation-order) * 0.1s);
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px) rotateX(2deg) rotateY(2deg);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .product-img-container {
+        position: relative;
+        padding-top: 100%;
+        overflow: hidden;
+        background: var(--light-bg);
+    }
+
+    .product-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: center;
+    will-change: transform;
+    }
+
+    .product-card:hover .product-img {
+        transform: scale(1.1) translateZ(20px);
+    }
+
+    .product-info {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 15%);
+        transform: translateZ(10px);
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-info {
+        transform: translateZ(30px);
+    }
+
+    .product-title {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+        flex-grow: 1;
+        font-family: var(--font-family);
+        transition: color 0.3s ease;
+    }
+
+    .product-card:hover .product-title {
+        color: var(--accent-color);
+    }
+
+    .product-price {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        font-family: var(--font-family);
+        position: relative;
+        display: inline-block;
+    }
+
+    .product-price::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--accent-color);
+        transition: width 0.3s ease;
+    }
+
+    .product-card:hover .product-price::after {
+        width: 100%;
+    }
+
+    .btn-add-cart {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.875rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.9rem;
+        font-family: var(--font-family);
+        position: relative;
+        overflow: hidden;
+    z-index: 1;
+    }
+
+    .btn-add-cart::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: var(--accent-color);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.4s ease, height 0.4s ease;
+        z-index: -1;
+    }
+
+    .btn-add-cart:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(196, 164, 132, 0.3);
+    }
+
+    .btn-add-cart:hover::before {
+        width: 300%;
+        height: 300%;
+    }
+
+    /* Add shimmer effect */
+    .product-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent
+        );
+        transform: skewX(-25deg);
+        transition: 0.75s;
+    }
+
+    .product-card:hover::after {
+        left: 100%;
+    }
+
+    /* Value Props Section */
+    .value-props {
+        position: relative;
+        padding: 6rem 0;
+        color: white;
+        margin: 4rem 0;
+        overflow: hidden;
+    }
+
+    .video-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+    }
+
+    .video-background video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        transform: translate(-50%, -50%);
+        object-fit: cover;
+    }
+
+    .video-background .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .value-props .container {
+    position: relative;
+    z-index: 2;
+    }
+
+    .value-prop-item {
+    padding: 2rem;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .value-prop-item:hover {
+        transform: translateY(-10px);
+    }
+
+    .value-prop-icon {
+        font-size: 2.5rem;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .value-prop-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        font-family: var(--font-family);
+    }
+
+    /* Newsletter Section */
+    .newsletter-section {
+        background-image: linear-gradient(135deg, #333, #000);
+        color: white;
+        padding: 5rem 0;
+        margin-top: 4rem;
+    }
+
+    /* Footer Styles */
+    .footer {
+        background-color: #2c2c2c;
+        color: #fff;
+        padding-top: 3rem;
+        margin-top: 4rem;
+    }
+
+    .footer-image-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .footer-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .footer-content {
+        padding: 2rem 0;
+    }
+
+    .footer-heading {
+        color: var(--accent-color);
+        font-family: var(--font-family);
+        margin-bottom: 1.5rem;
+        font-size: 1.2rem;
+    }
+
+    .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+        color: #fff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+        color: var(--accent-color);
+    }
+
+    .footer-bottom {
+        background-color: #222;
+        padding: 1rem 0;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .footer-bottom p {
+        margin: 0;
+        color: #888;
+    }
+
+    @media (max-width: 768px) {
+        .hero-slider {
+            height: 500px;
+        }
+
+        .hero-content {
+            margin: 0 1rem;
+            padding: 2rem;
+        }
+
+        .section-heading {
+            font-size: 1.75rem;
+        }
+
+        .product-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .value-props {
+            padding: 4rem 0;
+        }
+        
+        .value-prop-item {
+            padding: 1.5rem;
+        }
+
+        .footer-image-container {
+            width: 300px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .footer-image-container {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+    }
+
+    /* Quick View */
+    .quick-view {
+        font-family: var(--font-family);
+    }
+
+    /* Our Essence */
+    .essence-title {
+        font-family: var(--font-family);
+    }
+
+    /* Enhanced Animation Keyframes */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes scaleIn {
+        0% { 
+            transform: scale(0.95);
+            filter: blur(2px);
+        }
+        100% { 
+            transform: scale(1);
+            filter: blur(0);
+        }
+    }
+
+    @keyframes float {
+        0% { 
+            transform: translateY(0px) rotate(0deg);
+        }
+        25% {
+            transform: translateY(-8px) rotate(1deg);
+        }
+        75% {
+            transform: translateY(4px) rotate(-1deg);
+        }
+        100% { 
+            transform: translateY(0px) rotate(0deg);
+        }
+    }
+
+    @keyframes shine {
+        0% { 
+            background-position: -200% 50%;
+    opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% { 
+            background-position: 200% 50%;
+            opacity: 0;
+        }
+    }
+
+    @keyframes pulseScale {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    @keyframes borderGlow {
+        0% { box-shadow: 0 0 0 0 rgba(196, 164, 132, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(196, 164, 132, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(196, 164, 132, 0); }
+    }
+
+    /* Enhanced Product Card Animations */
+    .product-card {
+        animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: center;
+        will-change: transform, box-shadow;
+    }
+
+    .product-card:hover {
+        transform: translateY(-15px) scale(1.03);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .product-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 15px;
+        background: linear-gradient(45deg, var(--cream-light), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
+
+    .product-card:hover::before {
+        opacity: 0.1;
+    }
+
+    /* Enhanced Image Container */
+    .product-img-container {
+        position: relative;
+        padding-top: 100%;
+        overflow: hidden;
+        background: var(--light-bg);
+        border-radius: 15px 15px 0 0;
+    }
+
+    .product-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: center;
+        will-change: transform;
+    }
+
+    .product-img::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -150%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.4),
+            transparent
+        );
+        transform: skewX(-25deg);
+        animation: shine 3s infinite;
+    }
+
+    .product-card:hover .product-img {
+        transform: scale(1.15) rotate(3deg);
+        filter: brightness(1.1) contrast(1.1);
+    }
+
+    /* Enhanced Quick View */
+    .quick-view {
+        position: absolute;
+        bottom: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.85);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 20px;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 0;
+        backdrop-filter: blur(5px);
+        white-space: nowrap;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .product-card:hover .quick-view {
+        bottom: 20px;
+    opacity: 1;
+}
+
+    .quick-view:hover {
+        transform: translateX(-50%) scale(1.1);
+        background: rgba(0, 0, 0, 0.95);
+    }
+
+    /* Enhanced Product Badge */
+    .product-badge {
+    position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--accent-color);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        animation: float 4s ease-in-out infinite;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        z-index: 2;
+    }
+
+    /* Enhanced Add to Cart Button */
+    .btn-add-cart {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: var(--primary-color);
+        border: none;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .btn-add-cart:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        animation: pulseScale 1s infinite;
+    }
+
+    .btn-add-cart::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+        );
+        transform: rotate(45deg);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-add-cart:hover::after {
+        transform: rotate(45deg) translate(50%, 50%);
+    }
+
+    /* Enhanced Product Info */
+    .product-info {
+        padding: 1.5rem;
+        background: white;
+        border-radius: 0 0 15px 15px;
+        transform: translateY(10px);
+        opacity: 0;
+        animation: fadeIn 0.5s ease-out forwards 0.3s;
+    }
+
+    .product-title {
+        transition: color 0.3s ease;
+    }
+
+    .product-card:hover .product-title {
+        color: var(--accent-color);
+    }
+
+    /* Enhanced Rating Stars */
+    .stars {
+        color: var(--accent-color);
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Enhanced Product Price */
+    .product-price {
+        position: relative;
+        display: inline-block;
+        font-weight: 700;
+        color: var(--accent-color);
+        transition: all 0.3s ease;
+    }
+
+    .product-price::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--accent-color);
+        transform: scaleX(0);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .product-card:hover .product-price {
+        transform: scale(1.1);
+    }
+
+    .product-card:hover .product-price::after {
+        transform: scaleX(1);
+    }
+
+    /* Product Grid Stagger Animation */
+    .product-grid {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    .product-grid .product-card:nth-child(1) { animation-delay: 0.1s; }
+    .product-grid .product-card:nth-child(2) { animation-delay: 0.2s; }
+    .product-grid .product-card:nth-child(3) { animation-delay: 0.3s; }
+    .product-grid .product-card:nth-child(4) { animation-delay: 0.4s; }
+
+    /* Trust Indicators */
+    .trust-bar {
+        background: white;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border-color);
+        font-family: var(--font-family);
+    }
+
+    .trust-item {
+    display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .trust-item i {
+        color: var(--accent-color);
+        font-size: 1.2rem;
+    }
+
+    /* Customer Reviews Section */
+    .reviews-section {
+        padding: 5rem 0;
+        background: linear-gradient(135deg, #fff, #f8f9fa);
+    }
+
+    .review-card {
+    background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        margin: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    }
+
+    .reviewer-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .reviewer-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 1rem;
+        object-fit: cover;
+    }
+
+    .reviewer-name {
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .review-date {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .review-stars {
+        color: gold;
+        margin-bottom: 1rem;
+    }
+
+    .review-text {
+        font-style: italic;
+        color: #444;
+        line-height: 1.6;
+    }
+
+    /* Certifications Section */
+    .certifications {
+        padding: 4rem 0;
+        background: white;
+        text-align: center;
+    }
+
+    .certification-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .certification-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .certification-icon {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        border-radius: 50%;
+        margin-bottom: 1rem;
+    }
+
+    .certification-icon i {
+        font-size: 2rem;
+        color: var(--accent-color);
+    }
+
+    .certification-title {
+        font-weight: 600;
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    .certification-text {
+        font-size: 0.9rem;
+        color: #666;
+        max-width: 200px;
+        margin: 0 auto;
+    }
+
+    /* Enhanced Value Props */
+    .value-props {
+        position: relative;
+        padding: 6rem 0;
+        color: white;
+        background-attachment: fixed;
+    }
+
+    .value-prop-item {
+        backdrop-filter: blur(5px);
+        background: rgba(0, 0, 0, 0.3);
+        padding: 2rem;
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Enhanced Newsletter Section */
+    .newsletter-section {
+        background-image: linear-gradient(135deg, #333, #000);
+        color: white;
+    }
+
+    .newsletter-form .form-control {
+        height: 60px;
+        border-radius: 30px 0 0 30px;
+        padding: 0 2rem;
+        font-size: 1.1rem;
+        border: none;
+    }
+
+    .newsletter-form .btn {
+        height: 60px;
+        border-radius: 0 30px 30px 0;
+        padding: 0 2.5rem;
+        font-size: 1.1rem;
+        background: var(--accent-color);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .newsletter-form .btn:hover {
+        background: var(--cream-dark);
+        transform: translateX(5px);
+    }
+
+    /* Enhanced Product Card and Image Animations */
+    @keyframes productFadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            filter: blur(10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+    }
+
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-150%) skewX(-25deg);
+            opacity: 0;
+        }
+        50% {
+            opacity: 0.5;
+        }
+        100% {
+            transform: translateX(150%) skewX(-25deg);
+            opacity: 0;
+        }
+    }
+
+    @keyframes subtle3D {
+        0% { transform: rotateY(0deg) scale(1); }
+        50% { transform: rotateY(5deg) scale(1.02); }
+        100% { transform: rotateY(0deg) scale(1); }
+    }
+
+    .product-card {
+        perspective: 1000px;
+        animation: productFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-style: preserve-3d;
+        background: white;
+        border-radius: 20px;
+    overflow: hidden;
+        position: relative;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform, box-shadow;
+    }
+
+    .product-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(255, 255, 255, 0.1),
+            transparent
+        );
+        transform: translateY(100%);
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .product-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+    }
+
+    .product-card:hover::before {
+        transform: translateY(0);
+    }
+
+    .product-img-container {
+        position: relative;
+        padding-top: 100%;
+        overflow: hidden;
+        background: var(--light-bg);
+        border-radius: 20px 20px 0 0;
+        transform-style: preserve-3d;
+    }
+
+    .product-img-container::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            45deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.2) 50%,
+            transparent 70%
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .product-card:hover .product-img-container::after {
+        opacity: 1;
+    }
+
+    .product-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+        transform-origin: center;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform, filter;
+    }
+
+    .product-img::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+        );
+        transform: translateX(-100%);
+        animation: shimmer 3s infinite;
+    }
+
+    .product-card:hover .product-img {
+        transform: scale(1.1) translateZ(20px);
+        filter: brightness(1.1) contrast(1.05);
+        animation: subtle3D 5s infinite;
+    }
+
+    .quick-view {
+        position: absolute;
+        bottom: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.85);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        z-index: 2;
+    }
+
+    .product-card:hover .quick-view {
+        bottom: 20px;
+        opacity: 1;
+        transform: translateX(-50%) translateZ(30px);
+    }
+
+    .quick-view:hover {
+        transform: translateX(-50%) translateZ(30px) scale(1.1);
+        background: rgba(0, 0, 0, 0.95);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    .product-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--accent-color);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transform: translateZ(20px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        z-index: 2;
+        transition: all 0.3s ease;
+    }
+
+    .product-card:hover .product-badge {
+        transform: translateZ(40px) scale(1.1);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    /* Product Grid Stagger Animation */
+    .product-grid {
+        opacity: 0;
+        animation: fadeIn 1s ease-out forwards;
+    }
+
+    .product-grid .product-card {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    .product-grid .product-card:nth-child(1) { animation: productFadeIn 0.6s forwards 0.2s; }
+    .product-grid .product-card:nth-child(2) { animation: productFadeIn 0.6s forwards 0.4s; }
+    .product-grid .product-card:nth-child(3) { animation: productFadeIn 0.6s forwards 0.6s; }
+    .product-grid .product-card:nth-child(4) { animation: productFadeIn 0.6s forwards 0.8s; }
+
+    /* Product Info Animation */
+    .product-info {
+        padding: 1.5rem;
+        transform: translateY(10px);
+        opacity: 0;
+        animation: fadeIn 0.5s ease-out forwards 0.3s;
+        transition: all 0.3s ease;
+    }
+
+    .product-card:hover .product-info {
+        transform: translateZ(10px);
+    }
+
+    .product-title {
+        transition: color 0.3s ease;
+        transform: translateZ(5px);
+    }
+
+    .product-card:hover .product-title {
+        color: var(--accent-color);
+    }
+
+    .product-price {
+        position: relative;
+        display: inline-block;
+        font-weight: 700;
+        color: var(--accent-color);
+        transition: all 0.3s ease;
+        transform: translateZ(5px);
+    }
+
+    .product-card:hover .product-price {
+        transform: translateZ(15px) scale(1.1);
+    }
+
+    .product-rating {
+        transition: all 0.3s ease;
+        transform: translateZ(5px);
+    }
+
+    .product-card:hover .product-rating {
+        transform: translateZ(15px);
+    }
+
+    .stars {
+        color: var(--accent-color);
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .product-card:hover .stars {
+        text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Advertisement Section Styles */
+    .advertisement-section {
+        background: linear-gradient(135deg, #fff, #f8f9fa);
+        padding: 5rem 0;
+    }
+
+    .ad-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .ad-card img {
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .ad-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .ad-card:hover img {
+        transform: scale(1.1);
+    }
+
+    .ad-card a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    @media (max-width: 768px) {
+        .ad-card img {
+            height: 200px;
+        }
+    }
+
+    /* Our Essence Section */
+    .essence-section {
+        padding: 4rem 0;
+        background: var(--light-bg);
+        margin-bottom: 3rem;
+    }
+
+    .essence-slider {
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .essence-slide {
+        display: none;
+        position: relative;
+        height: 500px;
+    }
+
+    .essence-slide.active {
+        display: flex;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .essence-image {
+        width: 50%;
+        height: 100%;
+        object-fit: contain;
+        background-color: #f8f9fa;
+        padding: 1rem;
+    }
+
+    .essence-content {
+        width: 50%;
+        padding: 3rem;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .essence-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-color);
+        font-family: var(--font-family);
+    }
+
+    .essence-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #666;
+        margin-bottom: 2rem;
+        font-family: var(--font-family);
+    }
+
+    .essence-nav {
+        position: absolute;
+        bottom: 2rem;
+        right: 2rem;
+        display: flex;
+        gap: 1rem;
+    }
+
+    .essence-nav-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.9);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .essence-nav-btn:hover {
+        background: var(--accent-color);
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .essence-slide {
+            flex-direction: column;
+            height: auto;
+        }
+
+        .essence-image,
+        .essence-content {
+            width: 100%;
+        }
+
+        .essence-image {
+            height: 300px;
+        }
+    }
+
+    /* Hero Navigation Dots */
+    .hero-nav {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        z-index: 2;
+    }
+
+    .hero-dot {
+        width: 12px;
+        height: 12px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .hero-dot.active {
+        background: white;
+        transform: scale(1.2);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+
+    /* Trust Indicators */
+    .trust-bar {
+        background: white;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border-color);
+        font-family: var(--font-family);
+    }
+
+    /* Skin Concerns Section */
+    .skin-concerns {
+        padding: 4rem 0;
+        background: linear-gradient(135deg, #f9f9f9, #fff);
+    }
+
+    .skin-concern-card {
+        display: block;
+        text-decoration: none;
+        color: var(--text-color);
+        transition: all 0.3s ease;
+        height: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        position: relative;
+    }
+
+    .skin-concern-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        color: var(--text-color);
+    }
+
+    .concern-image-container {
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .concern-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.5s ease;
+    }
+
+    .skin-concern-card:hover .concern-image-container img {
+        transform: scale(1.1);
+    }
+
+    .concern-content {
+        padding: 1.5rem;
+        background: white;
+        position: relative;
+    }
+
+    .concern-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-family: var(--font-family);
+    }
+
+    .concern-description {
+        color: #666;
+        margin-bottom: 0;
+        font-size: 0.9rem;
+    }
+
+    .skin-concern-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: var(--accent-color);
+        transition: width 0.3s ease;
+    }
+
+    .skin-concern-card:hover::after {
+        width: 100%;
+    }
+
+    /* Customer Reviews Section */
+    .reviews-section {
+        padding: 5rem 0;
+        background: linear-gradient(135deg, #fff, #f8f9fa);
+    }
+
+    /* New Flash Sale Animation */
+    @keyframes flashSale {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .flash-sale-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: linear-gradient(45deg, #ff0000, #ff6b6b);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        animation: flashSale 1.5s ease-in-out infinite;
+        box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+        z-index: 2;
+    }
+
+    /* Limited Time Offer */
+    .limited-offer {
+        background: linear-gradient(135deg, #333, #000);
+        padding: 3rem 0;
+        position: relative;
+        overflow: hidden;
+        color: white;
+    }
+
+    .limited-offer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "images/pattern.png" %}');
+        opacity: 0.1;
+    }
+
+    .countdown-timer {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin: 2rem 0;
+    }
+
+    .countdown-box {
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(5px);
+        padding: 1rem;
+        border-radius: 10px;
+        min-width: 80px;
+        text-align: center;
+    }
+
+    .countdown-value {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .countdown-label {
+        font-size: 0.8rem;
+        color: rgba(255,255,255,0.8);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Special Bundle Cards */
+    .bundle-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .bundle-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .bundle-image {
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .bundle-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .bundle-card:hover .bundle-image img {
+        transform: scale(1.1);
+    }
+
+    .bundle-content {
+        padding: 1.5rem;
+    }
+
+    .bundle-tag {
+        display: inline-block;
+        background: var(--accent-color);
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .bundle-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .bundle-price {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .original-price {
+        text-decoration: line-through;
+        color: #888;
+    }
+
+    .discount-price {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--accent-color);
+    }
+
+    .savings-tag {
+        background: rgba(196, 164, 132, 0.2);
+        color: var(--accent-color);
+        padding: 0.2rem 0.5rem;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    /* Testimonial Card */
+    .testimonial-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .testimonial-content {
+        padding: 2rem;
+        position: relative;
+    }
+
+    .testimonial-content::before {
+        content: '"';
+        position: absolute;
+        top: 0;
+        left: 15px;
+        font-size: 5rem;
+        color: rgba(196, 164, 132, 0.2);
+        font-family: Georgia, serif;
+        line-height: 1;
+    }
+
+    .testimonial-text {
+        position: relative;
+        z-index: 1;
+        font-style: italic;
+        margin-bottom: 1.5rem;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+    }
+
+    .author-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 1rem;
+        object-fit: cover;
+    }
+
+    .author-info h4 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .author-info p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #888;
+    }
+
+    /* Parent Company Banner */
+    .parent-company {
+        background: linear-gradient(135deg, #f5e6d3, #fff);
+        padding: 3rem 0;
+        margin: 2rem 0;
+    }
+
+    .parent-logo {
+        max-width: 200px;
+        margin-bottom: 1rem;
+    }
+
+    /* Mobile App Download */
+    .app-download {
+        background: linear-gradient(135deg, #333, #000);
+        color: white;
+        padding: 4rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .app-phone {
+        max-width: 300px;
+        transform: rotate(-5deg);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        border-radius: 30px;
+    }
+
+    .app-store-badge {
+        height: 50px;
+        margin-right: 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .app-store-badge:hover {
+        transform: translateY(-5px);
+    }
+}
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<!-- Shipping Banner with Flash Sale Announcement -->
+<div class="shipping-banner">
+    <marquee behavior="scroll" direction="left" scrollamount="5">
+        🔥 FLASH SALE: Up to 40% OFF selected products! | Free shipping on orders over KSh 5,000 | Shop now and pay later with Lipa Mdogo Mdogo
+    </marquee>
+</div>
+
+<!-- Trust Bar -->
+<div class="trust-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="trust-item">
+                    <i class="fas fa-truck"></i>
+                    <span>Fast Nationwide Delivery</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="trust-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>100% Authentic Products</span>
+        </div>
+            </div>
+            <div class="col-md-3">
+                <div class="trust-item">
+                    <i class="fas fa-undo"></i>
+                    <span>30-Day Money Back</span>
+                            </div>
+                                </div>
+            <div class="col-md-3">
+                <div class="trust-item">
+                    <i class="fas fa-headset"></i>
+                    <span>24/7 Customer Support</span>
+                            </div>
+                        </div>
+                    </div>
+                            </div>
+                                </div>
+
+<!-- Hero Section with updated slides and call-to-actions -->
+<div class="hero-slider">
+    <!-- First slide: Video - Autumn and Winter Skin Secrets -->
+    <div class="hero-slide active">
+        <video class="hero-video" autoplay muted playsinline>
+            <source src="{% static 'images/Autumn and Winter Skin Secrets,  Nourish Your Glow!_x264.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Second slide: Image - 1 (1) (2).jpg -->
+    <div class="hero-slide" style="background-image: url('{% static "images/1 (1) (2).jpg" %}')">
+    </div>
+
+    <!-- Third slide: Video - Neutriherbs (2) (1).mp4 -->
+    <div class="hero-slide">
+        <video class="hero-video" muted playsinline>
+            <source src="{% static 'images/Neutriherbs  (2) (1).mp4' %}" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Fourth slide: Image - 1 (1) (4).jpg -->
+    <div class="hero-slide" style="background-image: url('{% static "images/1 (1) (4).jpg" %}')">
+    </div>
+    
+    <!-- Hero Navigation Dots -->
+    <div class="hero-nav">
+        <span class="hero-dot active" data-slide="0"></span>
+        <span class="hero-dot" data-slide="1"></span>
+        <span class="hero-dot" data-slide="2"></span>
+        <span class="hero-dot" data-slide="3"></span>
+    </div>
+</div>
+
+<!-- Limited Time Offer Section -->
+<section class="limited-offer" id="special-offer">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="mb-3">Flash Sale Ends In:</h2>
+            <div class="countdown-timer">
+                <div class="countdown-box">
+                    <div class="countdown-value" id="days">02</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value" id="hours">18</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value" id="minutes">45</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value" id="seconds">33</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
+            </div>
+            <a href="{% url 'store:shop' %}" class="btn btn-light mt-4">Shop Flash Sale</a>
+        </div>
+    </div>
+</section>
+
+<!-- Our Essence Section -->
+<section class="essence-section">
+    <div class="container">
+        <div class="section-title">
+            <h2 class="section-heading">It's In Our Essence</h2>
+            <p class="section-subheading">We make thoughtful choices about the products we offer, curating natural, skin-friendly essentials for your beauty journey.</p>
+        </div>
+
+        <div class="essence-slider">
+            <div class="essence-slide active">
+                <img src="https://neutriherbs.com/cdn/shop/files/phytotherapy-still-life-top-view.jpg?v=1706583420&width=768" alt="Natural Ingredients" class="essence-image">
+                <div class="essence-content">
+                    <h3 class="essence-title">Natural Ingredients</h3>
+                    <p class="essence-text">We carefully select natural, plant-based ingredients that are gentle on your skin and effective in delivering results. Our commitment to nature ensures you get the best of what Mother Earth has to offer.</p>
+                </div>
+            </div>
+
+            <div class="essence-slide">
+                <img src="https://cdn.shopify.com/s/files/1/2303/0621/t/19/assets/1648520157612-1653617677797.jpg?v=1653617822" alt="Ethical Sourcing" class="essence-image">
+                <div class="essence-content">
+                    <h3 class="essence-title">Ethical Sourcing</h3>
+                    <p class="essence-text">We partner with responsible suppliers who share our values of sustainability and fair trade. Every product in our collection is thoughtfully sourced to support both people and planet.</p>
+                </div>
+            </div>
+
+            <div class="essence-slide">
+                <img src="https://neutriherbs.com/cdn/shop/files/Lighten_skin-25.jpg?v=1737363609&width=1600" alt="Skin-Friendly Formulations" class="essence-image">
+                <div class="essence-content">
+                    <h3 class="essence-title">Skin-Friendly Formulations</h3>
+                    <p class="essence-text">Our products are formulated with your skin's health in mind. We avoid harsh chemicals and focus on ingredients that nourish, protect, and enhance your natural beauty.</p>
+                </div>
+            </div>
+
+            <div class="essence-nav">
+                <button class="essence-nav-btn prev-slide">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="essence-nav-btn next-slide">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Special Bundle Packages -->
+<section class="container py-5" id="special-bundles">
+    <div class="section-title">
+        <h2 class="section-heading">Special Bundle Packages</h2>
+        <p class="section-subheading">Save more when you buy our specially curated skincare sets</p>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="bundle-card">
+                <div class="bundle-image">
+                    <img src="https://neutriherbs.com/cdn/shop/files/Vitamin_c_plus-2_b9e3f212-0d1a-4479-a5be-85c716df7ac4.jpg?crop=center&height=462&v=1747704207&width=462" alt="Vitamin C Bundle">
+                </div>
+                <div class="bundle-content">
+                    <span class="bundle-tag">Most Popular</span>
+                    <h3 class="bundle-title">Vitamin C Complete Set</h3>
+                    <p>Experience the full brightening power with our Vitamin C serum, cream, and sunscreen.</p>
+                    <div class="bundle-price">
+                        <span class="original-price">KSh 9,500</span>
+                        <span class="discount-price">KSh 7,600</span>
+                        <span class="savings-tag">Save 20%</span>
+                    </div>
+                    <button class="btn-add-cart w-100">Add Bundle to Cart</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="bundle-card">
+                <div class="bundle-image">
+                    <img src="https://neutriherbs.com/cdn/shop/files/SnailAllInOneSeries-5.jpg?v=1745913167&width=1920" 
+                         alt="Snail Mucin Bundle" 
+                         style="width: 100%; height: 200px; object-fit: cover; object-position: center;">
+                </div>
+                <div class="bundle-content">
+                    <span class="bundle-tag">Best Value</span>
+                    <h3 class="bundle-title">Snail Mucin Power Duo</h3>
+                    <p>Repair and rejuvenate with our bestselling Snail Mucin serum and cream combination.</p>
+                    <div class="bundle-price">
+                        <span class="original-price">KSh 7,100</span>
+                        <span class="discount-price">KSh 5,325</span>
+                        <span class="savings-tag">Save 25%</span>
+                    </div>
+                    <button class="btn-add-cart w-100">Add Bundle to Cart</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="bundle-card">
+                <div class="bundle-image">
+                    <img src="https://neutriherbs.com/cdn/shop/products/best-anti-aging-retinol-cream-for-50s---best-gift-for-mother_f291f24d-b4c0-408a-bdb6-a2aaf0af064d.jpg?v=1597299400&width=1000" 
+                         alt="Anti-Aging Bundle" 
+                         style="width: 100%; height: 200px; object-fit: cover; object-position: center;">
+                </div>
+                <div class="bundle-content">
+                    <span class="bundle-tag">New</span>
+                    <h3 class="bundle-title">Anti-Aging Essentials</h3>
+                    <p>Combat signs of aging with our Retinol serum, eye cream, and hydrating face cream.</p>
+                    <div class="bundle-price">
+                        <span class="original-price">KSh 8,700</span>
+                        <span class="discount-price">KSh 6,525</span>
+                        <span class="savings-tag">Save 25%</span>
+                    </div>
+                    <button class="btn-add-cart w-100">Add Bundle to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Parent Company Banner -->
+<section class="parent-company">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+                <img src="{% static 'images/neutriherbs-logo.png' %}" alt="Neutriherbs Logo" class="parent-logo">
+                <h2 class="mb-3">Official Distributor of Neutriherbs in Kenya</h2>
+                <p class="lead mb-4">We import directly from the manufacturer to ensure you get 100% authentic products at the best prices.</p>
+                <a href="{% url 'store:about' %}" class="btn btn-outline-dark">Our Story</a>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'images/neutriherbs-factory.jpg' %}" alt="Neutriherbs Factory" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Vitamin C Collection -->
+<section class="container" id="vitamin-c">
+    <div class="section-title">
+        <h2 class="section-heading">Vitamin C Collection</h2>
+        <p class="section-subheading">Brighten Your Skin with Nature's Most Powerful Antioxidant</p>
+                                </div>
+    <div class="product-grid">
+        <!-- Super Booster VC Serum -->
+        <div class="product-card">
+                            <div class="product-img-container">
+                <img src="https://neutriherbs.com/cdn/shop/files/Vitamin_c_plus-1_7843e0c2-4ae9-4c84-aa26-1ff25e369e69.jpg?v=1747704207&width=932" alt="Super Booster Vitamin C Plus" class="product-img">
+                <div class="product-badge new">NEW</div>
+                <div class="quick-view">Quick view</div>
+                            </div>
+                            <div class="product-info">
+                <h3 class="product-title">[NEW ARRIVAL] Super Booster Vitamin C Plus Brightening Serum (20% VC)</h3>
+                <div class="product-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating">4.9</span>
+                    <span class="reviews">(86)</span>
+                                </div>
+                <div class="product-price">$38.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+                            </div>
+                        </div>
+
+        <!-- Vitamin C Cleanser Oil -->
+        <div class="product-card">
+                            <div class="product-img-container">
+                <img src="https://neutriherbs.com/cdn/shop/files/Vitaminccleansingoil-1.jpg?v=1701850978&width=932" alt="Vitamin C Cleansing Oil" class="product-img">
+                <div class="quick-view">Quick view</div>
+                            </div>
+                            <div class="product-info">
+                <h3 class="product-title">Vitamin C Cleansing Oil For Deep Cleansing And Brightening</h3>
+                <div class="product-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating">4.7</span>
+                    <span class="reviews">(89)</span>
+                                </div>
+                <div class="product-price">$26.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+                            </div>
+                        </div>
+
+        <!-- Vitamin C Eye Cream -->
+        <div class="product-card">
+                            <div class="product-img-container">
+                <img src="https://neutriherbs.com/cdn/shop/products/VCEyeCream-1.jpg?v=1670385327&width=932" alt="Vitamin C Eye Cream" class="product-img">
+                <div class="quick-view">Quick view</div>
+                            </div>
+                            <div class="product-info">
+                <h3 class="product-title">Vitamin C Eye Cream For Dark Circles And Anti-Aging</h3>
+                <div class="product-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating">4.8</span>
+                    <span class="reviews">(94)</span>
+                                </div>
+                <div class="product-price">$28.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+                            </div>
+                        </div>
+
+        <!-- Vitamin C Sunscreen -->
+        <div class="product-card">
+                            <div class="product-img-container">
+                <img src="https://neutriherbs.com/cdn/shop/files/Sunscreen_gel-1_b8f9daf8-28e2-4af9-88c8-e0c63075b877.jpg?v=1748511643&width=932" alt="Vitamin C Sunscreen" class="product-img">
+                <div class="quick-view">Quick view</div>
+                            </div>
+                            <div class="product-info">
+                <h3 class="product-title">Vitamin C Sunscreen SPF50 With Double UV Protection</h3>
+                <div class="product-price">$33.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+                                </div>
+                            </div>
+
+        <!-- Vitamin C Toner -->
+        <div class="product-card">
+                            <div class="product-img-container">
+                <img src="https://neutriherbs.com/cdn/shop/products/VCToner-2.jpg?v=1597218008&width=932" alt="Vitamin C Toner" class="product-img">
+                <div class="quick-view">Quick view</div>
+                            </div>
+                            <div class="product-info">
+                <h3 class="product-title">Vitamin C Brightening Toner For Moisturizing And Refining</h3>
+                <div class="product-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating">4.6</span>
+                    <span class="reviews">(76)</span>
+                                </div>
+                <div class="product-price">$24.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+                            </div>
+                        </div>
+    </div>
+    <div class="text-center">
+        <a href="{% url 'store:shop' %}?line=Vitamin C" class="btn btn-outline-dark">View All Vitamin C Products</a>
+                    </div>
+</section>
+
+<!-- Snail Mucin Series -->
+<section class="container">
+    <div class="section-title">
+        <h2 class="section-heading">Latest news Snail mucin Series</h2>
+        <p class="section-subheading">For Your Skin, Anti-Aging And Skin Repair</p>
+    </div>
+    <div class="product-grid">
+        <!-- Snail Mucin Cream -->
+        <div class="product-card">
+            <div class="product-img-container">
+                <img src="{% static 'images/products/snail_mucin/snail-serum.webp' %}" alt="Snail Mucin Cream" class="product-img">
+                <div class="quick-view">Quick view</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">The Best All In One Snail Mucin Cream For Anti-Aging And Skin Repair</h3>
+                <div class="product-price">$38.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+            </div>
+        </div>
+
+        <!-- Snail Mucin Serum -->
+        <div class="product-card">
+            <div class="product-img-container">
+                <img src="https://neutriherbs.com/cdn/shop/files/Snail_cream-1_114x144_crop_center.jpg?v=1739781626" 
+                     alt="Snail Mucin Serum" 
+                     class="product-img" 
+                     style="object-fit: cover; object-position: center;">
+                <div class="quick-view">Quick view</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">The Best All In One Snail Mucin Serum For Anti-Aging And Skin Soothing</h3>
+                <div class="product-price">$33.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+            </div>
+        </div>
+
+        <!-- Snail Mucin Face Mask -->
+        <div class="product-card">
+            <div class="product-img-container">
+                <img src="https://neutriherbs.com/cdn/shop/files/Snailserum-1.jpg?v=1731635018&width=1600" 
+                     alt="Snail Mucin Face Mask" 
+                     class="product-img" 
+                     style="object-fit: cover; object-position: center;">
+                <div class="product-badge new">NEW</div>
+                <div class="quick-view">Quick view</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Snail Mucin Face Mask For Skin Repair And Deep Hydration</h3>
+                <div class="product-price">$25.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+            </div>
+        </div>
+
+        <!-- Snail Mucin Gift Set -->
+        <div class="product-card">
+            <div class="product-img-container">
+                <img src="https://neutriherbs.com/cdn/shop/files/SnailAllInOneSeries-5.jpg?v=1745913167&width=1920" 
+                     alt="Snail Mucin Gift Set" 
+                     class="product-img" 
+                     style="object-fit: cover; object-position: center;">
+                <div class="quick-view">Quick view</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Snail Mucin Complete Collection Gift Set</h3>
+                <div class="product-price">$89.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <a href="{% url 'store:shop' %}?line=Snail" class="btn btn-outline-dark">View All Snail Products</a>
+    </div>
+</section>
+
+<!-- Gentle Lightening Section -->
+<section class="container">
+    <div class="section-title">
+        <h2 class="section-heading">Gentle Lightening with 𝗡𝗢 Bleaching</h2>
+        <p class="section-subheading">Your Path to Radiant, Even-Toned Skin</p>
+        <p class="section-subheading mt-2">No Bleaching, Just Brighter</p>
+        <h3 class="section-subheading mt-4 fw-bold">SymWhite 377</h3>
+                            </div>
+    <div class="product-grid">
+        <!-- Face Cream -->
+        <div class="product-card">
+                            <div class="product-img-container">
+                <img src="{% static 'images/products/lightening/lighten-cream.webp' %}" alt="Brightening Face Cream" class="product-img">
+                <div class="quick-view">Quick view</div>
+                            </div>
+                            <div class="product-info">
+                <div class="product-category">Face Cream</div>
+                <h3 class="product-title">Brightening And Lightening Skin Face Cream For Dark Skin</h3>
+                <div class="product-price">$34.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+                                </div>
+                            </div>
+
+        <!-- Face Wash -->
+        <div class="product-card">
+                            <div class="product-img-container">
+                <img src="{% static 'images/products/lightening/bright-cleanser.webp' %}" alt="Face Wash" class="product-img">
+                <div class="quick-view">Quick view</div>
+                            </div>
+                            <div class="product-info">
+                <div class="product-category">Face Wash</div>
+                <h3 class="product-title">Neutriherbs® Best Face Wash For Lightening Skin</h3>
+                <div class="product-price">$18.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+                                </div>
+                            </div>
+
+        <!-- Body Lotion -->
+        <div class="product-card">
+                            <div class="product-img-container">
+                <img src="{% static 'images/products/lightening/lighten-body-lotion.webp' %}" alt="Lightening Body Lotion" class="product-img">
+                <div class="quick-view">Quick view</div>
+                            </div>
+                            <div class="product-info">
+                <div class="product-category">Body Lotion</div>
+                <h3 class="product-title">Skin Lightening Body Lotion For Even Tone Skin</h3>
+                <div class="product-price">$30.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+                                </div>
+                            </div>
+
+        <!-- Whitening Soap -->
+        <div class="product-card">
+                            <div class="product-img-container">
+                <img src="{% static 'images/products/lightening/bright-soap.webp' %}" alt="Whitening Soap" class="product-img">
+                <div class="quick-view">Quick view</div>
+                            </div>
+                            <div class="product-info">
+                <div class="product-category">Soap</div>
+                <h3 class="product-title">Best Skin Lightening Soap For Glowing Skin</h3>
+                <div class="product-rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating">4.3</span>
+                    <span class="reviews">(45)</span>
+                                </div>
+                <div class="product-price">$18.00 USD</div>
+                <button class="btn-add-cart">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+    <div class="text-center">
+        <a href="{% url 'store:shop' %}?line=Lightening" class="btn btn-outline-dark">View All Lightening Products</a>
+    </div>
+</section>
+
+<!-- Customer Testimonials -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="section-title">
+            <h2 class="section-heading">What Our Customers Say</h2>
+            <p class="section-subheading">Real results from real people using Neutriherbs products</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p class="testimonial-text">The Vitamin C serum has completely transformed my skin! My dark spots have faded, and my skin tone is now much more even. I'm getting compliments everywhere I go!</p>
+                        <div class="testimonial-author">
+                            <img src="{% static 'images/testimonials/user1.jpg' %}" alt="Jane W." class="author-avatar">
+                            <div class="author-info">
+                                <h4>Jane W.</h4>
+                                <p>Nairobi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p class="testimonial-text">I've tried many snail mucin products, but Neutriherbs is by far the best! My skin feels so hydrated and plump. The shipping was fast, and the packaging was secure.</p>
+                        <div class="testimonial-author">
+                            <img src="{% static 'images/testimonials/user2.jpg' %}" alt="David M." class="author-avatar">
+                            <div class="author-info">
+                                <h4>David M.</h4>
+                                <p>Mombasa</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p class="testimonial-text">The retinol cream has worked wonders for my fine lines! I've been using it for 2 months, and I can see a significant difference. Plus, the customer service from NeutriKenya is exceptional!</p>
+                        <div class="testimonial-author">
+                            <img src="{% static 'images/testimonials/user3.jpg' %}" alt="Sarah K." class="author-avatar">
+                            <div class="author-info">
+                                <h4>Sarah K.</h4>
+                                <p>Kisumu</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mobile App Download -->
+<section class="app-download">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <h2 class="mb-3">Download Our App for Exclusive Offers</h2>
+                <p class="lead mb-4">Get 15% off your first in-app purchase, plus exclusive access to flash sales and limited-time offers!</p>
+                <div class="d-flex mb-4">
+                    <a href="#" class="me-3">
+                        <img src="{% static 'images/app-store-badge.png' %}" alt="App Store" class="app-store-badge">
+                    </a>
+                    <a href="#">
+                        <img src="{% static 'images/google-play-badge.png' %}" alt="Google Play" class="app-store-badge">
+                    </a>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <span class="fa-stack fa-2x">
+                            <i class="fas fa-circle fa-stack-2x" style="color: var(--accent-color);"></i>
+                            <i class="fas fa-gift fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </div>
+                    <div>
+                        <h4 class="mb-1">Scan to get KSh 500 off</h4>
+                        <p class="mb-0">Use the app to scan this code for an instant discount</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 text-center">
+                <img src="{% static 'images/app-mockup.png' %}" alt="NeutriKenya App" class="app-phone">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Certifications -->
+<section class="certifications">
+    <div class="container">
+        <div class="section-title">
+            <h2 class="section-heading">Our Certifications & Standards</h2>
+            <p class="section-subheading">We maintain the highest quality standards for your skincare</p>
+        </div>
+        <div class="certification-grid">
+            <div class="certification-item">
+                <div class="certification-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3 class="certification-title">KEBS Certified</h3>
+                <p class="certification-text">Meets all Kenya Bureau of Standards requirements</p>
+            </div>
+            <div class="certification-item">
+                <div class="certification-icon">
+                    <i class="fas fa-flask"></i>
+                    </div>
+                <h3 class="certification-title">Lab Tested</h3>
+                <p class="certification-text">All products undergo rigorous laboratory testing</p>
+                        </div>
+            <div class="certification-item">
+                <div class="certification-icon">
+                    <i class="fas fa-leaf"></i>
+                            </div>
+                <h3 class="certification-title">Natural Ingredients</h3>
+                <p class="certification-text">Formulated with nature's finest ingredients</p>
+                        </div>
+            <div class="certification-item">
+                <div class="certification-icon">
+                    <i class="fas fa-heart"></i>
+                    </div>
+                <h3 class="certification-title">Cruelty Free</h3>
+                <p class="certification-text">Never tested on animals</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Advertisement Section -->
+<section class="advertisement-section py-5">
+    <div class="container">
+        <div class="section-title">
+            <h2 class="section-heading">Special Offers & Promotions</h2>
+            <p class="section-subheading">Exclusive deals and limited-time offers on our premium skincare products</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 mb-4">
+                <div class="ad-card shadow h-100">
+                    <a href="{% url 'store:shop' %}?line=Vitamin C">
+                        <img src="{% static 'images/products/vitamin-c-collection.jpg' %}" alt="Vitamin C Collection" class="img-fluid">
+                        <div class="position-absolute top-0 end-0 p-3">
+                            <span class="badge bg-danger px-3 py-2 rounded-pill">25% OFF</span>
+                        </div>
+                        <div class="position-absolute bottom-0 start-0 p-4 text-white">
+                            <h3 class="fw-bold">Vitamin C Collection</h3>
+                            <p class="mb-0">Brighten & Glow with our Vitamin C Range</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="ad-card shadow h-100">
+                    <a href="{% url 'store:shop' %}?line=Snail">
+                        <img src="{% static 'images/products/snail-collection.jpg' %}" alt="Snail Mucin Collection" class="img-fluid">
+                        <div class="position-absolute top-0 end-0 p-3">
+                            <span class="badge bg-danger px-3 py-2 rounded-pill">NEW</span>
+                        </div>
+                        <div class="position-absolute bottom-0 start-0 p-4 text-white">
+                            <h3 class="fw-bold">Snail Mucin Collection</h3>
+                            <p class="mb-0">Repair & Hydrate with Natural Snail Extract</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="ad-card shadow h-100">
+                    <a href="{% url 'store:shop' %}?category=Serum">
+                        <img src="{% static 'images/products/serum.jpg' %}" alt="Premium Serums" class="img-fluid">
+                        <div class="position-absolute bottom-0 start-0 p-3 text-white">
+                            <h4 class="fw-bold">Premium Serums</h4>
+                            <p class="mb-0">Targeted Treatments</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="ad-card shadow h-100">
+                    <a href="{% url 'store:shop' %}?concern=Acne">
+                        <img src="{% static 'images/products/facial-mask.jpg' %}" alt="Face Masks" class="img-fluid">
+                        <div class="position-absolute bottom-0 start-0 p-3 text-white">
+                            <h4 class="fw-bold">Face Masks</h4>
+                            <p class="mb-0">Deep Cleansing & Nourishing</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="ad-card shadow h-100">
+                    <a href="{% url 'store:shop' %}?category=Cleanser">
+                        <img src="{% static 'images/products/cleanser.jpg' %}" alt="Gentle Cleansers" class="img-fluid">
+                        <div class="position-absolute bottom-0 start-0 p-3 text-white">
+                            <h4 class="fw-bold">Gentle Cleansers</h4>
+                            <p class="mb-0">For All Skin Types</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="ad-card shadow">
+                    <a href="{% url 'store:shop' %}?category=Bundle">
+                        <img src="{% static 'images/1 (1) (1).png' %}" alt="Special Bundle Offer" class="img-fluid" style="height: 300px; width: 100%; object-fit: cover;">
+                        <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+                            <h2 class="fw-bold display-4">BUY 2 GET 1 FREE</h2>
+                            <p class="lead mb-3">On all Neutriherbs skincare products</p>
+                            <button class="btn btn-light btn-lg px-4 py-2">Shop Now</button>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Value Props -->
+<section class="value-props">
+    <div class="video-background">
+        <video autoplay loop muted playsinline>
+            <source src="{% static 'images/Autumn and Winter-Skin Care Order_1_x264.mp4' %}" type="video/mp4">
+        </video>
+        <div class="overlay"></div>
+    </div>
+    <div class="container position-relative">
+        <div class="section-title text-white">
+            <h2 class="section-heading">FEEL CONFIDENT IN YOUR OWN SKIN</h2>
+            <p class="section-subheading">Scientifically formulated with active ingredients backed by science, extracted from nature, tested and proven effective</p>
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <div class="value-prop-item">
+                    <div class="value-prop-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="value-prop-title text-white">CRUELTY FREE</h3>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="value-prop-item">
+                    <div class="value-prop-icon">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <h3 class="value-prop-title text-white">PARABEN FREE</h3>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="value-prop-item">
+                    <div class="value-prop-icon">
+                        <i class="fas fa-wine-bottle"></i>
+                    </div>
+                    <h3 class="value-prop-title text-white">ALCOHOL FREE</h3>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="value-prop-item">
+                    <div class="value-prop-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="value-prop-title text-white">ECO FRIENDLY</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section class="newsletter-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h2 class="mb-4">Join to get special offers, free giveaways, and once-in-a-lifetime deals.</h2>
+                <form class="newsletter-form" id="newsletter-form">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Email" required>
+                        <button type="submit" class="btn btn-dark">
+                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            <span class="btn-text">Subscribe</span>
+                        </button>
+                    </div>
+                    <div class="form-text text-white mt-2">
+                        This site is protected by hCaptcha and the hCaptcha Privacy Policy and Terms of Service apply.
+                </div>
+                </form>
+                <div id="subscription-message" class="alert d-none mt-3"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Hero Slider functionality with video support
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    const heroDots = document.querySelectorAll('.hero-dot');
+    let currentHeroSlide = 0;
+    let heroSliderInterval;
+    let isVideoPlaying = false;
+
+    function showHeroSlide(index) {
+        // Hide all slides
+        heroSlides.forEach(slide => slide.classList.remove('active'));
+        // Show the selected slide
+        heroSlides[index].classList.add('active');
+        
+        // Update dots
+        heroDots.forEach(dot => dot.classList.remove('active'));
+        heroDots[index].classList.add('active');
+        
+        // Handle video playback
+        const currentSlide = heroSlides[index];
+        const video = currentSlide.querySelector('video');
+        
+        if (video) {
+            isVideoPlaying = true;
+            video.currentTime = 0; // Reset video to start
+            video.play().then(() => {
+                // Video started playing successfully
+                console.log('Video playing');
+            }).catch(error => {
+                console.log('Video autoplay failed:', error);
+                isVideoPlaying = false;
+                startHeroSliderInterval(); // Continue with normal interval if video fails
+            });
+            
+            // Listen for video end
+            video.addEventListener('ended', function() {
+                isVideoPlaying = false;
+                nextHeroSlide();
+            });
+        } else {
+            isVideoPlaying = false;
+            // Reset the interval for image slides
+            clearInterval(heroSliderInterval);
+            startHeroSliderInterval();
+        }
+        
+        // Pause all other videos
+        heroSlides.forEach((slide, i) => {
+            if (i !== index) {
+                const otherVideo = slide.querySelector('video');
+                if (otherVideo) {
+                    otherVideo.pause();
+                }
+            }
+        });
+    }
+
+    function nextHeroSlide() {
+        // Don't advance if video is still playing
+        if (isVideoPlaying) return;
+        
+        currentHeroSlide = (currentHeroSlide + 1) % heroSlides.length;
+        showHeroSlide(currentHeroSlide);
+    }
+
+    function startHeroSliderInterval() {
+        // Only set interval for image slides (5 seconds)
+        heroSliderInterval = setInterval(() => {
+            if (!isVideoPlaying) {
+                nextHeroSlide();
+            }
+        }, 5000);
+    }
+
+    // Add click event listeners to dots
+    heroDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            clearInterval(heroSliderInterval);
+            isVideoPlaying = false;
+            currentHeroSlide = index;
+            showHeroSlide(currentHeroSlide);
+        });
+    });
+
+    // Initialize the slider
+    showHeroSlide(0);
+
+    // Essence Slider functionality
+    const essenceSlider = document.querySelector('.essence-slider');
+    const slides = document.querySelectorAll('.essence-slide');
+    const prevBtn = document.querySelector('.prev-slide');
+    const nextBtn = document.querySelector('.next-slide');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[index].classList.add('active');
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    if (prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+    }
+
+    // Auto-advance slides every 5 seconds
+    setInterval(nextSlide, 5000);
+
+    // Add animation order to product cards
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach((card, index) => {
+        card.style.setProperty('--animation-order', index);
+    });
+
+    // Add 3D tilt effect
+    productCards.forEach(card => {
+        card.addEventListener('mousemove', handleTilt);
+        card.addEventListener('mouseleave', resetTilt);
+    });
+
+    function handleTilt(e) {
+        const card = e.currentTarget;
+        const cardRect = card.getBoundingClientRect();
+        const cardCenterX = cardRect.left + cardRect.width / 2;
+        const cardCenterY = cardRect.top + cardRect.height / 2;
+        const angleX = (e.clientY - cardCenterY) * 0.02;
+        const angleY = (cardCenterX - e.clientX) * 0.02;
+        
+        card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px)`;
+    }
+
+    function resetTilt(e) {
+        const card = e.currentTarget;
+        card.style.transform = 'translateY(-5px)';
+    }
+
+    // Newsletter form submission
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm) {
+        const subscriptionMessage = document.getElementById('subscription-message');
+        const submitButton = newsletterForm.querySelector('button[type="submit"]');
+        const spinner = submitButton.querySelector('.spinner-border');
+        const buttonText = submitButton.querySelector('.btn-text');
+
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            spinner.classList.remove('d-none');
+            buttonText.textContent = 'Subscribing...';
+            submitButton.disabled = true;
+
+            // Simulate API call
+            setTimeout(() => {
+                const email = this.querySelector('input[type="email"]').value;
+                
+                // Show success message
+                subscriptionMessage.textContent = 'Thank you for subscribing!';
+                subscriptionMessage.classList.remove('d-none', 'alert-danger');
+                subscriptionMessage.classList.add('alert-success');
+                
+                // Reset form
+                this.reset();
+                
+                // Reset button state
+                spinner.classList.add('d-none');
+                buttonText.textContent = 'Subscribe';
+                submitButton.disabled = false;
+            }, 1500);
+        });
+    }
+
+    // Quick view functionality
+    const quickViewButtons = document.querySelectorAll('.quick-view');
+    quickViewButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Quick view modal implementation
+        });
+    });
+
+    // Video background fallback
+    const video = document.querySelector('.video-background video');
+    if (video) {
+        video.addEventListener('loadeddata', function() {
+            video.play().catch(function(error) {
+                console.log("Video autoplay failed:", error);
+                // Fallback to image if video autoplay fails
+                video.style.display = 'none';
+                video.parentElement.style.backgroundImage = "url('{% static 'images/confidence-bg.jpg' %}')";
+                video.parentElement.style.backgroundSize = 'cover';
+                video.parentElement.style.backgroundPosition = 'center';
+            });
+        });
+    }
+});
+</script>
+
+<script>
+    // Existing JS
+
+    // Countdown Timer
+    function updateCountdown() {
+        const now = new Date();
+        const endDate = new Date();
+        endDate.setDate(now.getDate() + 2); // 2 days from now
+        endDate.setHours(23, 59, 59, 0);
+
+        const diff = endDate - now;
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        document.getElementById('days').textContent = days.toString().padStart(2, '0');
+        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+    }
+    
+    // Update countdown every second
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Add flash sale badges to selected products
+    document.addEventListener('DOMContentLoaded', function() {
+        const flashSaleProducts = [
+            'Vitamin C Serum Helps Lighten And Brighten Your Skin',
+            'The Best All In One Snail Mucin Serum For Anti-Aging And Skin Soothing',
+            'Skin Whitening Body Lotion For Dark Skin'
+        ];
+        
+        document.querySelectorAll('.product-card').forEach(card => {
+            const title = card.querySelector('.product-title').textContent;
+            if (flashSaleProducts.some(product => title.includes(product))) {
+                const badge = document.createElement('div');
+                badge.className = 'flash-sale-badge';
+                badge.textContent = 'FLASH SALE -40%';
+                card.querySelector('.product-img-container').appendChild(badge);
+            }
+        });
+    });
+</script>
+{% endblock extra_js %} 

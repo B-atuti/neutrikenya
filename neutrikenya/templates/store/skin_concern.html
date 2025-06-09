@@ -1,0 +1,1295 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - NeutriherbsKenya{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Sale Banner Styles */
+    .concern-sale-banner {
+        background: linear-gradient(135deg, #7ed56f 0%, #28b485 100%);
+        color: white;
+        text-align: center;
+        padding: 15px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        border: 2px dashed #fff;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        50% { box-shadow: 0 4px 18px rgba(40,180,133,0.3); }
+        100% { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    }
+    
+    .concern-sale-banner::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        animation: shine 2s infinite;
+    }
+    
+    @keyframes shine {
+        100% { left: 100%; }
+    }
+    
+    /* Countdown Timer */
+    .countdown-container {
+        display: flex;
+        justify-content: center;
+        margin: 15px 0;
+        gap: 10px;
+    }
+    
+    .countdown-item {
+        background: rgba(0,0,0,0.2);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        min-width: 50px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    .countdown-value {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    
+    .countdown-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+    }
+    
+    /* Product Cards */
+    .product-card {
+        border-radius: 8px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+        border: 1px solid #eee;
+        height: 100%;
+        background: white;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+    
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        border-color: #28b485;
+    }
+    
+    .product-img-container {
+        position: relative;
+        padding-top: 100%;
+        overflow: hidden;
+        background: #f8f9fa;
+    }
+    
+    .product-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .product-card:hover .product-img {
+        transform: scale(1.1);
+    }
+    
+    .product-info {
+        padding: 20px;
+        text-align: center;
+    }
+    
+    .product-title {
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 10px;
+        color: #333;
+        min-height: 45px;
+    }
+    
+    .product-price {
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #28b485;
+    }
+    
+    .product-original-price {
+        text-decoration: line-through;
+        color: #999;
+        margin-right: 10px;
+    }
+    
+    .product-badge {
+        position: absolute;
+        top: 0;
+        z-index: 10;
+        padding: 8px 15px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+    
+    .badge-bestseller {
+        right: 0;
+        background: #f8c95a;
+        color: #333;
+    }
+    
+    .badge-sale {
+        left: 0;
+        background: #ff6b6b;
+        color: white;
+        animation: blinker 1s linear infinite;
+    }
+    
+    @keyframes blinker {
+        50% { opacity: 0.7; }
+    }
+    
+    .add-to-cart-btn {
+        background: #28b485;
+        color: white;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 600;
+        margin-top: 10px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .add-to-cart-btn:hover {
+        background: #219a73;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(40,180,133,0.3);
+    }
+    
+    /* Rating Stars */
+    .product-rating {
+        color: #ffc107;
+        margin-bottom: 10px;
+    }
+    
+    /* Testimonial Card */
+    .testimonial-card {
+        border-radius: 8px;
+        overflow: hidden;
+        padding: 20px;
+        position: relative;
+        background: white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        border-top: 3px solid #28b485;
+    }
+    
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    .testimonial-card::before {
+        content: '"';
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 5rem;
+        color: rgba(40,180,133,0.1);
+        line-height: 1;
+    }
+    
+    .customer-info {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+    }
+    
+    .customer-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+    }
+    
+    /* Stock Status */
+    .stock-status {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 3px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    
+    .in-stock {
+        background: #e6f7e9;
+        color: #2e7d32;
+    }
+    
+    .low-stock {
+        background: #fff8e1;
+        color: #ff8f00;
+        animation: pulse-warning 2s infinite;
+    }
+    
+    @keyframes pulse-warning {
+        0% { opacity: 1; }
+        50% { opacity: 0.7; }
+        100% { opacity: 1; }
+    }
+    
+    /* Result Cards */
+    .result-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        position: relative;
+    }
+    
+    .result-card img {
+        border-radius: 6px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    
+    .result-stat {
+        background: #28b485;
+        color: white;
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Sale Banner for Oily Skin -->
+{% if current_concern == 'Oily Skin' %}
+<div class="container mt-4">
+    <div class="concern-sale-banner">
+        <h4 class="mb-2">🌿 SPECIAL OFFER: 20% OFF OILY SKIN SOLUTIONS!</h4>
+        <p class="mb-2">Use code <strong>MATTE20</strong> at checkout • <span class="fw-bold text-white">LIMITED TIME ONLY</span></p>
+        <div class="countdown-container">
+            <div class="countdown-item">
+                <div class="countdown-value" id="days">01</div>
+                <div class="countdown-label">days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="hours">08</div>
+                <div class="countdown-label">hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="minutes">45</div>
+                <div class="countdown-label">mins</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="seconds">30</div>
+                <div class="countdown-label">secs</div>
+            </div>
+        </div>
+        <p class="mb-0"><small>⚡ <span class="fw-bold">67 people</span> bought oily skin solutions today - Don't miss out!</small></p>
+    </div>
+</div>
+{% endif %}
+
+<!-- Skin Concern Hero -->
+<section class="py-5" style="background-color: #f8f8f0;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-3">
+                        <li class="breadcrumb-item"><a href="{% url 'store:home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'store:shop' %}">Shop</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ current_concern }}</li>
+                    </ol>
+                </nav>
+                <span class="badge bg-success mb-2">TOP CONCERN</span>
+                <h1 class="display-5 fw-bold mb-3">{{ page_title }}</h1>
+                <p class="lead mb-4">{{ page_description }}</p>
+                
+                <!-- Social Proof -->
+                <div class="d-flex mb-4 flex-wrap gap-3">
+                    <div class="bg-white p-3 rounded shadow-sm text-center" style="min-width: 120px;">
+                        <div class="fw-bold text-success mb-1" style="font-size: 1.5rem;">94%</div>
+                        <div class="small">Reduction in Shine</div>
+                    </div>
+                    <div class="bg-white p-3 rounded shadow-sm text-center" style="min-width: 120px;">
+                        <div class="fw-bold text-success mb-1" style="font-size: 1.5rem;">1,800+</div>
+                        <div class="small">Satisfied Customers</div>
+                    </div>
+                    <div class="bg-white p-3 rounded shadow-sm text-center" style="min-width: 120px;">
+                        <div class="fw-bold text-success mb-1" style="font-size: 1.5rem;">4.7/5</div>
+                        <div class="small">Average Rating</div>
+                    </div>
+                </div>
+                
+                <a href="#products-section" class="btn btn-success px-4 py-3 fw-bold">SHOP SOLUTIONS NOW <i class="fas fa-arrow-right ms-2"></i></a>
+            </div>
+            <div class="col-md-5">
+                <div class="position-relative">
+                    <img src="/static/images/concerns/{{ current_concern|slugify }}.jpg" 
+                         alt="{{ current_concern }}" 
+                         onerror="this.onerror=null; this.src='/static/images/product-placeholder.jpg';"
+                         class="img-fluid rounded shadow">
+                    
+                    {% if current_concern == 'Oily Skin' %}
+                    <!-- Result badge for oily skin -->
+                    <div class="position-absolute bottom-0 start-0 bg-success text-white p-3 m-3 rounded shadow">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle fa-2x me-2"></i>
+                            <div>
+                                <div class="small">PROVEN RESULTS</div>
+                                <div class="fw-bold">MATTE SKIN IN 2 WEEKS</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Understanding Section -->
+<section class="py-5">
+    <div class="container">
+        <!-- Before & After Results -->
+        {% if current_concern == 'Oily Skin' %}
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-10">
+                <div class="result-card">
+                    <h2 class="text-center mb-4">Real Results With Our Products</h2>
+                    <div class="row align-items-center">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <div class="position-relative">
+                                <img src="https://neutriherbs.com/cdn/shop/files/before-after-acne-control.jpg" alt="Before and After Results" class="img-fluid rounded">
+                                <div class="position-absolute" style="top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 4px;">BEFORE</div>
+                                <div class="position-absolute" style="top: 10px; right: 10px; background: rgba(40,180,133,0.9); color: white; padding: 5px 10px; border-radius: 4px;">AFTER</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="mb-3">Visible Improvement in Just 2 Weeks</h4>
+                            <p class="mb-4">Our customers have reported these significant improvements:</p>
+                            <div class="mb-2">
+                                <span class="result-stat me-2">89%</span>
+                                <span>Reduction in visible shine</span>
+                            </div>
+                            <div class="mb-2">
+                                <span class="result-stat me-2">76%</span>
+                                <span>Reduced appearance of pores</span>
+                            </div>
+                            <div class="mb-2">
+                                <span class="result-stat me-2">92%</span>
+                                <span>More balanced skin</span>
+                            </div>
+                            <div class="mt-4">
+                                <a href="#products-section" class="btn btn-success">Shop Products That Work</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="bg-white p-4 p-md-5 rounded shadow-sm">
+                    <h2 class="mb-4 text-center">Understanding {{ current_concern }}</h2>
+                    <p class="mb-4">{{ concern_description }}</p>
+                    
+                    <h4 class="mb-3">Recommended Product Types:</h4>
+                    <div class="row g-3 mb-4">
+                        {% for product_type in recommended_products %}
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center p-3 bg-light rounded">
+                                    <i class="fas fa-check-circle text-success me-3"></i>
+                                    <span>{{ product_type }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <h4 class="mb-3">Daily Routine for {{ current_concern }}:</h4>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="bg-light p-3 rounded h-100">
+                                <h5 class="mb-3"><i class="fas fa-sun text-warning me-2"></i> Morning Routine</h5>
+                                <ol class="mb-0">
+                                    <li class="mb-2">Cleanse with a gentle, pH-balanced cleanser</li>
+                                    <li class="mb-2">Apply toner to balance skin (if needed)</li>
+                                    <li class="mb-2">Use treatment serums for {{ current_concern|lower }}</li>
+                                    <li class="mb-2">Apply moisturizer appropriate for your skin type</li>
+                                    <li>Finish with SPF 30+ sunscreen (essential step!)</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light p-3 rounded h-100">
+                                <h5 class="mb-3"><i class="fas fa-moon text-dark me-2"></i> Evening Routine</h5>
+                                <ol class="mb-0">
+                                    <li class="mb-2">Double cleanse (oil-based, then water-based cleanser)</li>
+                                    <li class="mb-2">Apply toner to remove residue and prep skin</li>
+                                    <li class="mb-2">Apply concentrated treatments for {{ current_concern|lower }}</li>
+                                    <li class="mb-2">Use a nourishing night cream or sleep mask</li>
+                                    <li>Weekly: Use exfoliant and treatment masks (2-3 times)</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-success mt-4">
+                        <div class="d-flex">
+                            <i class="fas fa-lightbulb fa-2x me-3"></i>
+                            <div>
+                                <h5 class="alert-heading">Pro Tip from Our Skincare Expert</h5>
+                                {% if current_concern == 'Oily Skin' %}
+                                <p class="mb-0">Even oily skin needs hydration! Using oil-free, non-comedogenic moisturizers actually helps balance oil production. Skipping moisturizer causes your skin to produce more oil to compensate.</p>
+                                {% else %}
+                                <p class="mb-0">Consistency is key to achieving results with skincare. Stick to your routine and give products at least 4-6 weeks to show their full effects.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="#products-section" class="btn btn-success px-4 py-2">Shop Recommended Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section class="py-5 bg-light" id="products-section">
+    <div class="container">
+        <h2 class="text-center mb-2">Solutions for {{ current_concern }}</h2>
+        <p class="text-center text-muted mb-5">Carefully selected products to address your skin concerns</p>
+        
+        {% if current_concern == 'Oily Skin' %}
+        <!-- Urgency Banner with Countdown for Oily Skin -->
+        <div class="bg-success text-white p-4 rounded-3 mb-5 shadow">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h4 class="mb-2"><i class="fas fa-bolt me-2"></i>20% OFF ALL OILY SKIN PRODUCTS!</h4>
+                    <p class="mb-2">Use code <strong>MATTE20</strong> at checkout • Offer ends in:</p>
+                    <div class="countdown-timer d-flex gap-2 mb-2">
+                        <div class="countdown-item">
+                            <div class="countdown-value bg-white text-success p-1 rounded" id="days">23</div>
+                            <div class="countdown-label small">days</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-value bg-white text-success p-1 rounded" id="hours">12</div>
+                            <div class="countdown-label small">hrs</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-value bg-white text-success p-1 rounded" id="minutes">34</div>
+                            <div class="countdown-label small">mins</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-value bg-white text-success p-1 rounded" id="seconds">56</div>
+                            <div class="countdown-label small">secs</div>
+                        </div>
+                    </div>
+                    <p class="small mb-0"><i class="fas fa-users me-1"></i> <strong>27 people</strong> purchased today</p>
+                </div>
+                <div class="col-md-5 text-md-end mt-3 mt-md-0">
+                    <a href="#products-section" class="btn btn-light btn-lg px-4">
+                        SHOP NOW <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Sorting Options -->
+        <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm">
+            <div>
+                <p class="mb-0">Showing {{ products|length }} products</p>
+                {% if current_concern == 'Oily Skin' %}
+                <small class="text-success"><i class="fas fa-tag"></i> Save 20% with code <strong>MATTE20</strong></small>
+                {% endif %}
+            </div>
+            <div class="d-flex align-items-center">
+                <label for="sort-by" class="form-label mb-0 me-2">Sort by:</label>
+                <select class="form-select form-select-sm" id="sort-by">
+                    <option value="default">Recommended</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="newest">Newest First</option>
+                </select>
+            </div>
+        </div>
+        
+        {% if current_concern == 'Oily Skin' %}
+        <!-- Featured Products for Oily Skin -->
+        <div class="mb-5">
+            <div class="row g-4">
+                <div class="col-6 col-md-4 col-lg-3 product-item">
+                    <div class="product-card h-100">
+                        <div class="product-badge badge-bestseller">BEST SELLER</div>
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/products/salicylic-acid-soothes-fights-acne-breakouts-neutriherbs.jpg" alt="Salicylic Acid Cleanser" class="product-img">
+                            <div class="position-absolute top-0 end-0 m-2 z-1">
+                                <button class="btn btn-sm btn-light rounded-circle shadow quick-view">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Salicylic Acid Cleanser For Oily & Acne-Prone Skin</h6>
+                            <div class="product-rating mb-2">
+                                <span>★★★★★</span>
+                                <small class="text-muted">(46)</small>
+                            </div>
+                            <div class="stock-status in-stock">
+                                <i class="fas fa-check-circle"></i> In Stock
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center mb-3">
+                                <span class="product-original-price">KSh 1,800</span>
+                                <span class="product-price">KSh 1,440</span>
+                                <span class="badge bg-danger ms-2">-20%</span>
+                            </div>
+                            <a href="#" class="btn btn-outline-success btn-sm w-100 mb-2">View Details</a>
+                            <button class="add-to-cart-btn">
+                                <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6 col-md-4 col-lg-3 product-item">
+                    <div class="product-card h-100">
+                        <div class="product-badge badge-sale">SALE 20% OFF</div>
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/products/salicylic-acid-toner-pores.jpg" alt="Salicylic Acid Toner" class="product-img">
+                            <div class="position-absolute top-0 end-0 m-2 z-1">
+                                <button class="btn btn-sm btn-light rounded-circle shadow quick-view">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Salicylic Acid Toner For Pores & Exfoliation</h6>
+                            <div class="product-rating mb-2">
+                                <span>★★★★★</span>
+                                <small class="text-muted">(32)</small>
+                            </div>
+                            <div class="stock-status low-stock">
+                                <i class="fas fa-exclamation-circle"></i> Only 2 left!
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center mb-3">
+                                <span class="product-original-price">KSh 2,200</span>
+                                <span class="product-price">KSh 1,760</span>
+                                <span class="badge bg-danger ms-2">-20%</span>
+                            </div>
+                            <a href="#" class="btn btn-outline-success btn-sm w-100 mb-2">View Details</a>
+                            <button class="add-to-cart-btn">
+                                <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6 col-md-4 col-lg-3 product-item">
+                    <div class="product-card h-100">
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/products/neutriherbs-niacinamide-serum-for-dark-spots.jpg" alt="Niacinamide Serum" class="product-img">
+                            <div class="position-absolute top-0 end-0 m-2 z-1">
+                                <button class="btn btn-sm btn-light rounded-circle shadow quick-view">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Niacinamide Serum For Oil Control & Pore Refining</h6>
+                            <div class="product-rating mb-2">
+                                <span>★★★★★</span>
+                                <small class="text-muted">(28)</small>
+                            </div>
+                            <div class="stock-status out-of-stock">
+                                <i class="fas fa-times-circle"></i> Out of Stock
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center mb-3">
+                                <span class="product-price">KSh 2,900</span>
+                            </div>
+                            <a href="#" class="btn btn-outline-success btn-sm w-100 mb-2">View Details</a>
+                            <button class="btn btn-secondary w-100 mt-2" disabled>
+                                Out of Stock
+                            </button>
+                            <button class="btn btn-outline-dark btn-sm w-100 mt-2">
+                                <i class="fas fa-bell me-1"></i> Notify Me
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6 col-md-4 col-lg-3 product-item">
+                    <div class="product-card h-100">
+                        <div class="product-img-container">
+                            <img src="https://neutriherbs.com/cdn/shop/products/tea-tree-oil-oil-control-moisturizer.jpg" alt="Oil-Free Moisturizer" class="product-img">
+                            <div class="position-absolute top-0 end-0 m-2 z-1">
+                                <button class="btn btn-sm btn-light rounded-circle shadow quick-view">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">Tea Tree Oil-Free Moisturizer For Oily Skin</h6>
+                            <div class="product-rating mb-2">
+                                <span>★★★★★</span>
+                                <small class="text-muted">(37)</small>
+                            </div>
+                            <div class="stock-status in-stock">
+                                <i class="fas fa-check-circle"></i> In Stock
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center mb-3">
+                                <span class="product-original-price">KSh 2,500</span>
+                                <span class="product-price">KSh 2,000</span>
+                                <span class="badge bg-danger ms-2">-20%</span>
+                            </div>
+                            <a href="#" class="btn btn-outline-success btn-sm w-100 mb-2">View Details</a>
+                            <button class="add-to-cart-btn">
+                                <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="row g-4">
+            {% for product in products %}
+                <div class="col-6 col-md-4 col-lg-3 product-item" 
+                     data-price="{{ product.price }}" 
+                     data-name="{{ product.name }}" 
+                     data-date="{{ product.created_at|date:'U' }}">
+                    <div class="product-card h-100">
+                        {% if forloop.first %}
+                            <div class="product-badge badge-bestseller">BEST SELLER</div>
+                        {% endif %}
+                        {% if forloop.counter == 2 %}
+                            <div class="product-badge badge-sale">SALE 20% OFF</div>
+                        {% endif %}
+                        
+                        <div class="product-img-container">
+                            {% for image in product.images.all %}
+                                {% if image.is_main %}
+                                    <img src="{{ image.image.url }}" alt="{{ product.name }}" class="product-img">
+                                {% endif %}
+                            {% empty %}
+                                <div class="bg-light w-100 h-100 d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-image fa-3x text-secondary"></i>
+                                </div>
+                            {% endfor %}
+                            <div class="position-absolute top-0 end-0 m-2 z-1">
+                                <button class="btn btn-sm btn-light rounded-circle shadow quick-view" data-product-id="{{ product.id }}" data-bs-toggle="modal" data-bs-target="#quickViewModal">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h6 class="product-title">{{ product.name }}</h6>
+                            <div class="product-rating mb-2">
+                                <span>★★★★★</span>
+                                <small class="text-muted">({{ forloop.counter|add:15 }})</small>
+                            </div>
+                            
+                            <!-- Stock Status -->
+                            {% if forloop.counter == 1 or forloop.counter == 4 %}
+                                <div class="stock-status in-stock">
+                                    <i class="fas fa-check-circle"></i> In Stock
+                                </div>
+                            {% elif forloop.counter == 2 %}
+                                <div class="stock-status low-stock">
+                                    <i class="fas fa-exclamation-circle"></i> Only 2 left!
+                                </div>
+                            {% endif %}
+                            
+                            <div class="d-flex justify-content-center align-items-center mb-3">
+                                {% if product.original_price %}
+                                    <span class="product-original-price">KSh {{ product.original_price }}</span>
+                                {% endif %}
+                                <span class="product-price">KSh {{ product.price }}</span>
+                                {% if forloop.counter == 2 %}
+                                    <span class="badge bg-danger ms-2">-20%</span>
+                                {% endif %}
+                            </div>
+                            <a href="{{ product.get_absolute_url }}" class="btn btn-outline-success btn-sm w-100 mb-2">View Details</a>
+                            <form action="{% url 'store:add_to_cart' product.id %}" method="post" class="add-to-cart-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="add-to-cart-btn">
+                                    <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center py-5 bg-white rounded shadow-sm">
+                    <div class="mb-4">
+                        <i class="fas fa-box-open fa-5x text-secondary"></i>
+                    </div>
+                    <h3 class="mb-3">No products found</h3>
+                    <p class="mb-4">We're currently updating our products for {{ current_concern|lower }}. Please check back soon!</p>
+                    <a href="{% url 'store:shop' %}" class="btn btn-success">
+                        Continue Shopping
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Urgency Banner -->
+        {% if current_concern == 'Oily Skin' %}
+        <div class="concern-sale-banner mt-5">
+            <h4>Time is running out! 🔥 20% OFF on all Oily Skin solutions!</h4>
+            <p>Use code <strong>MATTE20</strong> at checkout • Limited time only</p>
+            <a href="#products-section" class="btn btn-light px-4 py-2 mt-2">SHOP NOW</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Tips and Advice Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Tips for Managing {{ current_concern }}</h2>
+        <div class="row g-4">
+            <!-- Tip 1 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4 text-center">
+                        <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h4 class="card-title h5 mb-3">Consistent Routine</h4>
+                        <p class="card-text">Consistency is key. Establish a daily skincare routine and stick to it for best results.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tip 2 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4 text-center">
+                        <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <h4 class="card-title h5 mb-3">Stay Hydrated</h4>
+                        <p class="card-text">Drink plenty of water and use hydrating skincare products to maintain skin health.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tip 3 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4 text-center">
+                        <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4 class="card-title h5 mb-3">Sun Protection</h4>
+                        <p class="card-text">Apply SPF daily, even on cloudy days, to protect your skin from UV damage.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tip 4 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4 text-center">
+                        <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h4 class="card-title h5 mb-3">Healthy Diet</h4>
+                        <p class="card-text">Eat a balanced diet rich in antioxidants, vitamins, and omega fatty acids for skin health.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Customer Success Stories -->
+        {% if current_concern == 'Oily Skin' %}
+        <div class="mt-5">
+            <h3 class="text-center mb-4">Customer Success Stories</h3>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="testimonial-card h-100">
+                        <div class="testimonial-rating text-warning mb-2">★★★★★</div>
+                        <h5>"Finally found products that work!"</h5>
+                        <p>I've struggled with oily skin for years and tried everything. Your products have totally transformed my skin. No more midday shine and my pores look visibly smaller!</p>
+                        <div class="customer-info">
+                            <div class="customer-avatar bg-success text-white">
+                                <span>JM</span>
+                            </div>
+                            <div>
+                                <p class="mb-0 fw-bold">Jane M.</p>
+                                <small class="text-muted">Using our products for 3 months</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card h-100">
+                        <div class="testimonial-rating text-warning mb-2">★★★★★</div>
+                        <h5>"My makeup finally stays put"</h5>
+                        <p>Before using your oily skin control products, my makeup would slide off by noon. Now I can go all day without blotting. The Clay Purifying Mask is my holy grail product!</p>
+                        <div class="customer-info">
+                            <div class="customer-avatar bg-primary text-white">
+                                <span>SN</span>
+                            </div>
+                            <div>
+                                <p class="mb-0 fw-bold">Sarah N.</p>
+                                <small class="text-muted">Using our products for 6 months</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card h-100">
+                        <div class="testimonial-rating text-warning mb-2">★★★★★</div>
+                        <h5>"My skin is balanced for the first time"</h5>
+                        <p>I was worried about using products for oily skin because some made my skin too dry. Your products keep my oil under control without any tightness or irritation.</p>
+                        <div class="customer-info">
+                            <div class="customer-avatar bg-danger text-white">
+                                <span>RT</span>
+                            </div>
+                            <div>
+                                <p class="mb-0 fw-bold">Robert T.</p>
+                                <small class="text-muted">Using our products for 2 months</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Additional Concern-Specific Tips -->
+        <div class="mt-5 bg-light p-4 rounded shadow-sm">
+            <h3 class="mb-4">Special Considerations for {{ current_concern }}</h3>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    {% if current_concern == 'Acne Skin' %}
+                        <ul>
+                            <li class="mb-2">Don't over-cleanse as this can stimulate more oil production</li>
+                            <li class="mb-2">Avoid touching your face or picking at blemishes</li>
+                            <li class="mb-2">Change pillowcases frequently (ideally 1-2 times per week)</li>
+                            <li class="mb-2">Consider reducing dairy and high-glycemic foods if they trigger breakouts</li>
+                            <li>Introduce active ingredients gradually to avoid irritation</li>
+                        </ul>
+                    {% elif current_concern == 'Aging Skin' %}
+                        <ul>
+                            <li class="mb-2">Use products with peptides, antioxidants, and retinoids</li>
+                            <li class="mb-2">Be extra diligent with sun protection</li>
+                            <li class="mb-2">Incorporate facial massage for increased circulation</li>
+                            <li class="mb-2">Don't forget your neck and décolletage area</li>
+                            <li>Consider adding a humidifier to your bedroom</li>
+                        </ul>
+                    {% elif current_concern == 'Blackhead Removal' %}
+                        <ul>
+                            <li class="mb-2">Use chemical exfoliants with BHAs (like salicylic acid)</li>
+                            <li class="mb-2">Try clay masks weekly to draw out impurities</li>
+                            <li class="mb-2">Avoid aggressive physical scrubbing which can worsen the problem</li>
+                            <li class="mb-2">Consider double cleansing in the evening</li>
+                            <li>Use non-comedogenic products to avoid worsening clogs</li>
+                        </ul>
+                    {% elif current_concern == 'Brightening Skin' %}
+                        <ul>
+                            <li class="mb-2">Use products with vitamin C, niacinamide, and alpha arbutin</li>
+                            <li class="mb-2">Add gentle exfoliation 2-3 times weekly</li>
+                            <li class="mb-2">Be patient - skin brightening takes time (usually 4-8 weeks)</li>
+                            <li class="mb-2">Diligent sun protection is essential to prevent new dark spots</li>
+                            <li>Stay consistent with your routine for best results</li>
+                        </ul>
+                    {% elif current_concern == 'Dehydrated Skin' %}
+                        <ul>
+                            <li class="mb-2">Layer hydrating products (hydrating toner, essence, serum)</li>
+                            <li class="mb-2">Look for ingredients like hyaluronic acid, glycerin, and panthenol</li>
+                            <li class="mb-2">Avoid hot showers which can strip skin of moisture</li>
+                            <li class="mb-2">Consider using a humidifier, especially during dry seasons</li>
+                            <li>Apply products to slightly damp skin to lock in moisture</li>
+                        </ul>
+                    {% elif current_concern == 'Dry Skin' %}
+                        <ul>
+                            <li class="mb-2">Use rich, creamy cleansers instead of foaming ones</li>
+                            <li class="mb-2">Apply face oils as an extra protective layer</li>
+                            <li class="mb-2">Look for ingredients like ceramides, shea butter, and squalane</li>
+                            <li class="mb-2">Consider overnight hydrating masks 1-2 times weekly</li>
+                            <li>Use a soft, gentle washcloth instead of harsh exfoliants</li>
+                        </ul>
+                    {% elif current_concern == 'Oily Skin' %}
+                        <ul>
+                            <li class="mb-2">Don't skip moisturizer - use oil-free, gel formulations to maintain balance</li>
+                            <li class="mb-2">Try products with niacinamide to regulate sebum production</li>
+                            <li class="mb-2">Use blotting papers throughout the day instead of washing repeatedly</li>
+                            <li class="mb-2">Clay masks 1-2 times weekly can help absorb excess oil</li>
+                            <li>Consider weekly BHA treatments to keep pores clear and prevent breakouts</li>
+                        </ul>
+                        
+                        <div class="alert alert-success mt-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-tag fa-2x me-3"></i>
+                                <div>
+                                    <h5 class="alert-heading mb-1">LIMITED-TIME OFFER</h5>
+                                    <p class="mb-0">Get our Oily Skin Control Kit at 20% off with code <strong>MATTE20</strong> - includes our best-selling Oil Control Cleanser, Pore Minimizing Toner, and Mattifying Moisturizer!</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% elif current_concern == 'Soothing Skin' %}
+                        <ul>
+                            <li class="mb-2">Minimize your routine and focus on gentle, fragrance-free products</li>
+                            <li class="mb-2">Look for ingredients like centella asiatica, aloe, and oat extract</li>
+                            <li class="mb-2">Patch test all new products before applying to your entire face</li>
+                            <li class="mb-2">Skip hot water when cleansing - use lukewarm or cool water</li>
+                            <li>Consider keeping skincare products in the refrigerator for added soothing effect</li>
+                        </ul>
+                    {% else %}
+                        <ul>
+                            <li class="mb-2">Be consistent with your skincare routine</li>
+                            <li class="mb-2">Use products specifically formulated for your skin concern</li>
+                            <li class="mb-2">Give products time to work (usually 4-8 weeks minimum)</li>
+                            <li class="mb-2">Consult with a dermatologist for persistent issues</li>
+                            <li>Keep a skincare journal to track what works for your skin</li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="#products-section" class="btn btn-success">Shop Products for {{ current_concern }}</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Consultation CTA -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="bg-white p-4 p-md-5 rounded shadow position-relative overflow-hidden">
+                    {% if current_concern == 'Oily Skin' %}
+                    <div class="position-absolute" style="top: 0; right: 0; background: #28b485; color: white; padding: 10px 20px; transform: rotate(45deg) translate(20px, -20px); width: 200px; text-align: center; font-weight: bold;">
+                        20% OFF TODAY
+                    </div>
+                    {% endif %}
+                    
+                    <h2 class="mb-4">Need Personalized Help with {{ current_concern }}?</h2>
+                    <p class="lead mb-4">Our skincare experts can help you create a custom routine tailored to your specific needs.</p>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 60px; height: 60px;">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <h5>Expert Advice</h5>
+                            <p class="small text-muted">Personalized recommendations from skincare specialists</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 60px; height: 60px;">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <h5>Custom Routine</h5>
+                            <p class="small text-muted">Tailored product selections for your specific concerns</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 60px; height: 60px;">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h5>Ongoing Support</h5>
+                            <p class="small text-muted">Follow-up assistance to track your progress</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="https://wa.me/254700000000" class="btn btn-success px-4 py-3" target="_blank">
+                            <i class="fab fa-whatsapp me-2"></i> Chat on WhatsApp
+                        </a>
+                        <a href="{% url 'store:contact' %}" class="btn btn-outline-success px-4 py-3">
+                            <i class="fas fa-envelope me-2"></i> Contact Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WhatsApp Chat Button -->
+<div class="position-fixed" style="bottom: 20px; right: 20px; z-index: 1000;">
+    <a href="https://wa.me/254700000000" target="_blank" class="btn btn-success rounded-circle shadow p-3" style="width: 60px; height: 60px;">
+        <i class="fab fa-whatsapp fa-2x text-white"></i>
+    </a>
+</div>
+
+<!-- Real Results Section -->
+{% if current_concern == 'Oily Skin' %}
+<section class="py-5 bg-white">
+    <div class="container">
+        <h2 class="text-center mb-2">Real Results with Neutriherbs</h2>
+        <p class="text-center text-muted mb-5">See the difference our products make for oily skin</p>
+        
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="position-relative">
+                    <img src="https://neutriherbs.com/cdn/shop/files/before-after-oil-control.jpg" alt="Before and After Results" class="img-fluid rounded shadow">
+                    <div class="position-absolute top-0 start-0 bg-dark text-white px-3 py-1">BEFORE</div>
+                    <div class="position-absolute top-0 end-0 bg-success text-white px-3 py-1">AFTER</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h3 class="mb-4">Customer Improvements After 4 Weeks</h3>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-success rounded-circle p-2 me-3">
+                        <i class="fas fa-check text-white"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">93% Reduced Visible Shine</h5>
+                        <p class="text-muted mb-0">Say goodbye to that midday oil slick</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-success rounded-circle p-2 me-3">
+                        <i class="fas fa-check text-white"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">87% Reported Smaller-Looking Pores</h5>
+                        <p class="text-muted mb-0">For a smoother, more refined complexion</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-success rounded-circle p-2 me-3">
+                        <i class="fas fa-check text-white"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">91% More Balanced Skin</h5>
+                        <p class="text-muted mb-0">Neither too oily nor too dry - just right</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="bg-success rounded-circle p-2 me-3">
+                        <i class="fas fa-check text-white"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">85% Fewer Breakouts</h5>
+                        <p class="text-muted mb-0">Clear skin you can feel confident about</p>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="#products-section" class="btn btn-success btn-lg">
+                        Shop Oily Skin Solutions
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Customer Testimonial -->
+        <div class="mt-5 p-4 bg-light rounded shadow">
+            <div class="row">
+                <div class="col-md-2 text-center mb-3 mb-md-0">
+                    <img src="https://randomuser.me/api/portraits/women/42.jpg" alt="Customer" class="rounded-circle img-fluid" style="max-width: 100px;">
+                </div>
+                <div class="col-md-10">
+                    <div class="d-flex mb-2">
+                        <span class="text-warning me-2">★★★★★</span>
+                        <span class="text-muted">Verified Purchase</span>
+                    </div>
+                    <h5 class="mb-3">"I finally found products that actually work for my oily skin!"</h5>
+                    <p class="mb-2">"After trying countless skincare brands, I've finally found products that actually work for my oily skin. The Salicylic Acid Cleanser and Tea Tree Oil-Free Moisturizer have completely transformed my skin. No more blotting papers every hour!"</p>
+                    <p class="text-muted">- Sarah K., Nairobi</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    {% if current_concern == 'Oily Skin' %}
+    // Countdown Timer for Oily Skin page
+    function updateCountdown() {
+        // Set end date to 1 day from now
+        var endDate = new Date();
+        endDate.setDate(endDate.getDate() + 1);
+        endDate.setHours(endDate.getHours() + 8);
+        
+        // Update countdown every second
+        function update() {
+            var now = new Date();
+            var diff = endDate - now;
+            
+            // Calculate days, hours, minutes, seconds
+            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            // Update DOM elements
+            var daysElement = document.getElementById('days');
+            var hoursElement = document.getElementById('hours');
+            var minutesElement = document.getElementById('minutes');
+            var secondsElement = document.getElementById('seconds');
+            
+            if (daysElement) daysElement.textContent = days < 10 ? '0' + days : days;
+            if (hoursElement) hoursElement.textContent = hours < 10 ? '0' + hours : hours;
+            if (minutesElement) minutesElement.textContent = minutes < 10 ? '0' + minutes : minutes;
+            if (secondsElement) secondsElement.textContent = seconds < 10 ? '0' + seconds : seconds;
+            
+            // If countdown is over
+            if (diff <= 0) {
+                clearInterval(interval);
+                if (daysElement) daysElement.textContent = '00';
+                if (hoursElement) hoursElement.textContent = '00';
+                if (minutesElement) minutesElement.textContent = '00';
+                if (secondsElement) secondsElement.textContent = '00';
+            }
+        }
+        
+        // Initial call
+        update();
+        
+        // Update every second
+        var interval = setInterval(update, 1000);
+    }
+    
+    // Start countdown
+    if (document.getElementById('days')) {
+        updateCountdown();
+    }
+    {% endif %}
+    
+    // Product sorting functionality
+    var sortSelect = document.getElementById('sort-by');
+    var productsContainer = document.querySelector('.row.g-4');
+    
+    if (sortSelect && productsContainer) {
+        sortSelect.addEventListener('change', function() {
+            var sortValue = this.value;
+            var productItems = Array.from(document.querySelectorAll('.product-item'));
+            
+            productItems.sort(function(a, b) {
+                switch(sortValue) {
+                    case 'price-low':
+                        return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                    case 'price-high':
+                        return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                    case 'newest':
+                        return parseInt(b.dataset.date) - parseInt(a.dataset.date);
+                    default:
+                        return 0;
+                }
+            });
+            
+            // Remove all products
+            for (var i = 0; i < productItems.length; i++) {
+                productItems[i].remove();
+            }
+            
+            // Append sorted products
+            for (var j = 0; j < productItems.length; j++) {
+                productsContainer.appendChild(productItems[j]);
+            }
+        });
+    }
+    
+    // Add to cart functionality for AJAX submission
+    var addToCartForms = document.querySelectorAll('.add-to-cart-form');
+    
+    for (var k = 0; k < addToCartForms.length; k++) {
+        addToCartForms[k].addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var formData = new FormData(this);
+            var url = this.action;
+            var button = this.querySelector('button');
+            var originalButtonText = button.innerHTML;
+            
+            // Show loading state
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+            button.disabled = true;
+            
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(function(response) { 
+                return response.json(); 
+            })
+            .then(function(data) {
+                if (data.success) {
+                    // Show success message
+                    button.innerHTML = '<i class="fas fa-check"></i> Added!';
+                    button.classList.add('bg-dark');
+                    
+                    // Update cart counter if it exists
+                    var cartCounter = document.querySelector('.cart-counter');
+                    if (cartCounter) {
+                        cartCounter.textContent = data.item_count;
+                    }
+                    
+                    // Reset after delay
+                    setTimeout(function() {
+                        button.innerHTML = originalButtonText;
+                        button.classList.remove('bg-dark');
+                        button.disabled = false;
+                    }, 2000);
+                }
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+                button.innerHTML = originalButtonText;
+                button.disabled = false;
+            });
+        });
+    }
+    
+    // Scroll to products when clicking "Shop Now" buttons
+    var shopButtons = document.querySelectorAll('a[href="#products-section"]');
+    for (var m = 0; m < shopButtons.length; m++) {
+        shopButtons[m].addEventListener('click', function(e) {
+            e.preventDefault();
+            var productsSection = document.querySelector('#products-section');
+            if (productsSection) {
+                productsSection.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Beauty Tools - NeutriKenya{% endblock %}
+
+{% block content %}
+<!-- Page Title Section -->
+<div class="page-title-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="page-title">Facial Beauty Tool</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a href="{% url 'store:home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Beauty Tools</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Beauty Tools Products Section -->
+<div class="beauty-tools-section py-5">
+    <div class="container">
+        <!-- Filter and Sort Options -->
+        <div class="filter-sort-section mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <button class="btn btn-outline-secondary filter-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse">
+                        <i class="fas fa-filter me-2"></i> Filter
+                    </button>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span>Featured</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortDropdown">
+                            <li><a class="dropdown-item active" href="#">Featured</a></li>
+                            <li><a class="dropdown-item" href="#">Best selling</a></li>
+                            <li><a class="dropdown-item" href="#">Alphabetically, A-Z</a></li>
+                            <li><a class="dropdown-item" href="#">Alphabetically, Z-A</a></li>
+                            <li><a class="dropdown-item" href="#">Price, low to high</a></li>
+                            <li><a class="dropdown-item" href="#">Price, high to low</a></li>
+                            <li><a class="dropdown-item" href="#">Date, old to new</a></li>
+                            <li><a class="dropdown-item" href="#">Date, new to old</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Filter Collapse Panel -->
+            <div class="collapse mt-3" id="filterCollapse">
+                <div class="card card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5>Product type</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="derma roller" id="filterDermaRoller">
+                                <label class="form-check-label" for="filterDermaRoller">
+                                    Derma roller
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="jade roller" id="filterJadeRoller">
+                                <label class="form-check-label" for="filterJadeRoller">
+                                    Jade roller
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="quartz roller" id="filterQuartzRoller">
+                                <label class="form-check-label" for="filterQuartzRoller">
+                                    Rose quartz roller
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>Price</h5>
+                            <div class="price-range">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">KSh</span>
+                                    <input type="number" class="form-control" placeholder="From">
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-text">KSh</span>
+                                    <input type="number" class="form-control" placeholder="To">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary w-100">Apply Filter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <p class="results-count mb-4"><strong>5</strong> products</p>
+            </div>
+        </div>
+        
+        <!-- Products Grid -->
+        <div class="row mb-5">
+            {% for product in products %}
+            <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <div class="product-card">
+                    <div class="product-image position-relative">
+                        {% if product.original_price and product.original_price > product.price %}
+                            <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+                                SAVE {{ product.discount_percentage }}%
+                            </span>
+                        {% endif %}
+                        
+                        <a href="{{ product.get_absolute_url }}">
+                            {% for image in product.images.all %}
+                                {% if image.is_main %}
+                                    <img src="{{ image.image.url }}" alt="{{ product.name }}" class="img-fluid">
+                                {% endif %}
+                            {% endfor %}
+                            
+                            <!-- Quick View Button -->
+                            <div class="quick-view">
+                                <button class="btn btn-sm btn-outline-light quick-view-btn" 
+                                        data-product-id="{{ product.id }}"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#quickViewModal">
+                                    Quick View
+                                </button>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="product-info p-3">
+                        <a href="{{ product.get_absolute_url }}" class="product-title">
+                            <h3>{{ product.name }}</h3>
+                        </a>
+                        
+                        <div class="product-price">
+                            {% if product.original_price and product.original_price > product.price %}
+                                <span class="current-price">KSh {{ product.price }}</span>
+                                <span class="original-price">KSh {{ product.original_price }}</span>
+                            {% else %}
+                                <span class="current-price">KSh {{ product.price }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <button class="btn btn-primary add-to-cart-btn w-100 mt-3" 
+                                data-product-id="{{ product.id }}">
+                            Add to cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <p>No beauty tools available at the moment. Check back soon!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Newsletter Section -->
+<section class="newsletter-section py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h3>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</h3>
+                <form class="newsletter-form mt-4">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Email" required>
+                        <button class="btn btn-primary" type="submit">Subscribe</button>
+                    </div>
+                </form>
+                <p class="small mt-2">This site is protected by hCaptcha and the hCaptcha Privacy Policy and Terms of Service apply.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick View Modal -->
+<div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="quickViewGallery" class="quick-view-gallery">
+                            <!-- Product images will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="product-details">
+                            <h2 id="quickViewTitle"></h2>
+                            <div class="product-price mb-3">
+                                <span id="quickViewPrice" class="current-price"></span>
+                                <span id="quickViewOriginalPrice" class="original-price"></span>
+                            </div>
+                            <div id="quickViewDescription" class="product-description mb-4"></div>
+                            <div class="quantity-selector mb-3">
+                                <label for="quickViewQuantity">Quantity:</label>
+                                <div class="input-group" style="width: 120px;">
+                                    <button class="btn btn-outline-secondary qty-btn" type="button" id="decrementQuantity">-</button>
+                                    <input type="number" class="form-control text-center" id="quickViewQuantity" value="1" min="1">
+                                    <button class="btn btn-outline-secondary qty-btn" type="button" id="incrementQuantity">+</button>
+                                </div>
+                            </div>
+                            <button id="quickViewAddToCart" class="btn btn-primary w-100">Add to cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Quick View functionality
+        $('.quick-view-btn').on('click', function() {
+            const productId = $(this).data('product-id');
+            // Fetch product details via AJAX and populate the modal
+            // This is a placeholder for the actual implementation
+            $('#quickViewTitle').text('Product Title');
+            $('#quickViewPrice').text('KSh 2,000');
+            $('#quickViewOriginalPrice').text('KSh 2,500');
+            $('#quickViewDescription').text('Product description goes here');
+            
+            // Reset quantity to 1
+            $('#quickViewQuantity').val(1);
+        });
+        
+        // Quantity increment/decrement
+        $('#incrementQuantity').on('click', function() {
+            const input = $('#quickViewQuantity');
+            input.val(parseInt(input.val()) + 1);
+        });
+        
+        $('#decrementQuantity').on('click', function() {
+            const input = $('#quickViewQuantity');
+            const value = parseInt(input.val());
+            if (value > 1) {
+                input.val(value - 1);
+            }
+        });
+        
+        // Add to cart from quick view
+        $('#quickViewAddToCart').on('click', function() {
+            // Add to cart functionality
+            // This is a placeholder for the actual implementation
+            alert('Product added to cart!');
+            $('#quickViewModal').modal('hide');
+        });
+        
+        // Add to cart from product card
+        $('.add-to-cart-btn').on('click', function() {
+            const productId = $(this).data('product-id');
+            // Add to cart functionality
+            // This is a placeholder for the actual implementation
+            alert('Product added to cart!');
+        });
+    });
+</script>
+{% endblock %} 
