@@ -8,6 +8,9 @@ pip install -r requirements.txt
 # Make migrations
 python manage.py makemigrations
 
+# Merge conflicting migrations
+python manage.py makemigrations --merge
+
 # Run migrations
 python manage.py migrate
 

@@ -67,7 +67,7 @@ def reverse_load(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('store', '0001_initial'),
+        ('store', '0004_order_delivery_instructions_order_payment_method_and_more'),
     ]
 
     operations = [
