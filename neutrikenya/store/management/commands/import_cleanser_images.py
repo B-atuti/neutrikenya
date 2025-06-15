@@ -30,7 +30,7 @@ class Command(BaseCommand):
             slug='vitamin-c-face-cleanser',
             defaults={
                 'description': 'A gentle yet effective cleanser that removes makeup and impurities while brightening the skin with Vitamin C.',
-                'price': 1800,
+                'price': 1400,
                 'category': cleanser_category,
                 'is_available': True,
                 'stock': 10,

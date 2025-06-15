@@ -28,7 +28,7 @@ class Command(BaseCommand):
             return
         
         # Create or get the product
-        product_name = 'Collagen Facial Sheet Mask'
+        product_name = 'Collagen Facial Sheet Mask (4pcs)'
         product_slug = slugify(product_name)
         
         # Ensure unique slug

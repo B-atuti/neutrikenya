@@ -644,6 +644,185 @@
         font-size: 0.7rem;
         text-transform: uppercase;
     }
+
+    .product-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+    
+    .product-link:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    .product-card {
+        position: relative;
+        transition: transform 0.3s ease;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .btn-cart {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* Mobile-friendly styles */
+    @media (max-width: 768px) {
+        .filter-sidebar {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 85%;
+            height: 100vh;
+            background: white;
+            z-index: 1000;
+            padding: 1rem;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .filter-sidebar.show {
+            left: 0;
+        }
+
+        .filter-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .filter-overlay.show {
+            display: block;
+        }
+
+        .mobile-filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mobile-filter-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .close-filters {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #666;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .mobile-filter-trigger {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        .mobile-filter-trigger i {
+            font-size: 1.2rem;
+        }
+
+        .product-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding: 0 0.5rem;
+        }
+
+        .product-card {
+            margin-bottom: 1rem;
+        }
+
+        .product-info {
+            padding: 0.75rem;
+        }
+
+        .product-title {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1rem;
+        }
+
+        .btn-cart {
+            padding: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .category-nav {
+            margin-bottom: 1rem;
+        }
+
+        .category-card {
+            min-width: 80px;
+            height: 24px;
+            font-size: 0.7rem;
+        }
+
+        .active-filters {
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .active-filter {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .section-header {
+            padding: 1rem 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.9rem;
+        }
+
+        .newsletter-banner {
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .newsletter-title {
+            font-size: 1.2rem;
+        }
+
+        .newsletter-input {
+            height: 40px;
+        }
+
+        .newsletter-btn {
+            height: 40px;
+            padding: 0 1rem;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -721,92 +900,143 @@
 <!-- Main Shop Content -->
 <div class="container" id="products">
     <div class="row">
-        <!-- Filters -->
-        <div class="col-lg-3 mb-4">
-            <div class="filter-sidebar">
-                <div class="filter-group">
-                    <h3 class="filter-heading">
-                        <span>Product Line</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </h3>
-                    <div class="filter-content">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="line-vitamin-c" {% if 'Vitamin C' in selected_lines %}checked{% endif %}>
-                            <label class="form-check-label" for="line-vitamin-c">
-                                Vitamin C
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="line-retinol" {% if 'Retinol' in selected_lines %}checked{% endif %}>
-                            <label class="form-check-label" for="line-retinol">
-                                Retinol
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="line-hyaluronic" {% if 'Hyaluronic Acid' in selected_lines %}checked{% endif %}>
-                            <label class="form-check-label" for="line-hyaluronic">
-                                Hyaluronic Acid
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="line-snail" {% if 'Snail' in selected_lines %}checked{% endif %}>
-                            <label class="form-check-label" for="line-snail">
-                                Snail Mucin
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="filter-group">
-                    <h3 class="filter-heading">
-                        <span>Skin Concern</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </h3>
-                    <div class="filter-content">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="concern-brightening" {% if 'Brightening Skin' in selected_concerns %}checked{% endif %}>
-                            <label class="form-check-label" for="concern-brightening">
-                                Brightening
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="concern-aging" {% if 'Aging Skin' in selected_concerns %}checked{% endif %}>
-                            <label class="form-check-label" for="concern-aging">
-                                Anti-Aging
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="concern-acne" {% if 'Acne Skin' in selected_concerns %}checked{% endif %}>
-                            <label class="form-check-label" for="concern-acne">
-                                Acne-Prone
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="concern-hydration" {% if 'Dehydrated Skin' in selected_concerns %}checked{% endif %}>
-                            <label class="form-check-label" for="concern-hydration">
-                                Hydration
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="filter-group">
-                    <h3 class="filter-heading">
-                        <span>Price Range</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </h3>
-                    <div class="filter-content">
-                        <div class="range-slider mb-3">
-                            <input type="range" class="form-range" min="0" max="5000" id="price-range">
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <span>KSh 0</span>
-                            <span>KSh 5,000+</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="filter-group">
-                    <button class="btn btn-dark w-100">Apply Filters</button>
-                </div>
+        <!-- Mobile Filter Trigger -->
+        <div class="d-lg-none mb-3">
+            <div class="mobile-filter-trigger" id="mobileFilterTrigger">
+                <i class="fas fa-filter"></i>
+                <span>Filters</span>
+                {% if current_category or current_line or current_concern %}
+                <span class="badge bg-light text-dark ms-2">
+                    {% if current_category %}1{% endif %}
+                    {% if current_line %}1{% endif %}
+                    {% if current_concern %}1{% endif %}
+                </span>
+                {% endif %}
             </div>
+        </div>
+
+        <!-- Filter Overlay -->
+        <div class="filter-overlay" id="filterOverlay"></div>
+
+        <!-- Filters -->
+        <div class="col-lg-3">
+            <form method="get" action="{% url 'store:shop' %}" id="filterForm" class="filter-sidebar">
+                <div class="filter-group">
+                    <h3 class="filter-heading" data-toggle="collapse" data-target="#skinConcerns">
+                        Skin Concerns
+                        <i class="fas fa-chevron-down"></i>
+                    </h3>
+                    <div id="skinConcerns" class="collapse show">
+                        <div class="filter-options">
+                            {% for concern in skin_concerns %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="concern" id="concern_{{ forloop.counter }}" 
+                                       value="{{ concern }}" {% if current_concern == concern %}checked{% endif %}>
+                                <label class="form-check-label" for="concern_{{ forloop.counter }}">
+                                    {{ concern }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3 class="filter-heading" data-toggle="collapse" data-target="#productLines">
+                        Product Lines
+                        <i class="fas fa-chevron-down"></i>
+                    </h3>
+                    <div id="productLines" class="collapse show">
+                        <div class="filter-options">
+                            {% for line in product_lines %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="line" id="line_{{ forloop.counter }}" 
+                                       value="{{ line }}" {% if current_line == line %}checked{% endif %}>
+                                <label class="form-check-label" for="line_{{ forloop.counter }}">
+                                    {{ line }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3 class="filter-heading" data-toggle="collapse" data-target="#categories">
+                        Categories
+                        <i class="fas fa-chevron-down"></i>
+                    </h3>
+                    <div id="categories" class="collapse show">
+                        <div class="filter-options">
+                            {% for category in categories %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category" id="category_{{ forloop.counter }}" 
+                                       value="{{ category.slug }}" {% if current_category == category.slug %}checked{% endif %}>
+                                <label class="form-check-label" for="category_{{ forloop.counter }}">
+                                    {{ category.name }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3 class="filter-heading" data-toggle="collapse" data-target="#priceRange">
+                        Price Range
+                        <i class="fas fa-chevron-down"></i>
+                    </h3>
+                    <div id="priceRange" class="collapse show">
+                        <div class="filter-options">
+                            <div class="price-inputs">
+                                <input type="number" name="min_price" class="form-control mb-2" placeholder="Min Price" 
+                                       value="{{ min_price_filter|default:'' }}">
+                                <input type="number" name="max_price" class="form-control" placeholder="Max Price" 
+                                       value="{{ max_price_filter|default:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3 class="filter-heading" data-toggle="collapse" data-target="#sorting">
+                        Sort By
+                        <i class="fas fa-chevron-down"></i>
+                    </h3>
+                    <div id="sorting" class="collapse show">
+                        <div class="filter-options">
+                            <select name="sort" class="form-control">
+                                {% for option in sort_options %}
+                                <option value="{{ option.value }}" {% if current_sort == option.value %}selected{% endif %}>
+                                    {{ option.label }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3 class="filter-heading" data-toggle="collapse" data-target="#itemsPerPage">
+                        Items Per Page
+                        <i class="fas fa-chevron-down"></i>
+                    </h3>
+                    <div id="itemsPerPage" class="collapse show">
+                        <div class="filter-options">
+                            <select name="items_per_page" class="form-control">
+                                {% for option in items_per_page_options %}
+                                <option value="{{ option }}" {% if items_per_page == option %}selected{% endif %}>
+                                    {{ option }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-3">Apply Filters</button>
+                <button type="button" class="btn btn-outline-secondary w-100 mt-2" onclick="clearFilters()">Clear Filters</button>
+            </form>
             
             <!-- Newsletter Signup -->
             <div class="newsletter-banner mt-4">
@@ -824,7 +1054,7 @@
         <!-- Products -->
         <div class="col-lg-9">
             <!-- Active Filters -->
-            {% if has_filters %}
+            {% if current_category or current_line or current_concern %}
             <div class="active-filters mb-4">
                 {% if current_category %}
                 <div class="active-filter">
@@ -833,19 +1063,19 @@
                 </div>
                 {% endif %}
                 
-                {% for line in selected_lines %}
+                {% if current_line %}
                 <div class="active-filter">
-                    Line: {{ line }}
+                    Line: {{ current_line }}
                     <a href="{% url 'store:shop' %}" class="remove-filter">×</a>
                 </div>
-                {% endfor %}
+                {% endif %}
                 
-                {% for concern in selected_concerns %}
+                {% if current_concern %}
                 <div class="active-filter">
-                    Concern: {{ concern }}
+                    Concern: {{ current_concern }}
                     <a href="{% url 'store:shop' %}" class="remove-filter">×</a>
                 </div>
-                {% endfor %}
+                {% endif %}
                 
                 <a href="{% url 'store:shop' %}" class="btn btn-sm btn-outline-secondary ms-auto">Clear All</a>
             </div>
@@ -853,7 +1083,7 @@
             
             <!-- Promotional Banner -->
             <div class="promo-banner mb-4">
-                FREE SHIPPING on orders over KSh 5,000 | Shop now, pay later with Lipa Mdogo Mdogo
+                FREE DELIVERY on orders over KSh 5,000 | Shop now
             </div>
             
             <!-- Product List -->
@@ -868,6 +1098,7 @@
                     <div class="product-badge bestseller">BESTSELLER</div>
                     {% endif %}
                     
+                    <a href="{% url 'store:product_detail' product.slug %}" class="product-link">
                     <div class="product-img-container">
                         {% for image in product.images.all %}
                             {% if image.is_main %}
@@ -901,6 +1132,8 @@
                             <span class="product-price">KSh {{ product.price }}</span>
                             {% endif %}
                         </div>
+                        </div>
+                    </a>
                         
                         <form method="post" action="{% url 'store:add_to_cart' product.id %}" class="cart-form">
                             {% csrf_token %}
@@ -909,7 +1142,6 @@
                                 <i class="fas fa-shopping-cart me-2"></i> Add to Cart
                             </button>
                         </form>
-                    </div>
                 </div>
                 {% empty %}
                 <div class="empty-state col-12">
@@ -1071,6 +1303,164 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('days')) {
         startCountdown();
     }
+
+    // Initialize Bootstrap collapse
+    document.addEventListener('DOMContentLoaded', function() {
+        // Show active filter sections
+        {% if current_line %}
+        document.getElementById('productLines').classList.add('show');
+        document.querySelector('[data-bs-target="#productLines"]').classList.remove('collapsed');
+        {% endif %}
+        
+        {% if current_concern %}
+        document.getElementById('skinConcerns').classList.add('show');
+        document.querySelector('[data-bs-target="#skinConcerns"]').classList.remove('collapsed');
+        {% endif %}
+        
+        // Filter form submission
+        document.querySelectorAll('.filter-content input[type="radio"], .filter-content input[type="checkbox"]').forEach(input => {
+            input.addEventListener('change', function() {
+                console.log('Filter input changed:', this.name, this.value);
+                
+                // Create a new URL with the current parameters
+                const url = new URL(window.location.href);
+                
+                // Clear existing line parameter
+                url.searchParams.delete('line');
+                
+                // Add the selected product line if it exists
+                const selectedLine = document.querySelector('input[name="line"]:checked');
+                if (selectedLine) {
+                    console.log('Selected product line:', selectedLine.value);
+                    url.searchParams.set('line', selectedLine.value);
+                }
+                
+                // Add other parameters
+                {% if current_category %}
+                url.searchParams.set('category', '{{ current_category.slug }}');
+                {% endif %}
+                
+                // Add skin concerns
+                document.querySelectorAll('.filter-content input[type="checkbox"]:checked').forEach(checkedBox => {
+                    if (checkedBox.name !== 'line') {
+                        url.searchParams.set(checkedBox.name, checkedBox.value);
+                    }
+                });
+                
+                // Add sort if exists
+                {% if current_sort %}
+                url.searchParams.set('sort', '{{ current_sort }}');
+                {% endif %}
+                
+                // Add search query if exists
+                {% if search_query %}
+                url.searchParams.set('q', '{{ search_query }}');
+                {% endif %}
+                
+                console.log('Redirecting to:', url.toString());
+                window.location.href = url.toString();
+            });
+        });
+    });
+
+    // Mobile filter functionality
+    const filterTrigger = document.getElementById('mobileFilterTrigger');
+    const filterSidebar = document.getElementById('filterSidebar');
+    const filterOverlay = document.getElementById('filterOverlay');
+    const closeFilters = document.getElementById('closeFilters');
+
+    function showFilters() {
+        filterSidebar.classList.add('show');
+        filterOverlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideFilters() {
+        filterSidebar.classList.remove('show');
+        filterOverlay.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    filterTrigger.addEventListener('click', showFilters);
+    closeFilters.addEventListener('click', hideFilters);
+    filterOverlay.addEventListener('click', hideFilters);
+
+    // Close filters when a filter is selected on mobile
+    document.querySelectorAll('.filter-content input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (window.innerWidth < 992) {
+                hideFilters();
+            }
+        });
+    });
+
+    // Handle radio button changes
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            // Remove checked state from other radio buttons in the same group
+            const name = this.name;
+            document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+                if (r !== this) r.checked = false;
+            });
+            // Submit the form
+            document.getElementById('filterForm').submit();
+        });
+    });
+
+    // Handle select changes
+    document.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', function() {
+            document.getElementById('filterForm').submit();
+        });
+    });
+
+    // Handle price input changes with debounce
+    let priceTimeout;
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        input.addEventListener('input', function() {
+            clearTimeout(priceTimeout);
+            priceTimeout = setTimeout(() => {
+                document.getElementById('filterForm').submit();
+            }, 500);
+        });
+    });
 });
+
+function clearFilters() {
+    // Clear all radio buttons
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.checked = false;
+    });
+    
+    // Clear price inputs
+    document.querySelector('input[name="min_price"]').value = '';
+    document.querySelector('input[name="max_price"]').value = '';
+    
+    // Reset sort to default
+    document.querySelector('select[name="sort"]').value = 'default';
+    
+    // Reset items per page
+    document.querySelector('select[name="items_per_page"]').value = '12';
+    
+    // Submit the form
+    document.getElementById('filterForm').submit();
+}
+
+// Show active filter sections
+{% if current_concern %}
+document.getElementById('skinConcerns').classList.add('show');
+{% endif %}
+
+{% if current_line %}
+document.getElementById('productLines').classList.add('show');
+{% endif %}
+
+{% if current_category %}
+document.getElementById('categories').classList.add('show');
+{% endif %}
+
+{% if min_price_filter or max_price_filter %}
+document.getElementById('priceRange').classList.add('show');
+{% endif %}
 </script>
 {% endblock %} 

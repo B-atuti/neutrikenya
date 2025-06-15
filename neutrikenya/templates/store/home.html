@@ -537,6 +537,9 @@
         .footer-image-container {
             width: 300px;
         }
+        .hero-video {
+            object-fit: contain;
+        }
     }
 
     @media (max-width: 576px) {
@@ -1772,6 +1775,103 @@
     .app-store-badge:hover {
         transform: translateY(-5px);
     }
+
+    @media (max-width: 768px) {
+        .product-grid {
+            display: flex !important;
+            flex-direction: row;
+            overflow-x: auto;
+            gap: 1rem;
+            padding: 0 0.5rem 1rem 0.5rem;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .product-card {
+            min-width: 75vw;
+            max-width: 80vw;
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            margin-bottom: 0;
+        }
+        .product-img-container {
+            border-radius: 15px 15px 0 0;
+        }
+        .product-info {
+            padding: 1rem;
+        }
+        .section-title {
+            padding-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-heading {
+            font-size: 1.3rem;
+        }
+        .section-subheading {
+            font-size: 0.95rem;
+        }
+        .product-title {
+            font-size: 1rem;
+        }
+        .product-price {
+            font-size: 1.1rem;
+        }
+        .btn-add-cart {
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+        .product-grid::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-indicator {
+            display: block;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+        }
+        /* Special Bundle Packages carousel on mobile */
+        .bundle-grid {
+            display: flex !important;
+            flex-direction: row;
+            overflow-x: auto;
+            gap: 1rem;
+            padding: 0 0.5rem 1rem 0.5rem;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .bundle-card {
+            min-width: 75vw;
+            max-width: 80vw;
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            margin-bottom: 0;
+        }
+        .bundle-grid::-webkit-scrollbar {
+            display: none;
+        }
+        .hero-video {
+            object-fit: contain;
+        }
+    }
+
+    .bundle-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: center;
+    }
+    .bundle-card {
+        flex: 0 0 calc(33.333% - 1.5rem);
+        max-width: calc(33.333% - 1.5rem);
+        margin-bottom: 0;
+    }
+
+    .bundle-img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        border-radius: 15px 15px 0 0;
+    }
 }
 </style>
 {% endblock extra_css %}
@@ -1928,63 +2028,58 @@
         <h2 class="section-heading">Special Bundle Packages</h2>
         <p class="section-subheading">Save more when you buy our specially curated skincare sets</p>
     </div>
-    <div class="row g-4">
-        <div class="col-md-6 col-lg-4">
-            <div class="bundle-card">
-                <div class="bundle-image">
-                    <img src="https://neutriherbs.com/cdn/shop/files/Vitamin_c_plus-2_b9e3f212-0d1a-4479-a5be-85c716df7ac4.jpg?crop=center&height=462&v=1747704207&width=462" alt="Vitamin C Bundle">
+    <div class="scroll-indicator d-md-none">Swipe to see more &rarr;</div>
+    <div class="bundle-grid">
+        <div class="bundle-card">
+            <div class="bundle-image">
+                <img src="https://neutriherbs.com/cdn/shop/files/Vitamin_c_plus-2_b9e3f212-0d1a-4479-a5be-85c716df7ac4.jpg?crop=center&height=462&v=1747704207&width=462" alt="Vitamin C Bundle">
+            </div>
+            <div class="bundle-content">
+                <span class="bundle-tag">Most Popular</span>
+                <h3 class="bundle-title">Vitamin C Complete Set</h3>
+                <p>Experience the full brightening power with our Vitamin C serum, cream, and sunscreen.</p>
+                <div class="bundle-price">
+                    <span class="original-price">KSh 9,500</span>
+                    <span class="discount-price">KSh 7,600</span>
+                    <span class="savings-tag">Save 20%</span>
                 </div>
-                <div class="bundle-content">
-                    <span class="bundle-tag">Most Popular</span>
-                    <h3 class="bundle-title">Vitamin C Complete Set</h3>
-                    <p>Experience the full brightening power with our Vitamin C serum, cream, and sunscreen.</p>
-                    <div class="bundle-price">
-                        <span class="original-price">KSh 9,500</span>
-                        <span class="discount-price">KSh 7,600</span>
-                        <span class="savings-tag">Save 20%</span>
-                    </div>
-                    <button class="btn-add-cart w-100">Add Bundle to Cart</button>
-                </div>
+                <button class="btn-add-cart w-100">Add Bundle to Cart</button>
             </div>
         </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="bundle-card">
-                <div class="bundle-image">
-                    <img src="https://neutriherbs.com/cdn/shop/files/SnailAllInOneSeries-5.jpg?v=1745913167&width=1920" 
-                         alt="Snail Mucin Bundle" 
-                         style="width: 100%; height: 200px; object-fit: cover; object-position: center;">
+        <div class="bundle-card">
+            <div class="bundle-image">
+                <img src="https://neutriherbs.com/cdn/shop/files/SnailAllInOneSeries-5.jpg?v=1745913167&width=1920" 
+                     alt="Snail Mucin Bundle" 
+                     style="width: 100%; height: 200px; object-fit: cover; object-position: center;">
+            </div>
+            <div class="bundle-content">
+                <span class="bundle-tag">Best Value</span>
+                <h3 class="bundle-title">Snail Mucin Power Duo</h3>
+                <p>Repair and rejuvenate with our bestselling Snail Mucin serum and cream combination.</p>
+                <div class="bundle-price">
+                    <span class="original-price">KSh 7,100</span>
+                    <span class="discount-price">KSh 5,325</span>
+                    <span class="savings-tag">Save 25%</span>
                 </div>
-                <div class="bundle-content">
-                    <span class="bundle-tag">Best Value</span>
-                    <h3 class="bundle-title">Snail Mucin Power Duo</h3>
-                    <p>Repair and rejuvenate with our bestselling Snail Mucin serum and cream combination.</p>
-                    <div class="bundle-price">
-                        <span class="original-price">KSh 7,100</span>
-                        <span class="discount-price">KSh 5,325</span>
-                        <span class="savings-tag">Save 25%</span>
-                    </div>
-                    <button class="btn-add-cart w-100">Add Bundle to Cart</button>
-                </div>
+                <button class="btn-add-cart w-100">Add Bundle to Cart</button>
             </div>
         </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="bundle-card">
-                <div class="bundle-image">
-                    <img src="https://neutriherbs.com/cdn/shop/products/best-anti-aging-retinol-cream-for-50s---best-gift-for-mother_f291f24d-b4c0-408a-bdb6-a2aaf0af064d.jpg?v=1597299400&width=1000" 
-                         alt="Anti-Aging Bundle" 
-                         style="width: 100%; height: 200px; object-fit: cover; object-position: center;">
+        <div class="bundle-card">
+            <div class="bundle-image">
+                <img src="https://neutriherbs.com/cdn/shop/products/best-anti-aging-retinol-cream-for-50s---best-gift-for-mother_f291f24d-b4c0-408a-bdb6-a2aaf0af064d.jpg?v=1597299400&width=1000" 
+                     alt="Anti-Aging Bundle" 
+                     style="width: 100%; height: 200px; object-fit: cover; object-position: center;">
+            </div>
+            <div class="bundle-content">
+                <span class="bundle-tag">New</span>
+                <h3 class="bundle-title">Anti-Aging Essentials</h3>
+                <p>Combat signs of aging with our Retinol serum, eye cream, and hydrating face cream.</p>
+                <div class="bundle-price">
+                    <span class="original-price">KSh 8,700</span>
+                    <span class="discount-price">KSh 6,525</span>
+                    <span class="savings-tag">Save 25%</span>
                 </div>
-                <div class="bundle-content">
-                    <span class="bundle-tag">New</span>
-                    <h3 class="bundle-title">Anti-Aging Essentials</h3>
-                    <p>Combat signs of aging with our Retinol serum, eye cream, and hydrating face cream.</p>
-                    <div class="bundle-price">
-                        <span class="original-price">KSh 8,700</span>
-                        <span class="discount-price">KSh 6,525</span>
-                        <span class="savings-tag">Save 25%</span>
-                    </div>
-                    <button class="btn-add-cart w-100">Add Bundle to Cart</button>
-                </div>
+                <button class="btn-add-cart w-100">Add Bundle to Cart</button>
             </div>
         </div>
     </div>
@@ -2012,7 +2107,8 @@
     <div class="section-title">
         <h2 class="section-heading">Vitamin C Collection</h2>
         <p class="section-subheading">Brighten Your Skin with Nature's Most Powerful Antioxidant</p>
-                                </div>
+    </div>
+    <div class="scroll-indicator d-md-none">Swipe to see more &rarr;</div>
     <div class="product-grid">
         <!-- Super Booster VC Serum -->
         <div class="product-card">
@@ -2102,7 +2198,7 @@
     </div>
     <div class="text-center">
         <a href="{% url 'store:shop' %}?line=Vitamin C" class="btn btn-outline-dark">View All Vitamin C Products</a>
-                    </div>
+    </div>
 </section>
 
 <!-- Snail Mucin Series -->
@@ -2111,6 +2207,7 @@
         <h2 class="section-heading">Latest news Snail mucin Series</h2>
         <p class="section-subheading">For Your Skin, Anti-Aging And Skin Repair</p>
     </div>
+    <div class="scroll-indicator d-md-none">Swipe to see more &rarr;</div>
     <div class="product-grid">
         <!-- Snail Mucin Cream -->
         <div class="product-card">
@@ -2186,7 +2283,8 @@
         <p class="section-subheading">Your Path to Radiant, Even-Toned Skin</p>
         <p class="section-subheading mt-2">No Bleaching, Just Brighter</p>
         <h3 class="section-subheading mt-4 fw-bold">SymWhite 377</h3>
-                            </div>
+    </div>
+    <div class="scroll-indicator d-md-none">Swipe to see more &rarr;</div>
     <div class="product-grid">
         <!-- Face Cream -->
         <div class="product-card">
@@ -2261,45 +2359,40 @@
             <h2 class="section-heading">What Our Customers Say</h2>
             <p class="section-subheading">Real results from real people using Neutriherbs products</p>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p class="testimonial-text">The Vitamin C serum has completely transformed my skin! My dark spots have faded, and my skin tone is now much more even. I'm getting compliments everywhere I go!</p>
-                        <div class="testimonial-author">
-                            <img src="{% static 'images/testimonials/user1.jpg' %}" alt="Jane W." class="author-avatar">
-                            <div class="author-info">
-                                <h4>Jane W.</h4>
-                                <p>Nairobi</p>
-                            </div>
+        <div class="scroll-indicator d-md-none">Swipe to see more &rarr;</div>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">The Vitamin C serum has completely transformed my skin! My dark spots have faded, and my skin tone is now much more even. I'm getting compliments everywhere I go!</p>
+                    <div class="testimonial-author">
+                        <img src="{% static 'images/testimonials/user1.jpg' %}" alt="Jane W." class="author-avatar">
+                        <div class="author-info">
+                            <h4>Jane W.</h4>
+                            <p>Nairobi</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p class="testimonial-text">I've tried many snail mucin products, but Neutriherbs is by far the best! My skin feels so hydrated and plump. The shipping was fast, and the packaging was secure.</p>
-                        <div class="testimonial-author">
-                            <img src="{% static 'images/testimonials/user2.jpg' %}" alt="David M." class="author-avatar">
-                            <div class="author-info">
-                                <h4>David M.</h4>
-                                <p>Mombasa</p>
-                            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">I've tried many snail mucin products, but Neutriherbs is by far the best! My skin feels so hydrated and plump. The shipping was fast, and the packaging was secure.</p>
+                    <div class="testimonial-author">
+                        <img src="{% static 'images/testimonials/user2.jpg' %}" alt="David M." class="author-avatar">
+                        <div class="author-info">
+                            <h4>David M.</h4>
+                            <p>Mombasa</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p class="testimonial-text">The retinol cream has worked wonders for my fine lines! I've been using it for 2 months, and I can see a significant difference. Plus, the customer service from NeutriKenya is exceptional!</p>
-                        <div class="testimonial-author">
-                            <img src="{% static 'images/testimonials/user3.jpg' %}" alt="Sarah K." class="author-avatar">
-                            <div class="author-info">
-                                <h4>Sarah K.</h4>
-                                <p>Kisumu</p>
-                            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">The retinol cream has worked wonders for my fine lines! I've been using it for 2 months, and I can see a significant difference. Plus, the customer service from NeutriKenya is exceptional!</p>
+                    <div class="testimonial-author">
+                        <img src="{% static 'images/testimonials/user3.jpg' %}" alt="Sarah K." class="author-avatar">
+                        <div class="author-info">
+                            <h4>Sarah K.</h4>
+                            <p>Kisumu</p>
                         </div>
                     </div>
                 </div>
@@ -2350,6 +2443,7 @@
             <h2 class="section-heading">Our Certifications & Standards</h2>
             <p class="section-subheading">We maintain the highest quality standards for your skincare</p>
         </div>
+        <div class="scroll-indicator d-md-none">Swipe to see more &rarr;</div>
         <div class="certification-grid">
             <div class="certification-item">
                 <div class="certification-icon">
@@ -2361,21 +2455,21 @@
             <div class="certification-item">
                 <div class="certification-icon">
                     <i class="fas fa-flask"></i>
-                    </div>
+                </div>
                 <h3 class="certification-title">Lab Tested</h3>
                 <p class="certification-text">All products undergo rigorous laboratory testing</p>
-                        </div>
+            </div>
             <div class="certification-item">
                 <div class="certification-icon">
                     <i class="fas fa-leaf"></i>
-                            </div>
+                </div>
                 <h3 class="certification-title">Natural Ingredients</h3>
                 <p class="certification-text">Formulated with nature's finest ingredients</p>
-                        </div>
+            </div>
             <div class="certification-item">
                 <div class="certification-icon">
                     <i class="fas fa-heart"></i>
-                    </div>
+                </div>
                 <h3 class="certification-title">Cruelty Free</h3>
                 <p class="certification-text">Never tested on animals</p>
             </div>

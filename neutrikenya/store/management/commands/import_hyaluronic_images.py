@@ -101,7 +101,7 @@ class Command(BaseCommand):
                     product_image = ProductImage(
                         product=product,
                         image=File(f, name=image_file),
-                        is_main=(index == 1)  # Second image is main
+                        is_main=(index == 0)  # Second image is main
                     )
                     product_image.save()
                 

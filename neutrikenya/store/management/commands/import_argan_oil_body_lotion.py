@@ -43,7 +43,23 @@ class Command(BaseCommand):
                 'slug': product_slug,
                 'category': body_care_category,
                 'price': 2300.00,
-                'description': 'A luxurious body lotion enriched with pure Argan oil to deeply nourish and moisturize the skin. This rich formula helps to improve skin elasticity, reduce the appearance of stretch marks, and leave your skin feeling silky smooth. The Argan oil provides essential fatty acids and vitamin E, making it perfect for dry or mature skin. The lotion absorbs quickly without leaving a greasy residue, making it ideal for daily use.',
+                'description': '''A luxurious body lotion enriched with pure Argan oil to deeply nourish and moisturize the skin. This rich formula helps to improve skin elasticity, reduce the appearance of stretch marks, and leave your skin feeling silky smooth. The Argan oil provides essential fatty acids and vitamin E, making it perfect for dry or mature skin. The lotion absorbs quickly without leaving a greasy residue, making it ideal for daily use.
+
+Ingredients:
+• Pure Argan Oil (Argania Spinosa Kernel Oil)
+• Shea Butter (Butyrospermum Parkii)
+• Sweet Almond Oil (Prunus Amygdalus Dulcis Oil)
+• Jojoba Oil (Simmondsia Chinensis Seed Oil)
+• Vitamin E (Tocopherol)
+• Natural Emulsifiers
+• Natural Preservatives
+• Fragrance (Natural Essential Oils)
+
+Directions for Use:
+Apply liberally to clean, dry skin after showering or bathing. Massage gently until fully absorbed. For best results, use daily, especially after bathing.
+
+Storage:
+Store in a cool, dry place away from direct sunlight. Keep the lid tightly closed when not in use.''',
                 'product_line': 'Body Care',
                 'skin_concern': 'Dry Skin, Stretch Marks, Loss of Elasticity',
                 'is_available': True
@@ -60,6 +76,30 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f"Updated slug for existing product: {product.name}"))
             else:
                 self.stdout.write(self.style.SUCCESS(f"Found existing product: {product.name}"))
+        
+        # Update description even for existing products
+        if not created:
+            product.description = '''A luxurious body lotion enriched with pure Argan oil to deeply nourish and moisturize the skin. This rich formula helps to improve skin elasticity, reduce the appearance of stretch marks, and leave your skin feeling silky smooth. The Argan oil provides essential fatty acids and vitamin E, making it perfect for dry or mature skin. The lotion absorbs quickly without leaving a greasy residue, making it ideal for daily use.
+
+Ingredients:
+• Pure Argan Oil (Argania Spinosa Kernel Oil)
+• Shea Butter (Butyrospermum Parkii)
+• Sweet Almond Oil (Prunus Amygdalus Dulcis Oil)
+• Jojoba Oil (Simmondsia Chinensis Seed Oil)
+• Vitamin E (Tocopherol)
+• Natural Emulsifiers
+• Natural Preservatives
+• Fragrance (Natural Essential Oils)
+
+For more information about our products and their benefits, visit our main website at www.neutriherbs.com
+
+Directions for Use:
+Apply liberally to clean, dry skin after showering or bathing. Massage gently until fully absorbed. For best results, use daily, especially after bathing.
+
+Storage:
+Store in a cool, dry place away from direct sunlight. Keep the lid tightly closed when not in use.'''
+            product.save()
+            self.stdout.write(self.style.SUCCESS(f"Updated description for existing product: {product.name}"))
         
         # Import images
         if os.path.exists(source_dir):

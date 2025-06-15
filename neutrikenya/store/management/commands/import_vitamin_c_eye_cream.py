@@ -42,7 +42,7 @@ class Command(BaseCommand):
             defaults={
                 'slug': product_slug,
                 'category': vitamin_c_category,
-                'price': 3200.00,
+                'price': 2000.00,
                 'description': 'A powerful eye cream enriched with Vitamin C to brighten the under-eye area, reduce dark circles, and diminish fine lines. This lightweight formula helps to firm and hydrate the delicate skin around the eyes while providing antioxidant protection.',
                 'product_line': 'Vitamin C',
                 'skin_concern': 'Dark Circles, Fine Lines, Puffy Eyes',

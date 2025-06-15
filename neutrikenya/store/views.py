@@ -74,7 +74,12 @@ def shop(request):
     # Filter by product line
     product_line = request.GET.get('line')
     if product_line:
-        products = products.filter(product_line=product_line)
+        products = products.filter(product_line__iexact=product_line)
+    
+    # Filter by skin concern
+    skin_concern = request.GET.get('concern')
+    if skin_concern:
+        products = products.filter(skin_concern__icontains=skin_concern)
     
     # Filter by price range
     min_price = request.GET.get('min_price')
@@ -138,6 +143,17 @@ def shop(request):
         '24K Luxury Gold'
     ]
     
+    # Get unique skin concerns for filtering
+    skin_concerns = [
+        'Acne Skin',
+        'Aging Skin',
+        'Blackhead Removal',
+        'Brightening Skin',
+        'Dehydrated Skin',
+        'Oily Skin',
+        'Soothing Skin'
+    ]
+    
     # Get price range for the filter
     price_range = products.aggregate(min_price=Min('price'), max_price=Max('price'))
     
@@ -151,10 +167,12 @@ def shop(request):
         'products': products_page,
         'categories': categories,
         'product_lines': product_lines,
-        'current_category': request.GET.get('category'),
-        'current_line': request.GET.get('line'),
-        'search_query': request.GET.get('q'),
-        'current_sort': request.GET.get('sort', 'default'),
+        'skin_concerns': skin_concerns,
+        'current_category': category_slug,
+        'current_line': product_line,
+        'current_concern': skin_concern,
+        'search_query': search_query,
+        'current_sort': sort,
         'price_range': price_range,
         'min_price_filter': min_price,
         'max_price_filter': max_price,
@@ -926,84 +944,99 @@ def body_lotion_category(request):
 
 # Skin Concern Views
 def acne_skin_concern(request):
-    """Acne Skin concern page"""
-    products = Product.objects.filter(skin_concern='Acne Skin', is_available=True)
-    categories = Category.objects.filter(parent=None)
+    """View for products addressing acne skin concerns."""
+    products = Product.objects.filter(
+        Q(is_available=True) &
+        (
+            Q(product_line__in=['Salicylic Acid', 'Deeply Cleansing']) |
+            Q(category__name__in=['Cleanser', 'Toner', 'Serum']) |
+            Q(skin_concern__icontains='Acne Skin')
+        )
+    ).distinct()
     
     context = {
         'products': products,
-        'categories': categories,
-        'current_concern': 'Acne Skin',
-        'page_title': 'Acne Skincare Solutions',
-        'page_description': 'Combat acne and prevent breakouts with our specially formulated products for acne-prone skin.',
-        'concern_description': 'Acne occurs when hair follicles become clogged with oil and dead skin cells. Our acne-fighting products help clear existing breakouts and prevent new ones from forming, while balancing oil production and reducing inflammation.',
-        'recommended_products': ['Cleansers with Salicylic Acid', 'Oil-Free Moisturizers', 'Spot Treatments', 'Clay Masks']
+        'concern': 'Acne Skin',
+        'meta_title': 'Acne Treatment Products - NeutriherbsKenya',
+        'meta_description': 'Shop our range of acne treatment products including cleansers, toners, and serums with salicylic acid.',
     }
-    return render(request, 'store/skin_concern.html', context)
+    return render(request, 'store/concern_detail.html', context)
 
 def aging_skin_concern(request):
-    """Aging Skin concern page"""
-    products = Product.objects.filter(skin_concern='Aging Skin', is_available=True)
-    categories = Category.objects.filter(parent=None)
+    """View for products addressing aging skin concerns."""
+    products = Product.objects.filter(
+        Q(is_available=True) &
+        (
+            Q(product_line__in=['PRO Retinol', 'Collagen', '24K Luxury Gold', 'Vitamin C']) |
+            Q(category__name__in=['Serum', 'Face Cream']) |
+            Q(skin_concern__icontains='Aging Skin')
+        )
+    ).distinct()
     
     context = {
         'products': products,
-        'categories': categories,
-        'current_concern': 'Aging Skin',
-        'page_title': 'Anti-Aging Skincare',
-        'page_description': 'Target signs of aging with our effective anti-aging products for a more youthful complexion.',
-        'concern_description': 'As we age, our skin produces less collagen and elastin, leading to wrinkles, fine lines, and loss of firmness. Our anti-aging products help boost collagen production, protect against environmental damage, and visibly reduce signs of aging.',
-        'recommended_products': ['Retinol Serums', 'Peptide Creams', 'Vitamin C Products', 'Eye Creams']
+        'concern': 'Aging Skin',
+        'meta_title': 'Anti-Aging Skincare Products - NeutriherbsKenya',
+        'meta_description': 'Discover our premium anti-aging products including retinol, collagen, and vitamin C formulations.',
     }
-    return render(request, 'store/skin_concern.html', context)
+    return render(request, 'store/concern_detail.html', context)
 
 def blackhead_removal_concern(request):
-    """Blackhead Removal concern page"""
-    products = Product.objects.filter(skin_concern='Blackhead Removal', is_available=True)
-    categories = Category.objects.filter(parent=None)
+    """View for products addressing blackhead removal concerns."""
+    products = Product.objects.filter(
+        Q(is_available=True) &
+        (
+            Q(product_line__in=['Deeply Cleansing', 'Salicylic Acid']) |
+            Q(category__name__in=['Cleanser', 'Toner', 'Facial Mask']) |
+            Q(skin_concern__icontains='Blackhead Removal')
+        )
+    ).distinct()
     
     context = {
         'products': products,
-        'categories': categories,
-        'current_concern': 'Blackhead Removal',
-        'page_title': 'Blackhead Removal Solutions',
-        'page_description': 'Clear clogged pores and eliminate blackheads with our targeted skincare products.',
-        'concern_description': 'Blackheads are a mild form of acne that appear as small, dark lesions on the skin, typically on the face and nose. They occur when hair follicles become clogged with oil and dead skin cells. Our products help unclog pores, dissolve excess sebum, and prevent new blackheads from forming.',
-        'recommended_products': ['Pore Strips', 'BHA Exfoliants', 'Clay Masks', 'Oil-Control Cleansers']
+        'concern': 'Blackhead Removal',
+        'meta_title': 'Blackhead Removal Products - NeutriherbsKenya',
+        'meta_description': 'Shop our effective blackhead removal products including deep cleansing treatments and pore-refining solutions.',
     }
-    return render(request, 'store/skin_concern.html', context)
+    return render(request, 'store/concern_detail.html', context)
 
 def brightening_skin_concern(request):
-    """Brightening Skin concern page"""
-    products = Product.objects.filter(skin_concern='Brightening Skin', is_available=True)
-    categories = Category.objects.filter(parent=None)
+    """View for products addressing brightening skin concerns."""
+    products = Product.objects.filter(
+        Q(is_available=True) &
+        (
+            Q(product_line__in=['Vitamin C', 'Skin Whitening', 'Turmeric']) |
+            Q(category__name__in=['Serum', 'Face Cream', 'Facial Mask']) |
+            Q(skin_concern__icontains='Brightening Skin')
+        )
+    ).distinct()
     
     context = {
         'products': products,
-        'categories': categories,
-        'current_concern': 'Brightening Skin',
-        'page_title': 'Skin Brightening Solutions',
-        'page_description': 'Achieve a radiant, even skin tone with our brightening products for a luminous complexion.',
-        'concern_description': 'Dull skin and uneven skin tone can be caused by factors such as sun damage, pollution, and aging. Our brightening products help fade dark spots, even out skin tone, and restore natural radiance for a more luminous complexion.',
-        'recommended_products': ['Vitamin C Serums', 'Alpha Arbutin Products', 'Exfoliating Treatments', 'Brightening Masks']
+        'concern': 'Brightening Skin',
+        'meta_title': 'Skin Brightening Products - NeutriherbsKenya',
+        'meta_description': 'Explore our range of skin brightening products with vitamin C, turmeric, and advanced whitening formulations.',
     }
-    return render(request, 'store/skin_concern.html', context)
+    return render(request, 'store/concern_detail.html', context)
 
 def dehydrated_skin_concern(request):
-    """Dehydrated Skin concern page"""
-    products = Product.objects.filter(skin_concern='Dehydrated Skin', is_available=True)
-    categories = Category.objects.filter(parent=None)
+    """View for products addressing dehydrated skin concerns."""
+    products = Product.objects.filter(
+        Q(is_available=True) &
+        (
+            Q(product_line__in=['Hyaluronic Acid', 'Vitamin E']) |
+            Q(category__name__in=['Serum', 'Face Cream', 'Facial Mask']) |
+            Q(skin_concern__icontains='Dehydrated Skin')
+        )
+    ).distinct()
     
     context = {
         'products': products,
-        'categories': categories,
-        'current_concern': 'Dehydrated Skin',
-        'page_title': 'Solutions for Dehydrated Skin',
-        'page_description': 'Restore moisture and plumpness to dehydrated skin with our hydrating skincare solutions.',
-        'concern_description': 'Dehydrated skin lacks water and can affect any skin type - even oily skin. Signs include dullness, itchiness, and fine lines. Our products help replenish lost moisture, strengthen the skin barrier, and prevent water loss for plump, healthy skin.',
-        'recommended_products': ['Hyaluronic Acid Serums', 'Hydrating Toners', 'Moisturizing Masks', 'Ceramide Creams']
+        'concern': 'Dehydrated Skin',
+        'meta_title': 'Hydrating Skincare Products - NeutriherbsKenya',
+        'meta_description': 'Shop our hydrating skincare products with hyaluronic acid and vitamin E for deep moisture.',
     }
-    return render(request, 'store/skin_concern.html', context)
+    return render(request, 'store/concern_detail.html', context)
 
 def dry_skin_concern(request):
     """Dry Skin concern page"""
@@ -1022,36 +1055,42 @@ def dry_skin_concern(request):
     return render(request, 'store/skin_concern.html', context)
 
 def oily_skin_concern(request):
-    """Oily Skin concern page"""
-    products = Product.objects.filter(skin_concern='Oily Skin', is_available=True)
-    categories = Category.objects.filter(parent=None)
+    """View for products addressing oily skin concerns."""
+    products = Product.objects.filter(
+        Q(is_available=True) &
+        (
+            Q(product_line__in=['Deeply Cleansing', 'Salicylic Acid']) |
+            Q(category__name__in=['Cleanser', 'Toner', 'Serum']) |
+            Q(skin_concern__icontains='Oily Skin')
+        )
+    ).distinct()
     
     context = {
         'products': products,
-        'categories': categories,
-        'current_concern': 'Oily Skin',
-        'page_title': 'Oily Skin Solutions',
-        'page_description': 'Control shine and balance oil production with our specialized products for oily skin.',
-        'concern_description': 'Oily skin occurs when sebaceous glands produce excess sebum, leading to a shiny appearance and potential breakouts. Our products help regulate oil production, minimize the appearance of pores, and provide oil-free hydration for balanced skin.',
-        'recommended_products': ['Oil-Control Cleansers', 'Mattifying Toners', 'Lightweight Gel Moisturizers', 'Clay Masks']
+        'concern': 'Oily Skin',
+        'meta_title': 'Oily Skin Products - NeutriherbsKenya',
+        'meta_description': 'Discover our range of products for oily skin, including oil-control cleansers and mattifying treatments.',
     }
-    return render(request, 'store/skin_concern.html', context)
+    return render(request, 'store/concern_detail.html', context)
 
 def soothing_skin_concern(request):
-    """Soothing Skin concern page"""
-    products = Product.objects.filter(skin_concern='Soothing Skin', is_available=True)
-    categories = Category.objects.filter(parent=None)
+    """View for products addressing soothing skin concerns."""
+    products = Product.objects.filter(
+        Q(is_available=True) &
+        (
+            Q(product_line__in=['Snail', 'Vitamin E']) |
+            Q(category__name__in=['Serum', 'Face Cream', 'Facial Mask']) |
+            Q(skin_concern__icontains='Soothing Skin')
+        )
+    ).distinct()
     
     context = {
         'products': products,
-        'categories': categories,
-        'current_concern': 'Soothing Skin',
-        'page_title': 'Soothing Solutions for Sensitive Skin',
-        'page_description': 'Calm irritation and reduce redness with our gentle, soothing products for sensitive skin.',
-        'concern_description': 'Sensitive skin can be easily irritated, leading to redness, itching, and discomfort. Our gentle, soothing products help calm inflammation, strengthen the skin barrier, and provide relief from irritation without harsh ingredients.',
-        'recommended_products': ['Centella Asiatica Products', 'Fragrance-Free Cleansers', 'Calming Serums', 'Barrier Repair Creams']
+        'concern': 'Soothing Skin',
+        'meta_title': 'Soothing Skincare Products - NeutriherbsKenya',
+        'meta_description': 'Shop our calming and soothing skincare products for sensitive and irritated skin.',
     }
-    return render(request, 'store/skin_concern.html', context)
+    return render(request, 'store/concern_detail.html', context)
 
 def collagen_line(request):
     """Collagen product line page"""

@@ -44,7 +44,6 @@ skin_concerns = {
     "blackhead-removal.jpg": "Look for pore cleansing products",
     "brightening-skin.jpg": "From 'Vit C SERIES' or 'LIGHTEN SKIN' folders - brightening image",
     "dehydrated-skin.jpg": "From 'HYALURONIC ACID' folder - hydrating product image",
-    "dry-skin.jpg": "Look for rich moisturizers for dry skin",
     "oily-skin.jpg": "Look for oil control products (mattifying products)",
     "soothing-skin.jpg": "Look for calming products (aloe vera, etc.)"
 }

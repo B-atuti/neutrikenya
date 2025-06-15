@@ -77,8 +77,8 @@ for p_type in product_types:
 # Create skin concern images
 skin_concerns = [
     "acne-skin", "aging-skin", "blackhead-removal", 
-    "brightening-skin", "dehydrated-skin", "dry-skin", 
-    "oily-skin", "soothing-skin"
+    "brightening-skin", "dehydrated-skin", "oily-skin", 
+    "soothing-skin"
 ]
 
 for concern in skin_concerns:

@@ -1,0 +1,121 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}{{ concern }} Products - NeutriherbsKenya{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ meta_description }}">
+<meta property="og:title" content="{{ meta_title }}">
+<meta property="og:description" content="{{ meta_description }}">
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ concern }} Products</h1>
+        <p class="text-gray-600">
+            {% if concern == 'Acne Skin' %}
+            Discover our range of acne treatment products formulated with salicylic acid and deep cleansing ingredients to help combat breakouts and maintain clear skin.
+            {% elif concern == 'Aging Skin' %}
+            Explore our premium anti-aging products featuring retinol, collagen, and vitamin C to help reduce fine lines, wrinkles, and promote youthful-looking skin.
+            {% elif concern == 'Blackhead Removal' %}
+            Shop our effective blackhead removal products designed to deeply cleanse pores and prevent future blackhead formation.
+            {% elif concern == 'Brightening Skin' %}
+            Find our selection of skin brightening products with vitamin C, turmeric, and advanced whitening formulations for a radiant complexion.
+            {% elif concern == 'Dehydrated Skin' %}
+            Browse our hydrating skincare products enriched with hyaluronic acid and vitamin E to restore moisture and maintain skin's natural barrier.
+            {% elif concern == 'Oily Skin' %}
+            Discover our range of products specifically formulated for oily skin, helping to control excess oil and maintain a balanced complexion.
+            {% elif concern == 'Soothing Skin' %}
+            Explore our calming and soothing skincare products perfect for sensitive and irritated skin, featuring gentle yet effective ingredients.
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {% for product in products %}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <a href="{{ product.get_absolute_url }}" class="block">
+                {% if product.images.exists %}
+                <img src="{{ product.images.first.image.url }}" 
+                     alt="{{ product.name }}" 
+                     class="w-full h-64 object-cover">
+                {% else %}
+                <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-400">No image available</span>
+                </div>
+                {% endif %}
+            </a>
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">
+                    <a href="{{ product.get_absolute_url }}" class="hover:text-blue-600">
+                        {{ product.name }}
+                    </a>
+                </h2>
+                <p class="text-gray-600 text-sm mb-2">{{ product.product_line }}</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-lg font-bold text-gray-900">KSh {{ product.price }}</span>
+                    {% if product.original_price %}
+                    <span class="text-sm text-gray-500 line-through">KSh {{ product.original_price }}</span>
+                    {% endif %}
+                </div>
+                <button onclick="addToCart({{ product.id }})" 
+                        class="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center py-8">
+            <p class="text-gray-600">No products found for this skin concern.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+function addToCart(productId) {
+    fetch(`/store/add-to-cart/${productId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show success message
+            alert('Product added to cart!');
+            // Update cart count if needed
+            updateCartCount();
+        } else {
+            alert('Error adding product to cart');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error adding product to cart');
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function updateCartCount() {
+    // Implement cart count update logic here
+}
+</script>
+{% endblock %} 

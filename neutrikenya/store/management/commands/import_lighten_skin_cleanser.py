@@ -42,7 +42,7 @@ class Command(BaseCommand):
             defaults={
                 'slug': product_slug,
                 'category': lighten_skin_category,
-                'price': 2500.00,
+                'price': 1400.00,
                 'description': 'A gentle yet effective facial cleanser formulated with natural ingredients to help brighten and even out skin tone. This cleanser removes impurities while helping to reduce the appearance of dark spots and hyperpigmentation for a more radiant complexion.',
                 'product_line': 'Lighten Skin',
                 'skin_concern': 'Dark Spots, Hyperpigmentation, Uneven Skin Tone',

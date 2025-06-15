@@ -50,4 +50,13 @@ urlpatterns = [
     path('concerns/oily-skin/', views.oily_skin_concern, name='oily_skin_concern'),
     path('concerns/soothing-skin/', views.soothing_skin_concern, name='soothing_skin_concern'),
     path('beauty-tools/', views.beauty_tools, name='beauty_tools'),
+    
+    # Skin Concern URLs
+    path('skin-concerns/acne-skin/', views.acne_skin_concern, name='acne_skin_concern'),
+    path('skin-concerns/aging-skin/', views.aging_skin_concern, name='aging_skin_concern'),
+    path('skin-concerns/blackhead-removal/', views.blackhead_removal_concern, name='blackhead_removal_concern'),
+    path('skin-concerns/brightening-skin/', views.brightening_skin_concern, name='brightening_skin_concern'),
+    path('skin-concerns/dehydrated-skin/', views.dehydrated_skin_concern, name='dehydrated_skin_concern'),
+    path('skin-concerns/oily-skin/', views.oily_skin_concern, name='oily_skin_concern'),
+    path('skin-concerns/soothing-skin/', views.soothing_skin_concern, name='soothing_skin_concern'),
 ] 
